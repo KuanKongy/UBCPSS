@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UBC Project STEM Search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --c0:#E8F4FA;--c1:#D0E8F5;--c2:#B8D4EC;--c3:#A4C4E0;--c4:#7AAFC8;
+  --c5:#4A7A9B;--c6:#2E5F82;--navy:#1A3A5C;--navy-d:#0F1E2E;
+  --teal:#7DD4CC;--gold:#F0C060;--sblue:#6BB8D4;
+  --txt:#0F1E2E;--txt2:#2E5070;--txt3:#5A7A96;
+  --white:#fff;
+  --fd:'Syne',Impact,Arial Black,sans-serif;
+  --fb:'DM Sans',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);color:var(--txt);overflow-x:hidden;background:var(--c1)}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 48px;
+  background:rgba(208,232,245,0.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(122,175,200,0.25);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-mark{width:34px;height:34px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center}
+.nav-mark svg{width:18px;height:18px}
+.nav-brand{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--navy)}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--txt2);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-join{background:var(--navy)!important;color:var(--white)!important;padding:8px 22px;border-radius:100px;font-weight:700!important;transition:transform .15s,background .2s!important}
+.nav-join:hover{background:var(--c6)!important;transform:translateY(-1px)}
+@media(max-width:768px){nav{padding:12px 20px}.nav-links{display:none}}
+
+/* SECTION */
+section{position:relative;overflow:visible}
+.blob-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.sc{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.sc{padding:0 22px}}
+
+/* WAVE TRANSITIONS */
+.wbot{position:absolute;left:0;right:0;bottom:-2px;width:100%;pointer-events:none;z-index:10;line-height:0}
+.wbot svg{display:block;width:100%}
+
+/* SPARKLES */
+.sp{position:absolute;pointer-events:none;z-index:5;animation:spk 2.5s ease-in-out infinite}
+@keyframes spk{0%,100%{opacity:.9;transform:scale(1) rotate(0deg)}50%{opacity:.35;transform:scale(.65) rotate(18deg)}}
+
+/* UTILITY */
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--c5);margin-bottom:14px}
+.ttl{font-family:var(--fd);font-size:clamp(36px,5vw,58px);font-weight:800;color:var(--navy);line-height:1.0;margin-bottom:20px}
+.bod{font-size:16px;line-height:1.75;color:var(--txt2)}
+.rev{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.rev.vis{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* BTN */
+.btnp{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--white);font-family:var(--fb);font-size:15px;font-weight:700;padding:14px 30px;border-radius:100px;text-decoration:none;border:none;cursor:pointer;transition:background .2s,transform .15s}
+.btnp:hover{background:var(--c6);transform:translateY(-2px)}
+.btns{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--navy);font-family:var(--fb);font-size:15px;font-weight:700;padding:14px 30px;border-radius:100px;text-decoration:none;border:2px solid var(--c4);cursor:pointer;transition:background .2s,transform .15s}
+.btns:hover{background:rgba(255,255,255,.6);transform:translateY(-2px)}
+
+/* DOT GRID */
+.dg{position:absolute;pointer-events:none;z-index:1;opacity:.3}
+
+/* ====== HERO ====== */
+#hero{background:var(--c1);min-height:100vh;padding:140px 0 140px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.eye{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--c6);background:rgba(255,255,255,.65);border:1px solid rgba(74,122,155,.25);border-radius:100px;padding:6px 16px;margin-bottom:26px}
+.eye-dot{width:7px;height:7px;border-radius:50%;background:var(--c5);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hhl{font-family:var(--fd);font-size:clamp(52px,7vw,92px);font-weight:800;line-height:.95;color:var(--navy);margin-bottom:22px}
+.hhl em{font-style:italic;color:var(--c5)}
+.hsub{font-size:17px;line-height:1.7;color:var(--txt2);max-width:480px;margin-bottom:40px}
+.hbtns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:60px}
+.hstats{display:flex;gap:44px;flex-wrap:wrap}
+.snum{font-family:var(--fd);font-size:44px;font-weight:800;color:var(--navy);line-height:1}
+.slbl{font-size:13px;color:var(--txt3);margin-top:5px;font-weight:500}
+.h-art{display:flex;align-items:center;justify-content:center}
+@media(max-width:900px){.h-art{display:none}}
+
+/* ====== ABOUT ====== */
+#about{background:var(--white);padding:80px 0}
+.ag{display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:start}
+@media(max-width:900px){.ag{grid-template-columns:1fr}}
+.acards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+@media(max-width:600px){.acards{grid-template-columns:1fr}}
+.acard{background:var(--c1);border-radius:20px;padding:22px 20px;border:1px solid rgba(122,175,200,.3);transition:transform .25s}
+.acard:hover{transform:translateY(-4px)}
+.acard-ico{font-size:24px;margin-bottom:10px}
+.acard h3{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:6px}
+.acard p{font-size:13px;line-height:1.6;color:var(--txt2)}
+
+/* ====== WHAT WE DO ====== */
+#what{background:var(--c1);padding:80px 0}
+.wh{text-align:center;margin-bottom:60px}
+.plrs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:900px){.plrs{grid-template-columns:1fr}}
+.plr{background:rgba(255,255,255,.72);backdrop-filter:blur(8px);border-radius:28px;padding:40px 30px;border:1px solid rgba(255,255,255,.9);transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden}
+.plr:hover{transform:translateY(-8px);box-shadow:0 24px 64px rgba(46,95,130,.14)}
+.pnum{font-family:var(--fd);font-size:72px;font-weight:800;color:var(--c2);line-height:1;margin-bottom:20px}
+.plr h3{font-family:var(--fd);font-weight:800;font-size:20px;color:var(--navy);margin-bottom:12px;line-height:1.2}
+.pdesc{font-size:14px;line-height:1.7;color:var(--txt2);margin-bottom:24px}
+.pbul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.pbul li{font-size:13px;color:var(--txt2);display:flex;align-items:flex-start;gap:9px;line-height:1.4}
+.pbul li::before{content:'→';color:var(--c5);font-weight:700;flex-shrink:0}
+.pico{position:absolute;bottom:20px;right:20px;opacity:.1}
+
+/* ====== UPCOMING ====== */
+#upcoming{background:#F4F8FC;padding:80px 0}
+.uph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px;flex-wrap:wrap;gap:16px}
+.upl{font-size:14px;font-weight:600;color:var(--c5);text-decoration:none}
+.upl:hover{color:var(--navy)}
+.evl{display:flex;flex-direction:column;gap:14px}
+.evi{display:grid;grid-template-columns:76px 1fr auto;gap:28px;align-items:center;background:var(--white);border-radius:22px;padding:22px 28px;border:1px solid rgba(184,212,236,.4);transition:transform .25s,box-shadow .25s}
+@media(max-width:600px){.evi{grid-template-columns:60px 1fr}}
+.evi:hover{transform:translateX(6px);box-shadow:0 8px 32px rgba(74,122,155,.1)}
+.edt{text-align:center}
+.emo{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c5)}
+.edy{font-family:var(--fd);font-size:38px;font-weight:800;color:var(--navy);line-height:1}
+.etg{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--c5);background:rgba(74,122,155,.1);border-radius:100px;padding:3px 10px;margin-bottom:6px}
+.enm{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.emt{font-size:13px;color:var(--txt3)}
+.ersvp{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:var(--white);font-size:13px;font-weight:700;padding:10px 22px;border-radius:100px;text-decoration:none;white-space:nowrap;transition:background .2s}
+.ersvp:hover{background:var(--c6)}
+@media(max-width:600px){.ersvp{display:none}}
+
+/* ====== TESTIMONIALS ====== */
+#testi{background:var(--c5);padding:80px 0}
+.th2{text-align:center;margin-bottom:60px}
+.th2 .lbl{color:rgba(255,255,255,.55)}
+.th2 .ttl{color:var(--white)}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.tgrid{grid-template-columns:1fr}}
+.tc{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:24px;padding:32px;transition:background .25s}
+.tc:hover{background:rgba(255,255,255,.18)}
+.tc.ft{grid-column:1/-1}
+@media(max-width:768px){.tc.ft{grid-column:auto}}
+.tqm{font-family:var(--fd);font-size:72px;font-weight:800;color:rgba(255,255,255,.18);line-height:.8;margin-bottom:12px}
+.ttxt{font-size:16px;line-height:1.75;color:var(--white);font-style:italic;margin-bottom:22px}
+.tc:not(.ft) .ttxt{font-size:14px}
+.tau{display:flex;align-items:center;gap:12px}
+.tav{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--white);border:2px solid rgba(255,255,255,.3);flex-shrink:0}
+.tnm{font-weight:700;font-size:14px;color:var(--white)}
+.trl{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+
+/* ====== FAQ ====== */
+#faq{background:var(--white);padding:80px 0}
+.fg{display:grid;grid-template-columns:1fr 1.7fr;gap:80px;align-items:start}
+@media(max-width:900px){.fg{grid-template-columns:1fr}}
+.fl{position:sticky;top:120px}
+@media(max-width:900px){.fl{position:static}}
+.fl .bod{margin-top:14px;margin-bottom:28px}
+.fits{display:flex;flex-direction:column;gap:6px}
+.fit{border-radius:16px;overflow:hidden;border:1px solid rgba(184,212,236,.4);transition:border-color .2s}
+.fit.open{border-color:var(--c4)}
+.fq{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;cursor:pointer;background:#F4F8FC;gap:16px;transition:background .2s}
+.fit.open .fq{background:var(--c1)}
+.fqt{font-size:15px;font-weight:600;color:var(--navy);line-height:1.4}
+.ftog{width:28px;height:28px;border-radius:50%;background:var(--white);border:1px solid rgba(184,212,236,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;color:var(--c5);line-height:1;font-weight:300;transition:transform .3s,background .2s}
+.fit.open .ftog{transform:rotate(45deg);background:var(--navy);color:var(--white)}
+.fa{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;padding:0 22px;background:var(--c1)}
+.fit.open .fa{max-height:300px;padding:0 22px 18px}
+.fa p{font-size:14px;line-height:1.7;color:var(--txt2)}
+
+/* ====== GET STARTED ====== */
+#gs{background:var(--c1);padding:120px 0;text-align:center;position:relative}
+.gsbtn{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ====== TEAM CAROUSEL ====== */
+#team{background:var(--navy);padding:80px 0 100px;overflow:hidden}
+.tmhdr{text-align:center;margin-bottom:52px}
+.tmhdr .lbl{color:rgba(255,255,255,.45)}
+.tmhdr .ttl{color:var(--white)}
+.tkwrap{overflow:hidden;width:100%;margin-bottom:16px;position:relative}
+.tkwrap::before,.tkwrap::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.tkwrap::before{left:0;background:linear-gradient(to right,var(--navy),transparent)}
+.tkwrap::after{right:0;background:linear-gradient(to left,var(--navy),transparent)}
+.ticker{display:flex;gap:16px;animation:tltr 35s linear infinite;width:max-content}
+.ticker.rtl{animation:trtl 40s linear infinite}
+.tkwrap:hover .ticker{animation-play-state:paused}
+@keyframes tltr{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes trtl{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.tmc{flex-shrink:0;width:160px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:24px 16px;text-align:center;transition:background .25s;cursor:default}
+.tmc:hover{background:rgba(255,255,255,.14)}
+.tmav{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:800;font-size:17px;color:var(--white);border:2px solid rgba(255,255,255,.25)}
+.av0{background:rgba(122,175,200,.4)}.av1{background:rgba(74,122,155,.5)}.av2{background:rgba(46,95,130,.55)}.av3{background:rgba(125,212,204,.3)}
+.tmnm{font-weight:700;font-size:13px;color:var(--white);margin-bottom:3px}
+.tmrl{font-size:11px;color:rgba(255,255,255,.5);line-height:1.3}
+
+/* FOOTER */
+footer{background:var(--navy-d);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.flogo{font-family:var(--fd);font-size:14px;font-weight:800;color:rgba(255,255,255,.5)}
+.flinks{display:flex;gap:24px}
+.flinks a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.flinks a:hover{color:var(--white)}
+.fack{background:rgba(0,0,0,.3);padding:16px 48px;text-align:center}
+.fack p{font-size:11px;color:rgba(255,255,255,.28);max-width:600px;margin:0 auto;line-height:1.6}
+@media(max-width:768px){footer{flex-direction:column;text-align:center;padding:28px 24px}.flinks{flex-wrap:wrap;justify-content:center}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-mark">
+      <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="5.5" stroke="white" stroke-width="1.5"/><circle cx="9" cy="9" r="2" fill="white"/><line x1="9" y1="0" x2="9" y2="4" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="9" y1="14" x2="9" y2="18" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="0" y1="9" x2="4" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/><line x1="14" y1="9" x2="18" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <span class="nav-brand">UBC PROJECT STEM SEARCH</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#what">What We Do</a></li>
+    <li><a href="#upcoming">Events</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://linktr.ee/ubc_pss" class="nav-join">Join Now</a></li>
+  </ul>
+</nav>
+
+<!-- ██ HERO ██ -->
+<section id="hero">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <path d="M-160 -120 C-40 -180,160 -100,260 60 C360 220,320 440,200 540 C80 640,-80 620,-160 500 C-240 380,-280 180,-260 60 C-250 0,-220 -80,-160 -120Z" fill="#A4C4E0" opacity=".65"/>
+      <path d="M-80 -60 C60 -120,240 -60,340 100 C440 260,400 460,280 550 C160 640,20 610,-60 490 C-140 370,-160 200,-140 80 C-130 20,-100 -40,-80 -60Z" fill="#B8D4EC" opacity=".45"/>
+      <path d="M1280 580 C1380 540,1520 580,1540 700 C1560 820,1480 930,1380 950 C1280 970,1160 910,1140 810 C1120 720,1160 600,1200 570 C1230 545,1250 615,1280 580Z" fill="#A4C4E0" opacity=".55"/>
+      <path d="M1340 680 C1400 650,1500 670,1520 750 C1540 830,1500 920,1440 940 C1380 960,1300 920,1280 850 C1260 785,1295 705,1340 680Z" fill="#C2D8EE" opacity=".5"/>
+      <path d="M1100 180 C1180 135,1300 155,1340 250 C1380 345,1340 455,1270 480 C1200 510,1100 455,1070 365 C1045 290,1055 218,1100 180Z" fill="#B8D0E8" opacity=".3"/>
+    </svg>
+  </div>
+  <!-- Sparkles -->
+  <div class="sp" style="top:15%;right:8%;animation-delay:.4s"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="top:62%;right:14%;animation-delay:1.2s"><svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="bottom:20%;left:28%;animation-delay:.8s"><svg width="9" height="9" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="top:28%;left:36%;animation-delay:2s"><svg width="9" height="9" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+  <div class="sp" style="top:72%;left:8%;animation-delay:1.6s"><svg width="13" height="13" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+
+  <div class="sc">
+    <div class="hero-grid">
+      <div>
+        <div class="eye"><div class="eye-dot"></div>UBC AMS Club &nbsp;·&nbsp; Est. 2023</div>
+        <h1 class="hhl">Finding<br>research<br>shouldn't be<br><em>daunting.</em></h1>
+        <p class="hsub">We bridge the gap between classroom learning and hands-on research — connecting UBC undergrads with professors, labs, and the skills to land that first position.</p>
+        <div class="hbtns">
+          <a href="https://linktr.ee/ubc_pss" class="btnp">Become a Member ↗</a>
+          <a href="#upcoming" class="btns">See Events</a>
+        </div>
+        <div class="hstats">
+          <div><div class="snum">120+</div><div class="slbl">Members</div></div>
+          <div><div class="snum">30+</div><div class="slbl">Professors</div></div>
+          <div><div class="snum">15+</div><div class="slbl">Events / year</div></div>
+        </div>
+      </div>
+      <div class="h-art">
+        <svg width="380" height="380" viewBox="0 0 380 380" fill="none">
+          <!-- Atom orbits -->
+          <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".45" transform="rotate(-30 190 190)"/>
+          <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".45" transform="rotate(30 190 190)"/>
+          <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".45" transform="rotate(90 190 190)"/>
+          <!-- Nucleus -->
+          <circle cx="190" cy="190" r="30" fill="#4A7A9B" opacity=".9"/>
+          <circle cx="190" cy="190" r="19" fill="#7AAFC8" opacity=".9"/>
+          <circle cx="190" cy="190" r="8" fill="white" opacity=".85"/>
+          <!-- Electrons -->
+          <circle cx="48" cy="190" r="9" fill="#7DD4CC" opacity=".85"/>
+          <circle cx="332" cy="190" r="8" fill="#6BB8D4" opacity=".85"/>
+          <circle cx="190" cy="38" r="8" fill="#7AAFC8" opacity=".8"/>
+          <circle cx="320" cy="100" r="7" fill="#7DD4CC" opacity=".75"/>
+          <circle cx="60" cy="280" r="7" fill="#6BB8D4" opacity=".75"/>
+          <!-- Sparkle decorations -->
+          <path d="M344 58 L347 67 L356 70 L347 73 L344 82 L341 73 L332 70 L341 67Z" fill="#6BB8D4" opacity=".7"/>
+          <path d="M36 312 L38 318 L44 320 L38 322 L36 328 L34 322 L28 320 L34 318Z" fill="#6BB8D4" opacity=".6"/>
+          <path d="M358 265 L360 271 L366 273 L360 275 L358 281 L356 275 L350 273 L356 271Z" fill="#F0C060" opacity=".7"/>
+          <path d="M18 128 L20 134 L26 136 L20 138 L18 144 L16 138 L10 136 L16 134Z" fill="#F0C060" opacity=".6"/>
+          <!-- DNA helix -->
+          <path d="M296 282 Q307 267,320 282 Q333 297,344 282 Q355 267,364 282" stroke="#4A7A9B" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <path d="M296 294 Q307 309,320 294 Q333 279,344 294 Q355 309,364 294" stroke="#7AAFC8" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".55"/>
+          <line x1="307" y1="275" x2="307" y2="287" stroke="#A4C4E0" stroke-width="1.5" opacity=".5"/>
+          <line x1="332" y1="288" x2="332" y2="276" stroke="#A4C4E0" stroke-width="1.5" opacity=".5"/>
+          <line x1="355" y1="275" x2="355" y2="287" stroke="#A4C4E0" stroke-width="1.5" opacity=".5"/>
+          <!-- Magnifying glass -->
+          <circle cx="78" cy="78" r="38" stroke="#2E5F82" stroke-width="3.5" fill="rgba(184,212,236,.35)"/>
+          <circle cx="78" cy="78" r="29" stroke="#4A7A9B" stroke-width="1.5" fill="rgba(208,232,245,.4)"/>
+          <line x1="107" y1="107" x2="130" y2="130" stroke="#2E5F82" stroke-width="4.5" stroke-linecap="round"/>
+          <circle cx="72" cy="72" r="4.5" fill="#4A7A9B" opacity=".6"/>
+          <circle cx="85" cy="76" r="3.5" fill="#7AAFC8" opacity=".7"/>
+          <circle cx="76" cy="86" r="4" fill="#4A7A9B" opacity=".5"/>
+          <circle cx="88" cy="66" r="3" fill="#7DD4CC" opacity=".65"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 0 C200 100,500 100,720 50 C940 0,1200 90,1440 60 L1440 100 L0 100Z" fill="#ffffff"/>
+      <path d="M0 40 C300 100,700 60,1000 80 C1200 95,1380 50,1440 70 L1440 100 L0 100Z" fill="#ffffff" opacity=".6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ ABOUT ██ -->
+<section id="about">
+  <div class="blob-layer" style="overflow:hidden">
+    <svg width="100%" height="100%" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+      <path d="M1200 90 C1300 40,1460 70,1480 195 C1500 320,1420 420,1320 440 C1220 460,1120 390,1100 290 C1080 198,1132 132,1200 90Z" fill="#D0E8F5" opacity=".55"/>
+      <path d="M-80 490 C-20 430,105 420,185 475 C265 530,290 635,248 705 C208 775,98 800,18 770 C-62 740,-102 648,-102 578 C-102 538,-100 520,-80 490Z" fill="#C8E0F2" opacity=".45"/>
+    </svg>
+    <svg class="dg" style="top:8%;left:3%;width:120px;height:120px" viewBox="0 0 120 120"><defs><pattern id="d1" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="#7AAFC8"/></pattern></defs><rect width="120" height="120" fill="url(#d1)"/></svg>
+  </div>
+  <div class="sp" style="top:12%;right:20%;animation-delay:.5s"><svg width="13" height="13" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="bottom:20%;right:8%;animation-delay:1.8s"><svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div class="ag">
+      <div class="rev">
+        <div class="lbl">What is Project STEM Search?</div>
+        <h2 class="ttl">Your launchpad into undergraduate research</h2>
+        <p class="bod">As finding research is often a daunting journey, Project STEM Search supports students by bridging the gap between classroom learning and hands-on research.<br><br>Our supportive interdisciplinary community ensures that students build confidence and prepare for a successful career in research and beyond.</p>
+      </div>
+      <div class="acards">
+        <div class="acard rev d1"><div class="acard-ico">🔬</div><h3>Unique research experience</h3><p>Personalized guidance to help you land real research positions across all STEM fields.</p></div>
+        <div class="acard rev d2"><div class="acard-ico">🤝</div><h3>Teamwork & community</h3><p>Hands-on projects and community involvement that build real collaboration skills.</p></div>
+        <div class="acard rev d3"><div class="acard-ico">🏆</div><h3>Co-op & career ready</h3><p>Resume workshops, interview prep, and cold-email strategies that actually work.</p></div>
+        <div class="acard rev d4"><div class="acard-ico">🌱</div><h3>Support local orgs</h3><p>Meaningful semester projects that directly benefit Vancouver-area organizations.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 60 C200 0,500 100,720 50 C940 0,1200 90,1440 40 L1440 100 L0 100Z" fill="#D0E8F5"/>
+      <path d="M0 80 C300 25,700 100,1050 65 C1300 35,1380 88,1440 75 L1440 100 L0 100Z" fill="#D0E8F5" opacity=".5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ WHAT WE DO ██ -->
+<section id="what">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <path d="M-120 -80 C0 -140,200 -80,280 80 C360 240,320 440,180 520 C40 600,-100 540,-160 400 C-220 260,-220 60,-120 -80Z" fill="#A4C4E0" opacity=".5"/>
+      <path d="M1300 600 C1380 560,1500 580,1520 680 C1540 780,1480 880,1400 900 C1320 920,1220 860,1200 770 C1180 690,1230 632,1300 600Z" fill="#7AAFC8" opacity=".4"/>
+      <path d="M600 -80 C680 -110,800 -80,840 0 C880 80,848 182,788 210 C728 238,640 198,600 118 C564 52,554 -54,600 -80Z" fill="#B8D4EC" opacity=".35"/>
+    </svg>
+  </div>
+  <div class="sp" style="top:8%;right:10%;animation-delay:.3s"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="bottom:15%;left:12%;animation-delay:1.4s"><svg width="12" height="12" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+  <div class="sp" style="top:50%;left:6%;animation-delay:2.2s"><svg width="9" height="9" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div class="wh rev">
+      <div class="lbl">Featured Events</div>
+      <h2 class="ttl">Three ways we help you</h2>
+    </div>
+    <div class="plrs">
+      <div class="plr rev d1">
+        <div class="pnum">01</div>
+        <h3>Professor & Research Spotlights</h3>
+        <p class="pdesc">Get face time with UBC professors and researchers in an informal, approachable setting. Learn what real research looks like day-to-day.</p>
+        <ul class="pbul"><li>Network directly with professors and grad students</li><li>Learn about ongoing research and open positions</li><li>Explore academic career paths across disciplines</li></ul>
+        <div class="pico"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><path d="M40 8 L44 28 L62 22 L50 36 L68 40 L50 44 L62 58 L44 52 L40 72 L36 52 L18 58 L30 44 L12 40 L30 36 L18 22 L36 28Z" fill="#1A3A5C"/></svg></div>
+      </div>
+      <div class="plr rev d2">
+        <div class="pnum">02</div>
+        <h3>Resume & RA Application Workshops</h3>
+        <p class="pdesc">Get hands-on help crafting research applications that actually stand out in a competitive applicant pool.</p>
+        <ul class="pbul"><li>Build strong research-focused resumes</li><li>Learn strategies for contacting professors cold</li><li>Practice interview skills with peer feedback</li></ul>
+        <div class="pico"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><rect x="18" y="12" width="44" height="56" rx="4" fill="#1A3A5C"/><rect x="26" y="24" width="28" height="3" rx="1.5" fill="white" opacity=".5"/><rect x="26" y="32" width="22" height="3" rx="1.5" fill="white" opacity=".5"/><rect x="26" y="40" width="28" height="3" rx="1.5" fill="white" opacity=".5"/><rect x="26" y="48" width="18" height="3" rx="1.5" fill="white" opacity=".5"/></svg></div>
+      </div>
+      <div class="plr rev d3">
+        <div class="pnum">03</div>
+        <h3>Group Social Events</h3>
+        <p class="pdesc">Build a genuine community of like-minded students all working toward the same goal.</p>
+        <ul class="pbul"><li>Connect with peers across all STEM disciplines</li><li>Network with upper-years who've found research</li><li>Low-pressure, fun environment to meet your people</li></ul>
+        <div class="pico"><svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="28" cy="30" r="10" fill="#1A3A5C"/><circle cx="52" cy="30" r="10" fill="#1A3A5C" opacity=".7"/><path d="M10 58 Q28 46 46 58" stroke="#1A3A5C" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M34 58 Q52 46 70 58" stroke="#1A3A5C" stroke-width="4" stroke-linecap="round" fill="none" opacity=".7"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 45 C240 -10,480 100,720 55 C960 10,1200 90,1440 45 L1440 100 L0 100Z" fill="#F4F8FC"/>
+      <path d="M0 70 C300 30,650 100,950 65 C1200 35,1360 88,1440 75 L1440 100 L0 100Z" fill="#F4F8FC" opacity=".6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ UPCOMING EVENTS ██ -->
+<section id="upcoming">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice">
+      <path d="M1180 -80 C1300 -60,1445 40,1462 162 C1480 282,1420 382,1320 410 C1220 438,1100 380,1080 278 C1060 188,1110 80,1180 -80Z" fill="#C8E0F2" opacity=".5"/>
+      <path d="M-60 480 C20 440,140 450,180 520 C220 590,200 680,130 710 C60 740,-40 700,-70 630 C-100 570,-100 510,-60 480Z" fill="#BDD0EC" opacity=".45"/>
+    </svg>
+  </div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div class="uph rev">
+      <div><div class="lbl">What's coming up</div><h2 class="ttl">Upcoming events</h2></div>
+      <a href="https://linktr.ee/ubc_pss" class="upl">View all on Linktree →</a>
+    </div>
+    <div class="evl">
+      <div class="evi rev d1">
+        <div class="edt"><div class="emo">MAR</div><div class="edy">22</div></div>
+        <div><span class="etg">Professor Spotlight</span><div class="enm">Prof. Panel: Engineering &amp; Applied Science Research</div><div class="emt">ICCS 104 &nbsp;·&nbsp; 6:00 PM – 8:00 PM</div></div>
+        <a href="https://linktr.ee/ubc_pss" class="ersvp">RSVP ↗</a>
+      </div>
+      <div class="evi rev d2">
+        <div class="edt"><div class="emo">APR</div><div class="edy">3</div></div>
+        <div><span class="etg">Workshop</span><div class="enm">Resume &amp; RA Application Workshop</div><div class="emt">ESB 2012 &nbsp;·&nbsp; 5:30 PM – 7:30 PM</div></div>
+        <a href="https://linktr.ee/ubc_pss" class="ersvp">RSVP ↗</a>
+      </div>
+      <div class="evi rev d3">
+        <div class="edt"><div class="emo">APR</div><div class="edy">17</div></div>
+        <div><span class="etg">Social Event</span><div class="enm">End of Term Social Dinner</div><div class="emt">Off-campus Vancouver &nbsp;·&nbsp; 7:00 PM</div></div>
+        <a href="https://linktr.ee/ubc_pss" class="ersvp">RSVP ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 30 C200 95,400 10,720 55 C1040 100,1240 20,1440 62 L1440 100 L0 100Z" fill="#4A7A9B"/>
+      <path d="M0 60 C300 12,700 98,1000 55 C1300 12,1380 82,1440 75 L1440 100 L0 100Z" fill="#4A7A9B" opacity=".6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ TESTIMONIALS ██ -->
+<section id="testi">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <path d="M-100 100 C-20 40,120 40,180 120 C240 200,220 320,140 380 C60 440,-60 400,-100 310 C-140 230,-160 150,-100 100Z" fill="rgba(255,255,255,0.07)"/>
+      <path d="M1260 500 C1340 460,1460 480,1490 580 C1520 680,1470 780,1390 800 C1310 820,1210 760,1190 670 C1170 590,1200 530,1260 500Z" fill="rgba(255,255,255,0.06)"/>
+    </svg>
+  </div>
+  <div class="sp" style="top:10%;right:6%;animation-delay:.6s"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="rgba(255,255,255,.6)"/></svg></div>
+  <div class="sp" style="bottom:18%;left:4%;animation-delay:1.8s"><svg width="10" height="10" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="rgba(255,255,255,.5)"/></svg></div>
+  <div class="sp" style="top:40%;left:20%;animation-delay:2.4s"><svg width="8" height="8" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div class="th2 rev"><div class="lbl">Hear from our members</div><h2 class="ttl">Real students, real research</h2></div>
+    <div class="tgrid">
+      <div class="tc ft rev"><div class="tqm">"</div><p class="ttxt">I found my summer research position through a professor spotlight event. I had no idea how to even approach a professor before joining PSS — the community completely changed how I think about my academic future.</p><div class="tau"><div class="tav">SK</div><div><div class="tnm">Sarah K.</div><div class="trl">3rd year Biology</div></div></div></div>
+      <div class="tc rev d1"><div class="tqm">"</div><p class="ttxt">The resume workshop completely changed how I approached my RA applications. Got my first position within a month.</p><div class="tau"><div class="tav">DL</div><div><div class="tnm">David L.</div><div class="trl">2nd year Computer Science</div></div></div></div>
+      <div class="tc rev d2"><div class="tqm">"</div><p class="ttxt">PSS made research feel accessible. I had no idea how to cold-email a professor — now I have a position in a chem lab.</p><div class="tau"><div class="tav">PM</div><div><div class="tnm">Priya M.</div><div class="trl">4th year Chemistry</div></div></div></div>
+      <div class="tc rev d3"><div class="tqm">"</div><p class="ttxt">Met my closest study group at a PSS social. The community genuinely cares about helping each other grow.</p><div class="tau"><div class="tav">JT</div><div><div class="tnm">James T.</div><div class="trl">2nd year Neuroscience</div></div></div></div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 50 C180 0,400 98,720 50 C1040 2,1260 88,1440 38 L1440 100 L0 100Z" fill="#ffffff"/>
+      <path d="M0 75 C260 28,520 98,780 62 C1040 28,1300 88,1440 72 L1440 100 L0 100Z" fill="#ffffff" opacity=".55"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ FAQ ██ -->
+<section id="faq">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <path d="M-100 200 C-20 130,120 110,200 170 C280 230,300 345,260 435 C220 522,110 560,30 522 C-50 482,-100 382,-110 302 C-120 240,-148 250,-100 200Z" fill="#D0E8F5" opacity=".55"/>
+      <path d="M1320 500 C1400 460,1500 480,1520 562 C1540 642,1500 740,1430 758 C1360 778,1270 732,1250 650 C1232 580,1262 530,1320 500Z" fill="#C0D8F0" opacity=".45"/>
+      <path d="M700 -60 C780 -90,900 -60,940 20 C980 100,950 202,880 230 C810 258,720 210,690 130 C660 58,648 -36,700 -60Z" fill="#C8DDF2" opacity=".35"/>
+    </svg>
+    <svg class="dg" style="bottom:10%;right:4%;width:100px;height:100px" viewBox="0 0 100 100"><defs><pattern id="d2" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.8" fill="#7AAFC8"/></pattern></defs><rect width="100" height="100" fill="url(#d2)"/></svg>
+  </div>
+  <div class="sp" style="top:15%;right:22%;animation-delay:1s"><svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div class="fg">
+      <div class="fl rev">
+        <div class="lbl">Got questions?</div>
+        <h2 class="ttl">Everything you need to know</h2>
+        <p class="bod">Can't find what you're looking for? Reach out on Instagram <a href="https://instagram.com/ubc_pss" style="color:var(--c5);font-weight:600">@ubc_pss</a></p>
+        <br><br>
+        <a href="https://linktr.ee/ubc_pss" class="btnp" style="display:inline-flex">Join PSS ↗</a>
+      </div>
+      <div class="fits rev d1">
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">Who can join Project STEM Search?</span><span class="ftog">+</span></div><div class="fa"><p>Any UBC undergraduate student — no prior research experience required. We're built for all stages, from first-years exploring to upper-years ready to apply.</p></div></div>
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">Is there a membership fee?</span><span class="ftog">+</span></div><div class="fa"><p>A small AMS club fee applies when you sign up. The vast majority of our events are free for all members once you've joined.</p></div></div>
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">What STEM fields does PSS cover?</span><span class="ftog">+</span></div><div class="fa"><p>All of them — biology, chemistry, CS, physics, engineering, neuroscience, psychology, statistics, and more. We're interdisciplinary by design.</p></div></div>
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">How often do events happen?</span><span class="ftog">+</span></div><div class="fa"><p>Roughly 2–3 events per month throughout the academic year (September through April), mixing professor panels, workshops, and socials.</p></div></div>
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">How do I actually find a research position?</span><span class="ftog">+</span></div><div class="fa"><p>Through professor spotlight events, resume and cold-email workshops, and mentorship from upper-year members who've been through the process.</p></div></div>
+        <div class="fit"><div class="fq" onclick="tFaq(this)"><span class="fqt">Do I need to attend every event?</span><span class="ftog">+</span></div><div class="fa"><p>Not at all. Come to whatever fits your schedule. Just RSVP through our Linktree so we can plan capacity for each event.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 40 C200 98,400 0,720 52 C1040 102,1240 10,1440 55 L1440 100 L0 100Z" fill="#D0E8F5"/>
+      <path d="M0 65 C300 18,650 98,950 60 C1200 25,1380 82,1440 70 L1440 100 L0 100Z" fill="#D0E8F5" opacity=".55"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ GET STARTED ██ -->
+<section id="gs">
+  <div class="blob-layer">
+    <svg width="100%" height="100%" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice">
+      <path d="M-120 -80 C0 -140,200 -80,280 60 C360 200,320 380,180 460 C40 540,-100 480,-160 340 C-220 210,-220 30,-120 -80Z" fill="#A4C4E0" opacity=".55"/>
+      <path d="M1300 -60 C1400 -82,1522 0,1542 120 C1562 242,1500 362,1400 400 C1300 440,1180 378,1160 268 C1140 170,1200 38,1300 -60Z" fill="#7AAFC8" opacity=".45"/>
+      <path d="M580 520 C660 490,780 500,820 570 C860 640,840 730,770 760 C700 790,600 750,565 680 C535 620,530 545,580 520Z" fill="#B8D4EC" opacity=".4"/>
+      <path d="M-60 490 C22 452,142 462,182 535 C222 608,200 700,130 730 C60 758,-40 720,-70 650 C-100 588,-100 525,-60 490Z" fill="#A4C4E0" opacity=".4"/>
+    </svg>
+    <svg class="dg" style="top:8%;right:6%;width:90px;height:90px" viewBox="0 0 90 90"><rect width="90" height="90" fill="url(#d1)"/></svg>
+  </div>
+  <div class="sp" style="top:18%;left:10%;animation-delay:.3s"><svg width="15" height="15" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="top:14%;right:14%;animation-delay:1.1s"><svg width="12" height="12" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+  <div class="sp" style="bottom:20%;left:22%;animation-delay:2s"><svg width="10" height="10" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+  <div class="sp" style="bottom:25%;right:18%;animation-delay:.7s"><svg width="11" height="11" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#F0C060"/></svg></div>
+  <div class="sp" style="top:55%;right:8%;animation-delay:1.5s"><svg width="8" height="8" viewBox="0 0 16 16"><path d="M8 0L9.5 6.5L16 8L9.5 9.5L8 16L6.5 9.5L0 8L6.5 6.5Z" fill="#6BB8D4"/></svg></div>
+
+  <div class="sc" style="padding-top:80px;padding-bottom:80px">
+    <div style="text-align:center" class="rev">
+      <div class="lbl">Ready to get started?</div>
+      <h2 class="ttl">Find your research<br>home at PSS</h2>
+      <p class="bod" style="max-width:440px;margin:0 auto 40px">Join a community of driven UBC students all working toward the same goal — getting real research experience.</p>
+      <div class="gsbtn">
+        <a href="https://linktr.ee/ubc_pss" class="btnp">Become a Member ↗</a>
+        <a href="https://instagram.com/ubc_pss" class="btns">Follow @ubc_pss</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wbot">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0 55 C200 10,480 98,720 50 C960 2,1200 85,1440 42 L1440 100 L0 100Z" fill="#1A3A5C"/>
+      <path d="M0 75 C300 35,700 98,1000 62 C1300 28,1380 88,1440 80 L1440 100 L0 100Z" fill="#1A3A5C" opacity=".6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ██ TEAM CAROUSEL ██ -->
+<section id="team">
+  <div class="sc" style="padding-top:80px;padding-bottom:56px">
+    <div class="tmhdr rev"><div class="lbl">The people behind PSS</div><h2 class="ttl">Meet the team</h2></div>
+  </div>
+
+  <div class="tkwrap" style="margin-bottom:16px">
+    <div class="ticker" id="row1"></div>
+  </div>
+  <div class="tkwrap" style="margin-bottom:80px">
+    <div class="ticker rtl" id="row2"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">UBC Project STEM Search</div>
+  <div class="flinks">
+    <a href="https://instagram.com/ubc_pss">Instagram</a>
+    <a href="https://linktr.ee/ubc_pss">Linktree</a>
+    <a href="mailto:ubc.pss@gmail.com">Email</a>
+    <a href="#">Code of Conduct</a>
+  </div>
+</footer>
+<div class="fack">
+  <p>UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the xʷməθkʷəy̓əm (Musqueam) people. As we build tomorrow's research community, we acknowledge our responsibility to understand and respect Indigenous histories.</p>
+</div>
+
+<script>
+const members=[
+  {i:'AL',n:'Alex Lin',r:'President',a:0},
+  {i:'BM',n:'Bella Morris',r:'VP Events',a:1},
+  {i:'CK',n:'Chris Kim',r:'VP Marketing',a:2},
+  {i:'DS',n:'Dana Singh',r:'VP Finance',a:3},
+  {i:'EJ',n:'Ethan Jones',r:'VP External',a:0},
+  {i:'FW',n:'Fiona Wu',r:'VP Technology',a:1},
+  {i:'GP',n:'Grace Park',r:'VP Communications',a:2},
+  {i:'HN',n:'Henry Ng',r:'Events Coordinator',a:3},
+  {i:'IR',n:'Iris Ramos',r:'Events Coordinator',a:0},
+  {i:'JC',n:'Julia Chen',r:'Social Media',a:1},
+  {i:'KL',n:'Kevin Liu',r:'Social Media',a:2},
+  {i:'LT',n:'Lily Tran',r:'Project Coordinator',a:3},
+  {i:'MO',n:"Max O'Brien",r:'Public Relations',a:0},
+  {i:'NP',n:'Nina Patel',r:'Public Relations',a:1},
+  {i:'OP',n:'Oscar Park',r:'Design',a:2},
+  {i:'PZ',n:'Priya Zhang',r:'Design',a:3},
+];
+function mkCard(m){return`<div class="tmc"><div class="tmav av${m.a}">${m.i}</div><div class="tmnm">${m.n}</div><div class="tmrl">${m.r}</div></div>`}
+function buildRow(el,arr){const q=[...arr,...arr,...arr,...arr];el.innerHTML=q.map(mkCard).join('')}
+buildRow(document.getElementById('row1'),members.slice(0,8));
+buildRow(document.getElementById('row2'),members.slice(8));
+
+// Scroll reveal
+const revEls=document.querySelectorAll('.rev');
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target)}})},{threshold:.1});
+revEls.forEach(el=>obs.observe(el));
+
+// FAQ
+function tFaq(el){
+  const item=el.closest('.fit');
+  const open=item.classList.contains('open');
+  document.querySelectorAll('.fit.open').forEach(i=>i.classList.remove('open'));
+  if(!open)item.classList.add('open');
+}
+
+// Nav active
+const secs=document.querySelectorAll('section[id]');
+const navAs=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  navAs.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--navy)':''});
+},{passive:true});
+</script>
+</body>
+</html>

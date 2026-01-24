@@ -1,0 +1,340 @@
+{
+  "project": "UBC Project STEM Search — Website Design Spec",
+  "version": "2.0",
+  "inspiration": ["nwHacks.io", "PSS Instagram @ubc_pss"],
+
+  "brand": {
+    "colors": {
+      "bg_lightest":   "#E8F4FA",
+      "bg_light":      "#D0E8F5",
+      "bg_mid":        "#B8D4EC",
+      "blob_soft":     "#A4C4E0",
+      "blob_mid":      "#7AAFC8",
+      "blob_dark":     "#4A7A9B",
+      "blob_deep":     "#2E5F82",
+      "teal_accent":   "#7DD4CC",
+      "navy":          "#1A3A5C",
+      "navy_mid":      "#2B5580",
+      "text_dark":     "#0F1E2E",
+      "text_mid":      "#2E5070",
+      "text_muted":    "#5A7A96",
+      "white":         "#FFFFFF",
+      "sparkle_gold":  "#F0C060",
+      "sparkle_blue":  "#6BB8D4"
+    },
+    "typography": {
+      "display_font": "Syne",
+      "display_fallback": "Impact, Arial Black, sans-serif",
+      "body_font": "DM Sans",
+      "body_fallback": "system-ui, sans-serif",
+      "display_weight": 800,
+      "heading_weight": 700,
+      "body_weight": 400
+    },
+    "decorative_elements": {
+      "sparkles": "4-pointed CSS/SVG stars, sizes 8-20px, scattered",
+      "dot_grid": "small circle dot grid pattern for corner accents",
+      "blobs": "large smooth organic SVG paths, 2-3 per section, layered",
+      "science_icons": "inline SVG: microscope, magnifying glass, flask, atom, DNA"
+    },
+    "section_transitions": {
+      "type": "SVG wave / organic blob cut",
+      "description": "Each section bottom bleeds into next via a large organic SVG blob path that matches next section bg color — no hard horizontal lines",
+      "overlap": "60-80px vertical overlap between sections"
+    }
+  },
+
+  "page_structure": {
+    "layout": "single-page, vertical scroll",
+    "nav": "sticky, frosted glass, PSS logo left, links right",
+    "sections": [
+      {
+        "id": "hero",
+        "order": 1,
+        "bg_color": "#D0E8F5",
+        "blob_colors": ["#A4C4E0", "#7AAFC8", "#4A7A9B"],
+        "blob_layout": "massive blob top-left bleeding off edge + medium blob bottom-right",
+        "sparkles": true,
+        "sparkle_positions": ["top-right corner", "mid-left", "bottom-center"],
+        "content": {
+          "eyebrow": "UBC AMS Club · Est. 2023",
+          "headline": "Finding research\nshouldn't be daunting.",
+          "headline_style": "ultra-bold, split: first line normal, 'daunting.' in italic teal",
+          "subtext": "We bridge the gap between classroom learning and hands-on research — connecting UBC undergrads with professors, labs, and the skills to land that first research position.",
+          "cta_primary": { "label": "Become a Member", "href": "https://linktr.ee/ubc_pss" },
+          "cta_secondary": { "label": "See Upcoming Events", "href": "#upcoming" },
+          "stats": [
+            { "number": "120+", "label": "Members" },
+            { "number": "30+",  "label": "Professors connected" },
+            { "number": "15+",  "label": "Events this year" }
+          ],
+          "decorative": "large atom/molecule SVG illustration, right side, partially behind blob"
+        },
+        "transition_out": "large organic blob wave in #FFFFFF flowing into About section"
+      },
+
+      {
+        "id": "about",
+        "order": 2,
+        "bg_color": "#FFFFFF",
+        "blob_colors": ["#D0E8F5", "#B8D4EC"],
+        "blob_layout": "soft blob mid-right, dot grid top-left",
+        "sparkles": true,
+        "content": {
+          "label": "What is Project STEM Search?",
+          "headline": "Your launchpad into undergraduate research",
+          "body": "As finding research is often a daunting journey, Project STEM Search supports students by bridging the gap between classroom learning and hands-on research. Our supportive interdisciplinary community ensures students build confidence and prepare for a successful career in research and beyond.",
+          "cards": [
+            { "icon": "🔬", "title": "Unique research experience",    "body": "Personalized guidance to help students land real research positions across all STEM fields." },
+            { "icon": "🤝", "title": "Teamwork through community",    "body": "Hands-on projects and community involvement that build real collaboration skills." },
+            { "icon": "🏆", "title": "Co-op & career ready",         "body": "Resume workshops, interview prep, and cold-email strategies that actually work." },
+            { "icon": "🌱", "title": "Support local organizations",   "body": "Meaningful semester projects that directly benefit Vancouver-area organizations." }
+          ]
+        },
+        "transition_out": "wave blob in #D0E8F5 flowing into What We Do section"
+      },
+
+      {
+        "id": "what_we_do",
+        "order": 3,
+        "bg_color": "#D0E8F5",
+        "blob_colors": ["#A4C4E0", "#7AAFC8"],
+        "blob_layout": "large blob bottom-left + overlapping blob top-right",
+        "sparkles": true,
+        "sparkle_color": "sparkle_blue",
+        "content": {
+          "label": "Featured Events",
+          "headline": "Three ways we help you",
+          "pillars": [
+            {
+              "number": "01",
+              "title": "Professor & Research Spotlights",
+              "icon": "spotlight_svg",
+              "description": "Get face time with UBC professors and researchers in an informal, approachable setting. Learn what real research looks like day-to-day.",
+              "bullets": [
+                "Network directly with professors and grad students",
+                "Learn about ongoing research and open positions",
+                "Explore academic career paths across disciplines"
+              ]
+            },
+            {
+              "number": "02",
+              "title": "Resume & RA Application Workshops",
+              "icon": "clipboard_svg",
+              "description": "Get hands-on help crafting research applications that actually stand out in a competitive applicant pool.",
+              "bullets": [
+                "Build strong research-focused resumes",
+                "Learn strategies for contacting professors cold",
+                "Practice interview skills with peer feedback"
+              ]
+            },
+            {
+              "number": "03",
+              "title": "Group Social Events",
+              "icon": "people_svg",
+              "description": "Build a genuine community of like-minded students all working toward the same goal.",
+              "bullets": [
+                "Connect with peers across all STEM disciplines",
+                "Network with upper-years who've found research",
+                "Low-pressure fun environment to meet your people"
+              ]
+            }
+          ]
+        },
+        "transition_out": "wave blob in #F4F8FC flowing into Upcoming Events section"
+      },
+
+      {
+        "id": "upcoming_events",
+        "order": 4,
+        "bg_color": "#F4F8FC",
+        "blob_colors": ["#C8E0F2", "#B0CCE4"],
+        "blob_layout": "blob top-right corner, small blob bottom-left",
+        "sparkles": false,
+        "content": {
+          "label": "What's coming up",
+          "headline": "Upcoming events",
+          "link": { "label": "View all on Linktree →", "href": "https://linktr.ee/ubc_pss" },
+          "events": [
+            {
+              "month": "MAR", "day": "22",
+              "tag": "Professor Spotlight",
+              "name": "Prof. Panel: Engineering & Applied Science Research",
+              "location": "ICCS 104", "time": "6:00 PM – 8:00 PM"
+            },
+            {
+              "month": "APR", "day": "3",
+              "tag": "Workshop",
+              "name": "Resume & RA Application Workshop",
+              "location": "ESB 2012", "time": "5:30 PM – 7:30 PM"
+            },
+            {
+              "month": "APR", "day": "17",
+              "tag": "Social Event",
+              "name": "End of Term Social Dinner",
+              "location": "Off-campus Vancouver", "time": "7:00 PM"
+            }
+          ]
+        },
+        "transition_out": "wave blob in #7AAFC8 flowing into Testimonials section"
+      },
+
+      {
+        "id": "testimonials",
+        "order": 5,
+        "bg_color": "#4A7A9B",
+        "blob_colors": ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"],
+        "blob_layout": "subtle light blobs top-left and bottom-right",
+        "sparkles": true,
+        "sparkle_color": "white at 40% opacity",
+        "content": {
+          "label": "Hear from our members",
+          "headline": "Real students, real research",
+          "headline_color": "white",
+          "layout": "featured-large + 3 smaller grid (2 columns bottom)",
+          "testimonials": [
+            {
+              "featured": true,
+              "quote": "I found my summer research position through a professor spotlight event. I had no idea how to even approach a professor before joining PSS — the community completely changed how I think about my academic future.",
+              "name": "Sarah K.", "role": "3rd year Biology", "initials": "SK"
+            },
+            {
+              "quote": "The resume workshop completely changed how I approached my RA applications. Got my first position within a month.",
+              "name": "David L.", "role": "2nd year Computer Science", "initials": "DL"
+            },
+            {
+              "quote": "PSS made research feel accessible. I had no idea how to cold-email a professor — now I have a position in a chem lab.",
+              "name": "Priya M.", "role": "4th year Chemistry", "initials": "PM"
+            },
+            {
+              "quote": "Met my closest study group at a PSS social event. The community genuinely cares about helping each other grow.",
+              "name": "James T.", "role": "2nd year Neuroscience", "initials": "JT"
+            }
+          ]
+        },
+        "transition_out": "wave blob in #FFFFFF flowing into FAQ section"
+      },
+
+      {
+        "id": "faq",
+        "order": 6,
+        "bg_color": "#FFFFFF",
+        "blob_colors": ["#D0E8F5", "#B8D4EC"],
+        "blob_layout": "medium blob left side, small blob bottom-right",
+        "sparkles": true,
+        "content": {
+          "label": "Got questions?",
+          "headline": "Everything you\nneed to know",
+          "contact_note": "Reach out on Instagram @ubc_pss",
+          "faqs": [
+            {
+              "q": "Who can join Project STEM Search?",
+              "a": "Any UBC undergraduate student — no prior research experience required. We're built for students at all stages, from first-years just exploring to upper-years ready to apply."
+            },
+            {
+              "q": "Is there a membership fee?",
+              "a": "A small AMS club fee applies when you sign up through the AMS portal. The vast majority of our events are free for all members once you've joined."
+            },
+            {
+              "q": "What STEM fields does PSS cover?",
+              "a": "All of them — biology, chemistry, CS, physics, engineering, neuroscience, psychology, statistics, and more. We're interdisciplinary by design."
+            },
+            {
+              "q": "How often do events happen?",
+              "a": "Roughly 2–3 events per month throughout the academic year (September through April), mixing professor panels, workshops, and socials."
+            },
+            {
+              "q": "How do I actually find a research position?",
+              "a": "Through professor spotlight events, resume/cold-email workshops, and mentorship from upper-year members who've been through the process."
+            },
+            {
+              "q": "Do I need to commit to attending every event?",
+              "a": "Not at all. Come to whatever fits your schedule. We just ask that you RSVP through our Linktree so we can plan capacity."
+            }
+          ]
+        },
+        "transition_out": "wave blob in #D0E8F5 flowing into Get Started section"
+      },
+
+      {
+        "id": "get_started",
+        "order": 7,
+        "bg_color": "#D0E8F5",
+        "blob_colors": ["#A4C4E0", "#7AAFC8", "#4A7A9B"],
+        "blob_layout": "four corner blobs, dense blob background — mirrors hero style",
+        "sparkles": true,
+        "sparkle_positions": ["all four quadrants"],
+        "content": {
+          "label": "Ready to get started?",
+          "headline": "Find your research\nhome at PSS",
+          "body": "Join a community of driven UBC students all working toward the same goal — getting real research experience.",
+          "cta_primary":   { "label": "Become a Member ↗", "href": "https://linktr.ee/ubc_pss" },
+          "cta_secondary": { "label": "Follow @ubc_pss",   "href": "https://instagram.com/ubc_pss" }
+        },
+        "transition_out": "hard cut to navy team section — intentional contrast"
+      },
+
+      {
+        "id": "team",
+        "order": 8,
+        "note": "BELOW get_started, per nwHacks pattern",
+        "bg_color": "#1A3A5C",
+        "blob_colors": ["rgba(255,255,255,0.04)"],
+        "blob_layout": "very subtle blobs, mostly dark navy",
+        "sparkles": false,
+        "content": {
+          "label": "The people behind PSS",
+          "headline": "Meet the team",
+          "headline_color": "white",
+          "display": {
+            "type": "auto-rotating ticker / infinite horizontal scroll carousel",
+            "description": "Two rows of team cards auto-scrolling in opposite directions (row 1 left→right, row 2 right→left), infinite loop, pause on hover. Each card shows avatar circle with initials + name + role. Card bg: rgba(255,255,255,0.08) with white border.",
+            "card_size": "160px × 180px",
+            "animation": "CSS transform translateX infinite loop, ~30s duration, alternating direction per row"
+          },
+          "members": [
+            { "initials": "AL", "name": "Alex Lin",      "role": "President" },
+            { "initials": "BM", "name": "Bella Morris",  "role": "VP Events" },
+            { "initials": "CK", "name": "Chris Kim",     "role": "VP Marketing" },
+            { "initials": "DS", "name": "Dana Singh",    "role": "VP Finance" },
+            { "initials": "EJ", "name": "Ethan Jones",   "role": "VP External" },
+            { "initials": "FW", "name": "Fiona Wu",      "role": "VP Technology" },
+            { "initials": "GP", "name": "Grace Park",    "role": "VP Communications" },
+            { "initials": "HN", "name": "Henry Ng",      "role": "Events Coordinator" },
+            { "initials": "IR", "name": "Iris Ramos",    "role": "Events Coordinator" },
+            { "initials": "JC", "name": "Julia Chen",    "role": "Social Media" },
+            { "initials": "KL", "name": "Kevin Liu",     "role": "Social Media" },
+            { "initials": "LT", "name": "Lily Tran",     "role": "Project Coordinator" },
+            { "initials": "MO", "name": "Max O'Brien",   "role": "Public Relations" },
+            { "initials": "NP", "name": "Nina Patel",    "role": "Public Relations" },
+            { "initials": "OP", "name": "Oscar Park",    "role": "Design" },
+            { "initials": "PZ", "name": "Priya Zhang",   "role": "Design" }
+          ]
+        }
+      }
+    ]
+  },
+
+  "footer": {
+    "bg_color": "#0F1E2E",
+    "content": {
+      "logo": "UBC Project STEM Search",
+      "links": [
+        { "label": "Instagram",     "href": "https://instagram.com/ubc_pss" },
+        { "label": "Linktree",      "href": "https://linktr.ee/ubc_pss" },
+        { "label": "Email",         "href": "mailto:ubc.pss@gmail.com" },
+        { "label": "Code of Conduct","href": "#" }
+      ],
+      "land_acknowledgement": "UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the xʷməθkʷəy̓əm (Musqueam) people."
+    }
+  },
+
+  "global_effects": {
+    "scroll_reveal": "IntersectionObserver, fade-up 28px, staggered delays per card",
+    "section_transitions": "Each section has an absolutely-positioned SVG wave at bottom, colored to match the NEXT section's bg — creates seamless organic flow",
+    "sparkle_animation": "CSS keyframe scale + opacity pulse, 2-4s duration, staggered delays",
+    "nav_scroll_behavior": "Highlight active section link on scroll",
+    "faq_accordion": "Single open at a time, smooth max-height transition",
+    "team_carousel": "Two-row infinite ticker, row-1 scrolls right, row-2 scrolls left, pause on hover via animation-play-state"
+  }
+}
