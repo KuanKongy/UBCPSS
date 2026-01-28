@@ -1,0 +1,111 @@
+/* Self-hosted Google Fonts via @fontsource — no external CDN */
+@import '@fontsource-variable/syne';
+@import '@fontsource-variable/dm-sans';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties (for SVG fills that can't use Tailwind classes) ── */
+:root {
+  --navy:   #1A3A5C;
+  --navy-d: #0F1E2E;
+  --teal:   #7DD4CC;
+  --gold:   #F0C060;
+  --sblue:  #6BB8D4;
+  --txt:    #0F1E2E;
+  --txt2:   #2E5070;
+  --txt3:   #5A7A96;
+  --c1:     #D0E8F5;
+  --c2:     #B8D4EC;
+  --c3:     #A4C4E0;
+  --c4:     #7AAFC8;
+  --c5:     #4A7A9B;
+  --c6:     #2E5F82;
+}
+
+/* ── Base reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans Variable', system-ui, sans-serif;
+  color: var(--txt);
+  overflow-x: hidden;
+  background: #D0E8F5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Section layout base ── */
+section {
+  position: relative;
+  overflow: visible;
+}
+
+/* ── Blob layer ── */
+.blob-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── Content container ── */
+.sc {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+@media (max-width: 768px) {
+  .sc { padding: 0 22px; }
+}
+
+/* ── Ticker carousel ── */
+.ticker-wrap {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.ticker-wrap::before,
+.ticker-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ticker-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, #1A3A5C, transparent);
+}
+
+.ticker-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, #1A3A5C, transparent);
+}
+
+.ticker-wrap:hover .ticker-row {
+  animation-play-state: paused;
+}
+
+/* ── Smooth scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #A4C4E0; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7AAFC8; }
