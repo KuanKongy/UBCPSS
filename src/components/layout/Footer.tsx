@@ -10,16 +10,12 @@ export default function Footer() {
       >
         {/* Logo */}
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <circle cx="9" cy="9" r="5.5" stroke="white" strokeWidth="1.5"/>
-              <circle cx="9" cy="9" r="2" fill="white"/>
-              <line x1="9" y1="0" x2="9" y2="4" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="9" y1="14" x2="9" y2="18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="0" y1="9" x2="4" y2="9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="14" y1="9" x2="18" y2="9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
+          <img
+            src="/favicon.svg"
+            alt=""
+            aria-hidden="true"
+            className="w-10 h-10 flex-shrink-0 rounded-full border border-white/30 bg-white/10 p-0.5 object-cover"
+          />
           <span className="font-syne text-[13px] font-bold tracking-wider text-white/50">
             UBC Project STEM Search
           </span>

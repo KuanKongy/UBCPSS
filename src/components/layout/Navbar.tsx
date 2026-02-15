@@ -67,16 +67,12 @@ export default function Navbar() {
           className="flex items-center gap-2.5 text-decoration-none group"
           aria-label="UBC Project STEM Search — back to top"
         >
-          <div className="w-[34px] h-[34px] rounded-full bg-pss-700 flex items-center justify-center flex-shrink-0">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <circle cx="9" cy="9" r="5.5" stroke="white" strokeWidth="1.5"/>
-              <circle cx="9" cy="9" r="2" fill="white"/>
-              <line x1="9" y1="0" x2="9" y2="4" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="9" y1="14" x2="9" y2="18" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="0" y1="9" x2="4" y2="9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-              <line x1="14" y1="9" x2="18" y2="9" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </div>
+          <img
+            src="/favicon.svg"
+            alt=""
+            aria-hidden="true"
+            className="w-[44px] h-[44px] flex-shrink-0 rounded-full border border-pss-500/40 bg-pss-100 p-0.5 object-cover"
+          />
           <span className="font-syne text-[13px] font-bold tracking-[0.04em] text-pss-700 hidden sm:block">
             UBC PROJECT STEM SEARCH
           </span>
