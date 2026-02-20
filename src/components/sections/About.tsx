@@ -65,8 +65,8 @@ export default function About() {
               return (
                 <ScrollReveal key={card.title} delay={0.1 * (i + 1)}>
                   <motion.div
-                    whileHover={{ y: -4 }}
-                    transition={{ duration: 0.2 }}
+                    whileHover={{ y: -12, scale: 1.04, boxShadow: '0 24px 56px rgba(26,58,92,0.22)' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                     className="bg-pss-100 rounded-[20px] p-5 border border-pss-400/30 h-full"
                   >
                     <Icon size={26} className="text-pss-500 mb-2.5" />

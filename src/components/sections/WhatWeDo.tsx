@@ -44,7 +44,7 @@ export default function WhatWeDo() {
         {/* Heading */}
         <ScrollReveal className="text-center mb-14">
           <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-pss-500 mb-3">
-            Featured Events
+            Our Programs
           </p>
           <h2
             className="font-syne font-bold text-pss-700 leading-[1.05] tracking-[-0.01em]"
@@ -57,12 +57,12 @@ export default function WhatWeDo() {
         {/* Pillar cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {PILLARS.map((pillar, i) => (
-            <ScrollReveal key={pillar.num} delay={0.1 * (i + 1)}>
+            <ScrollReveal key={pillar.num} delay={0.1 * (i + 1)} className="h-full">
               <motion.div
                 whileHover={{ y: -8, boxShadow: '0 24px 64px rgba(46,95,130,.14)' }}
                 transition={{ duration: 0.25 }}
                 className="relative overflow-hidden rounded-[28px] p-10 border border-white/90
-                           bg-white/72 backdrop-blur-[8px]"
+                           bg-white/72 backdrop-blur-[8px] flex flex-col h-full"
               >
                 <div
                   className="font-syne font-bold text-pss-200 leading-none mb-5"
@@ -74,7 +74,7 @@ export default function WhatWeDo() {
                 <h3 className="font-syne font-bold text-[20px] text-pss-700 mb-3 leading-[1.2]">
                   {pillar.title}
                 </h3>
-                <p className="text-[14px] leading-[1.7] text-pss-500 mb-6">{pillar.desc}</p>
+                <p className="text-[14px] leading-[1.7] text-pss-500 mb-6 flex-1">{pillar.desc}</p>
                 <ul className="flex flex-col gap-2.5 list-none">
                   {pillar.bullets.map((b) => (
                     <li key={b} className="text-[13px] text-pss-500 flex items-start gap-2 leading-[1.4]">

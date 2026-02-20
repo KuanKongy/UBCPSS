@@ -34,11 +34,14 @@ export default function GetStarted() {
               Join a community of driven UBC students all working toward the same goal — getting
               real research experience.
             </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <LinkButton href={LINKS.linktree} external>
-                Become a Member ↗
+            <div className="flex gap-3 justify-center flex-wrap">
+              <LinkButton href={LINKS.amsSignup} external size="sm">
+                Apply to Join ↗
               </LinkButton>
-              <LinkButton href={LINKS.instagram} variant="outline" external>
+              <LinkButton href={LINKS.linktree} variant="outline" external size="sm">
+                Our Linktree ↗
+              </LinkButton>
+              <LinkButton href={LINKS.instagram} variant="outline" external size="sm">
                 Follow @ubc_pss
               </LinkButton>
             </div>

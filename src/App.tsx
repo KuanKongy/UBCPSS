@@ -5,6 +5,7 @@ import About from '@/components/sections/About'
 import WhatWeDo from '@/components/sections/WhatWeDo'
 import Events from '@/components/sections/Events'
 import Testimonials from '@/components/sections/Testimonials'
+import Gallery from '@/components/sections/Gallery'
 import FAQ from '@/components/sections/FAQ'
 import GetStarted from '@/components/sections/GetStarted'
 import Team from '@/components/sections/Team'
@@ -19,6 +20,7 @@ export default function App() {
         <WhatWeDo />
         <Events />
         <Testimonials />
+        <Gallery />
         <FAQ />
         <GetStarted />
         <Team />

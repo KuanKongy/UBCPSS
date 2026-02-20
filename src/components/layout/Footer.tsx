@@ -2,10 +2,10 @@ import { LINKS } from '@/lib/data'
 
 export default function Footer() {
   return (
-    <footer>
-      {/* Main footer row */}
+    <footer className="bg-pss-900">
+      {/* Main row: logo + links */}
       <div
-        className="bg-pss-900 flex flex-wrap items-center justify-between gap-5
+        className="flex flex-wrap items-center justify-between gap-5
                    px-12 py-9 md:flex-row flex-col text-center md:text-left"
       >
         {/* Logo */}
@@ -44,8 +44,8 @@ export default function Footer() {
         </nav>
       </div>
 
-      {/* Land acknowledgement */}
-      <div className="bg-black/30 px-8 py-4 text-center">
+      {/* Land acknowledgement — unified in the same dark footer */}
+      <div className="border-t border-white/10 px-8 py-5 text-center">
         <p className="text-[11px] text-white/28 max-w-[600px] mx-auto leading-relaxed">
           UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the{' '}
           <span className="text-white/40">xʷməθkʷəy̓əm (Musqueam)</span> people. As we build

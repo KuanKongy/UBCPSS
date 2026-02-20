@@ -11,10 +11,10 @@ export const LINKS = {
 } as const
 
 export const STATS: Stat[] = [
-  { value: 20, suffix: '+', label: 'Members'              },
-  { value: 10, suffix: '+', label: 'Professors connected' },
-  { value: 10, suffix: '+', label: 'Events held'          },
-  { value: 10, suffix: '+', label: 'Research placements'  },
+  { value: 25, suffix: '+', label: 'Members'              },
+  { value: 15, suffix: '+', label: 'Professors connected' },
+  //{ value: 10, suffix: '+', label: 'Events held'          },
+  { value: 15, suffix: '+', label: 'Research placements'  },
 ]
 
 // All past events — listed most-recent-first
@@ -48,7 +48,7 @@ export const EVENTS: PastEvent[] = [
   },
 ]
 
-// 7 real member testimonials — Nicole is featured (full-width card)
+// 13 member testimonials — research placements + Thunderbird volunteer project
 export const TESTIMONIALS: Testimonial[] = [
   {
     initials: 'NI',
@@ -57,7 +57,6 @@ export const TESTIMONIALS: Testimonial[] = [
     program:  'Biochemistry',
     position: 'WL Lab Assistant (S25) · YIP Lab (W25)',
     quote:    'By being part of Project STEM Search, I was able to practice many soft skills like leadership, time management, and organization. Also, I was able to demonstrate my passion for research.',
-    featured: true,
   },
   {
     initials: 'RO',
@@ -107,28 +106,83 @@ export const TESTIMONIALS: Testimonial[] = [
     position: 'Lung Disease Researcher — McGill University Health Centre',
     quote:    'The club enabled me to interact with the profs comfortably through the panel, and through their advice, I was able to receive a position in Montreal.',
   },
+  // Thunderbird volunteer project testimonials
+  {
+    initials: 'IV',
+    name:     'Ivan',
+    year:     'Year 3',
+    program:  'Human Geography',
+    quote:    'The Thunderbird project provided an opportunity to learn in an elementary school environment with other like minded people, an opportunity not seen anywhere else. I gained skills and friendships that have helped me in my pursuit in education, and helped me become the person I am now. I would encourage anyone looking to get into education to join this project, and I hope to see them soon!',
+  },
+  {
+    initials: 'CA',
+    name:     'Catherina',
+    year:     'Year 4',
+    program:  'Biology',
+    quote:    'From forming meaningful connections with the children to seeing their bright smiles each day, every moment was truly rewarding. This experience helped me grow personally and professionally, strengthening my adaptability and communication skills in ways I\'ll carry with me for years to come.',
+  },
+  {
+    initials: 'AI',
+    name:     'Aisha',
+    year:     'Year 2',
+    program:  'Pharmacology',
+    quote:    'Volunteering at Thunderbird was an amazing experience overall. I gained hands-on experience in a classroom setting, connected with diverse students and staff, and played a role in helping the community and making classrooms a better place.',
+  },
+  {
+    initials: 'JE',
+    name:     'Jessica',
+    year:     'Year 3',
+    program:  'Medical Laboratory Science',
+    quote:    'Although I realized through the Thunderbird volunteer project that elementary education might not be the right path for me, the experience still gave me the chance to practice patience and communication, both of which are essential skills for research and life.',
+  },
+  {
+    initials: 'MA',
+    name:     'Maddy',
+    year:     'Year 3',
+    program:  'Food Science',
+    quote:    'Volunteering at Thunderbird was a wonderful experience! Not only did I gain valuable leadership skills, but it was plenty fun. The experience gave me the chance to take initiative, work directly with students, and further explore my interest in the education career path!',
+  },
+  {
+    initials: 'JN',
+    name:     'Jenica',
+    year:     'Alumni',
+    program:  'Biology',
+    quote:    'Volunteering with Thunderbird Elementary School allowed me to make genuine connections with my community and with the kids. I was able to see them grow and form friendships. The kids wholeheartedly embrace you as a leader and a friend, and it\'s heartwarming to return and have them run up to you because you mean a lot to them as a role model. If you\'re looking to go into early childhood education or teaching in the future, this is a great way to get hands-on experience and determine if those career paths are right for you.',
+  },
 ]
 
-// Team — real roles, placeholder names (replace before launch)
+// Team — real names and roles
 export const TEAM_MEMBERS: TeamMember[] = [
-  { initials: '??', name: 'President',              role: 'President',              avatarIndex: 0 },
-  { initials: '??', name: 'Vice President',         role: 'Vice President',         avatarIndex: 1 },
-  { initials: '??', name: 'Social Media',           role: 'Social Media',           avatarIndex: 2 },
-  { initials: '??', name: 'Social Media',           role: 'Social Media',           avatarIndex: 3 },
-  { initials: '??', name: 'Social Media',           role: 'Social Media',           avatarIndex: 0 },
-  { initials: '??', name: 'Events Committee',       role: 'Events Committee',       avatarIndex: 1 },
-  { initials: '??', name: 'Events Committee',       role: 'Events Committee',       avatarIndex: 2 },
-  { initials: '??', name: 'Events Committee',       role: 'Events Committee',       avatarIndex: 3 },
-  { initials: '??', name: 'Communications',         role: 'Communications',         avatarIndex: 0 },
-  { initials: '??', name: 'PR Committee',           role: 'PR Committee',           avatarIndex: 1 },
-  { initials: '??', name: 'PR Committee',           role: 'PR Committee',           avatarIndex: 2 },
-  { initials: '??', name: 'PR Committee',           role: 'PR Committee',           avatarIndex: 3 },
-  { initials: '??', name: 'Outreach Coordinator',   role: 'Outreach Coordinator',   avatarIndex: 0 },
-  { initials: '??', name: 'Outreach Coordinator',   role: 'Outreach Coordinator',   avatarIndex: 1 },
-  { initials: '??', name: 'Project Coordinator',    role: 'Project Coordinator',    avatarIndex: 2 },
-  { initials: '??', name: 'Project Coordinator',    role: 'Project Coordinator',    avatarIndex: 3 },
-  { initials: '??', name: 'Project Coordinator',    role: 'Project Coordinator',    avatarIndex: 0 },
-  { initials: '??', name: 'Software Developer',     role: 'Software Developer',     avatarIndex: 1 },
+  // VP Admin
+  { initials: 'JZ', name: 'Jackson Zhou',  role: 'VP Admin',               avatarIndex: 0 },
+  { initials: 'NC', name: 'Nathan Chen',   role: 'VP Admin',               avatarIndex: 1 },
+  { initials: 'CY', name: 'Cliff Yang',    role: 'VP Admin',               avatarIndex: 2 },
+  { initials: 'ER', name: 'Eric',          role: 'VP Admin',               avatarIndex: 3 },
+  { initials: 'LW', name: 'Lucie Wang',    role: 'VP Admin',               avatarIndex: 0 },
+  { initials: 'CA', name: 'Catherina Y',   role: 'VP Admin',               avatarIndex: 1 },
+  { initials: 'ME', name: 'Maddy E',       role: 'VP Admin',               avatarIndex: 2 },
+  { initials: 'RO', name: 'Roger',         role: 'VP Admin',               avatarIndex: 3 },
+  { initials: 'SH', name: 'Shamel',        role: 'VP Admin',               avatarIndex: 0 },
+  // Social Media
+  { initials: 'VR', name: 'Vrinda',        role: 'Social Media Director',  avatarIndex: 1 },
+  { initials: 'AH', name: 'Aisha Hsu',     role: 'Social Media',           avatarIndex: 2 },
+  { initials: 'JE', name: 'Jessica',       role: 'Social Media',           avatarIndex: 3 },
+  // PR Committee
+  { initials: 'HO', name: 'Howard',        role: 'PR Director',            avatarIndex: 0 },
+  { initials: 'JQ', name: 'Jacquline',     role: 'PR Committee',           avatarIndex: 1 },
+  { initials: 'JN', name: 'Jonathan',      role: 'PR Committee',           avatarIndex: 2 },
+  { initials: 'KI', name: 'Kiran',         role: 'PR Committee',           avatarIndex: 3 },
+  // Events Committee
+  { initials: 'AS', name: 'Ashassavir',    role: 'Events Committee',       avatarIndex: 0 },
+  { initials: 'NS', name: 'Nicole Sia',    role: 'Events Committee',       avatarIndex: 1 },
+  { initials: 'CW', name: 'Clinton Wong',  role: 'Events Committee',       avatarIndex: 2 },
+  { initials: 'JM', name: 'Jasmeet',       role: 'Events Committee',       avatarIndex: 3 },
+  { initials: 'SM', name: 'Samuel',        role: 'Events Committee',       avatarIndex: 0 },
+  { initials: 'EL', name: 'Elaine',        role: 'Events Committee',       avatarIndex: 1 },
+  { initials: 'AO', name: 'Ashley Or',     role: 'Events Committee',       avatarIndex: 2 },
+  { initials: 'BI', name: 'Bernard Ip',    role: 'Events Committee',       avatarIndex: 3 },
+  // Software
+  { initials: 'NL', name: 'Nam Le',        role: 'Software Developer',     avatarIndex: 0 },
 ]
 
 export const FAQ_ITEMS: FAQItem[] = [
@@ -194,7 +248,7 @@ export const PILLARS: Pillar[] = [
   },
   {
     num: '02',
-    title: 'Resume & RA Application Workshops',
+    title: 'Resume & Coop Application Workshops',
     desc:  'Hands-on help crafting research applications that stand out in a competitive applicant pool.',
     bullets: [
       'Build strong research-focused resumes',

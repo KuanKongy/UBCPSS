@@ -22,7 +22,7 @@ export interface Testimonial {
   name: string
   year: string
   program: string
-  position: string
+  position?: string
   quote: string
   featured?: boolean
 }

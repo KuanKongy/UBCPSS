@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { LINKS } from '@/lib/data'
 
 const NAV_LINKS = [
-  { label: 'About',      href: '#about' },
-  { label: 'What We Do', href: '#what'  },
-  { label: 'Events',     href: '#events' },
-  { label: 'FAQ',        href: '#faq'  },
+  { label: 'About',        href: '#about'        },
+  { label: 'What We Do',   href: '#what'         },
+  { label: 'Events',       href: '#events'       },
+  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'FAQ',          href: '#faq'          },
+  { label: 'Contact',      href: '#get-started'  },
 ] as const
 
 export default function Navbar() {

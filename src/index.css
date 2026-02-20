@@ -74,7 +74,8 @@ section {
 
 /* ── Ticker carousel ── */
 .ticker-wrap {
-  overflow: hidden;
+  overflow-x: clip;   /* clip horizontal only — lets hover scale/translate-y escape */
+  overflow-y: visible;
   width: 100%;
   position: relative;
 }

@@ -1,4 +1,4 @@
-type BlobVariant = 'hero' | 'about' | 'what' | 'events' | 'testi' | 'faq' | 'gs'
+type BlobVariant = 'hero' | 'about' | 'what' | 'events' | 'testi' | 'faq' | 'gs' | 'gallery'
 
 interface BlobLayerProps {
   variant: BlobVariant
@@ -42,7 +42,10 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
         </svg>
       )}
       {variant === 'faq' && (
-        <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        /* xMidYMin + tall viewBox: scale always driven by width (1×), anchored to top.
+           As accordion opens and section grows, more of the SVG is revealed from the
+           bottom — no jump/reposition. */
+        <svg width="100%" height="100%" viewBox="0 0 1440 1800" preserveAspectRatio="xMidYMin slice">
           <path d="M-100 200 C-20 130,120 110,200 170 C280 230,300 345,260 435 C220 522,110 560,30 522 C-50 482,-100 382,-110 302 C-120 240,-148 250,-100 200Z" fill="#D0E8F5" opacity=".55"/>
           <path d="M1320 500 C1400 460,1500 480,1520 562 C1540 642,1500 740,1430 758 C1360 778,1270 732,1250 650 C1232 580,1262 530,1320 500Z" fill="#C0D8F0" opacity=".45"/>
           <path d="M700 -60 C780 -90,900 -60,940 20 C980 100,950 202,880 230 C810 258,720 210,690 130 C660 58,648 -36,700 -60Z" fill="#C8DDF2" opacity=".35"/>
@@ -54,6 +57,14 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
           <path d="M1300 -60 C1400 -82,1522 0,1542 120 C1562 242,1500 362,1400 400 C1300 440,1180 378,1160 268 C1140 170,1200 38,1300 -60Z" fill="#7AAFC8" opacity=".45"/>
           <path d="M580 520 C660 490,780 500,820 570 C860 640,840 730,770 760 C700 790,600 750,565 680 C535 620,530 545,580 520Z" fill="#B8D4EC" opacity=".4"/>
           <path d="M-60 490 C22 452,142 462,182 535 C222 608,200 700,130 730 C60 758,-40 720,-70 650 C-100 588,-100 525,-60 490Z" fill="#A4C4E0" opacity=".4"/>
+        </svg>
+      )}
+      {variant === 'gallery' && (
+        <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+          <path d="M-100 100 C20 40,200 60,280 180 C360 300,340 460,200 520 C60 580,-80 520,-120 390 C-160 270,-170 130,-100 100Z" fill="#C8E0F2" opacity=".5"/>
+          <path d="M1280 560 C1360 520,1480 540,1500 640 C1520 740,1470 840,1390 860 C1310 880,1210 820,1190 730 C1170 650,1210 590,1280 560Z" fill="#B8D0E8" opacity=".45"/>
+          <path d="M640 -60 C720 -90,840 -60,880 20 C920 100,890 202,820 230 C750 258,660 210,630 130 C600 58,588 -36,640 -60Z" fill="#D0E8F5" opacity=".4"/>
+          <path d="M700 760 C780 730,900 750,940 830 C980 910,950 980,880 1000 C810 1020,720 975,690 900 C660 835,648 782,700 760Z" fill="#A4C4E0" opacity=".35"/>
         </svg>
       )}
     </div>
