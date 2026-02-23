@@ -2,28 +2,32 @@ import { LINKS } from '@/lib/data'
 
 export default function Footer() {
   return (
-    <footer className="bg-pss-900">
-      {/* Main row: logo + links */}
-      <div
-        className="flex flex-wrap items-center justify-between gap-5
-                   px-12 py-9 md:flex-row flex-col text-center md:text-left"
-      >
-        {/* Logo */}
-        <div className="flex items-center gap-2.5">
+    <footer className="bg-pss-900 px-8 md:px-12 py-7">
+      <div className="flex items-center gap-6">
+        {/* Logo — left */}
+        <div className="flex items-center gap-2.5 flex-shrink-0">
           <img
             src="/favicon.svg"
             alt=""
             aria-hidden="true"
-            className="w-10 h-10 flex-shrink-0 rounded-full border border-white/30 bg-white/10 p-0.5 object-cover"
+            className="w-9 h-9 rounded-full border border-white/30 bg-white/10 p-0.5 object-cover"
           />
-          <span className="font-syne text-[13px] font-bold tracking-wider text-white/50">
+          <span className="font-syne text-[12px] font-bold tracking-wider text-white/50 whitespace-nowrap hidden lg:block">
             UBC Project STEM Search
           </span>
         </div>
 
-        {/* Links */}
-        <nav aria-label="Footer navigation">
-          <ul className="flex flex-wrap gap-6 md:gap-7 justify-center list-none">
+        {/* Acknowledgement — centre, fills available space */}
+        <p className="flex-1 text-[11px] text-white/55 leading-relaxed text-center max-w-[380px] mx-auto">
+          UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the{' '}
+          <span className="text-white/80 font-medium">xʷməθkʷəy̓əm (Musqueam)</span> people. As we build
+          tomorrow's research community, we acknowledge our responsibility to understand and respect
+          Indigenous histories, lands, and cultures.
+        </p>
+
+        {/* Links — right */}
+        <nav aria-label="Footer navigation" className="flex-shrink-0">
+          <ul className="flex flex-wrap gap-5 justify-end list-none">
             {[
               { label: 'Instagram', href: LINKS.instagram, external: true  },
               { label: 'Linktree',  href: LINKS.linktree,  external: true  },
@@ -34,7 +38,7 @@ export default function Footer() {
                 <a
                   href={href}
                   {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="text-[13px] text-white/40 hover:text-white no-underline transition-colors duration-200"
+                  className="text-[12px] text-white/45 hover:text-white no-underline transition-colors duration-200 whitespace-nowrap"
                 >
                   {label}
                 </a>
@@ -42,16 +46,6 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
-      </div>
-
-      {/* Land acknowledgement — unified in the same dark footer */}
-      <div className="border-t border-white/10 px-8 py-5 text-center">
-        <p className="text-[11px] text-white/28 max-w-[600px] mx-auto leading-relaxed">
-          UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the{' '}
-          <span className="text-white/40">xʷməθkʷəy̓əm (Musqueam)</span> people. As we build
-          tomorrow's research community, we acknowledge our responsibility to understand and respect
-          Indigenous histories, lands, and cultures.
-        </p>
       </div>
     </footer>
   )

@@ -49,11 +49,11 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3.5 mb-14">
-              <LinkButton href={LINKS.linktree} external>
+              <LinkButton href={LINKS.amsSignup} external>
                 Become a Member ↗
               </LinkButton>
-              <LinkButton href="#events" variant="outline">
-                See Events
+              <LinkButton href={LINKS.linktree} external variant="outline">
+                See Events ↗
               </LinkButton>
             </div>
 

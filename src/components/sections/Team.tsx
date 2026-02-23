@@ -16,18 +16,23 @@ const R2_BASE = TEAM_MEMBERS.slice(HALF)
 const ROW1    = [...R1_BASE, ...R1_BASE, ...R1_BASE, ...R1_BASE]
 const ROW2    = [...R2_BASE, ...R2_BASE, ...R2_BASE, ...R2_BASE]
 
-function TeamCard({ initials, name, role, avatarIndex }: typeof TEAM_MEMBERS[0]) {
+function TeamCard({ initials, name, role, avatarIndex, linkedin }: typeof TEAM_MEMBERS[0]) {
+  const Wrapper = linkedin ? motion.a : motion.div
+  const wrapperProps = linkedin
+    ? { href: linkedin, target: '_blank', rel: 'noopener noreferrer' }
+    : {}
   return (
-    <motion.div
+    <Wrapper
+      {...(wrapperProps as object)}
       whileHover={{ y: -10, scale: 1.05, boxShadow: '0 24px 56px rgba(0,0,0,0.55)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       className="flex-shrink-0 w-[200px] h-[200px] relative rounded-[20px]
-                 border border-white/15 cursor-pointer overflow-hidden"
+                 border border-white/15 cursor-pointer overflow-hidden no-underline block"
       style={{ background: 'rgba(255,255,255,0.09)' }}
     >
-      {/* Large circle — 68 % of card width */}
+      {/* Large circle — z-10 so it stays above the gradient overlay */}
       <div
-        className="w-[136px] h-[136px] rounded-full absolute left-1/2 -translate-x-1/2 top-5
+        className="w-[136px] h-[136px] rounded-full absolute left-1/2 -translate-x-1/2 top-3 z-10
                    flex items-center justify-center font-syne font-bold text-[28px] text-white
                    border-2 border-white/30"
         style={{ background: AVATAR_COLORS[avatarIndex] }}
@@ -35,15 +40,26 @@ function TeamCard({ initials, name, role, avatarIndex }: typeof TEAM_MEMBERS[0])
         {initials}
       </div>
 
-      {/* Name / role pinned to bottom with gradient overlay */}
+      {/* Gradient overlay — z-0, stays below circle */}
       <div
-        className="absolute bottom-0 left-0 right-0 px-3 pt-8 pb-4 text-center"
-        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 70%, transparent)' }}
+        className="absolute bottom-0 left-0 right-0 z-0 px-3 pt-6 pb-3 text-center"
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.80) 60%, transparent)' }}
       >
-        <div className="font-bold text-[13px] text-white leading-tight">{name}</div>
+        <div className="font-syne font-bold text-[13px] text-white leading-tight">{name}</div>
         <div className="text-[11px] text-white/55 mt-0.5 leading-tight">{role}</div>
       </div>
-    </motion.div>
+
+      {/* LinkedIn hover hint */}
+      {linkedin && (
+        <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="w-5 h-5 rounded bg-white/20 flex items-center justify-center">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+              <path d="M20.447 20.452H16.89v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.98 1.98 0 0 1-2.006-1.99 1.985 1.985 0 1 1 2.006 1.99zm1.76 13.019H3.576V9h3.52v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </div>
+        </div>
+      )}
+    </Wrapper>
   )
 }
 
@@ -62,7 +78,7 @@ export default function Team() {
       </div>
 
       {/* Row 1 — scrolls left */}
-      <div className="ticker-wrap mb-4" role="region" aria-label="Team members row 1">
+      <div className="ticker-wrap mb-10" role="region" aria-label="Team members row 1">
         <div className="flex gap-4 animate-ticker-ltr ticker-row" style={{ width: 'max-content' }}>
           {ROW1.map((m, i) => (
             <TeamCard key={`r1-${i}`} {...m} />

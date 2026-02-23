@@ -11,29 +11,26 @@ const TOTAL_PAGES = Math.ceil(TESTIMONIALS.length / CARDS_PER_PAGE)
 const INTERVAL_MS = 6000
 
 const slideVariants = {
-  enter: (dir: number) => ({ x: dir > 0 ? '60%' : '-60%', opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit:  (dir: number) => ({ x: dir > 0 ? '-60%' : '60%', opacity: 0 }),
+  enter: { opacity: 0, scale: 0.97 },
+  center: { opacity: 1, scale: 1 },
+  exit:  { opacity: 0, scale: 0.97 },
 }
 
 export default function Testimonials() {
   const [page, setPage]       = useState(0)
-  const [dir, setDir]         = useState(1)
   const [paused, setPaused]   = useState(false)
   const intervalRef           = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const goTo = useCallback((next: number, direction: number) => {
-    setDir(direction)
+  const goTo = useCallback((next: number) => {
     setPage(next)
   }, [])
 
-  const goPrev = () => goTo((page - 1 + TOTAL_PAGES) % TOTAL_PAGES, -1)
-  const goNext = () => goTo((page + 1) % TOTAL_PAGES, 1)
+  const goPrev = () => goTo((page - 1 + TOTAL_PAGES) % TOTAL_PAGES)
+  const goNext = () => goTo((page + 1) % TOTAL_PAGES)
 
   const startInterval = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
     intervalRef.current = setInterval(() => {
-      setDir(1)
       setPage((p) => (p + 1) % TOTAL_PAGES)
     }, INTERVAL_MS)
   }, [])
@@ -65,7 +62,7 @@ export default function Testimonials() {
       <Sparkle size={10} color="rgba(255,255,255,.5)" bottom="18%" left="4%" delay={1.8} />
       <Sparkle size={8}  color="#F0C060"              top="40%"  left="20%"  delay={2.4} />
 
-      <div className="sc py-0">
+      <div className="py-0" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 32px' }}>
         {/* Section heading */}
         <ScrollReveal className="text-center mb-14">
           <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-white/55 mb-3">
@@ -84,17 +81,16 @@ export default function Testimonials() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Cards — overflow-x clip keeps slide animation contained; overflow-y visible lets hover pop out */}
-          <div className="relative" style={{ overflowX: 'clip' }}>
-            <AnimatePresence custom={dir} mode="wait">
+          {/* Cards — no clip needed since animation is fade/scale */}
+          <div className="relative py-4">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={page}
-                custom={dir}
                 variants={slideVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
                 className={`grid gap-5 ${colsClass}`}
               >
                 {visible.map((t) => (
@@ -102,29 +98,29 @@ export default function Testimonials() {
                     key={t.name + t.year}
                     whileHover={{ scale: 1.025, boxShadow: '0 20px 48px rgba(0,0,0,0.35)' }}
                     transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                    className="bg-white/12 border border-white/20 rounded-[24px] p-8 flex flex-col h-[340px] cursor-default"
+                    className="bg-white/12 border border-white/20 rounded-[24px] p-5 flex flex-col h-[420px] cursor-default"
                   >
-                    {/* Opening quote — reduced bottom margin so text sits closer */}
+                    {/* Opening quote — tight margin so text is close */}
                     <div
-                      className="font-syne font-bold text-white/18 leading-[0.8] mb-1 select-none flex-shrink-0"
-                      style={{ fontSize: '56px' }}
+                      className="font-syne font-bold text-white/20 leading-none mb-0 select-none flex-shrink-0"
+                      style={{ fontSize: '64px' }}
                       aria-hidden="true"
                     >
                       "
                     </div>
 
-                    {/* Quote text — scrollable if too long */}
-                    <div className="flex-1 overflow-y-auto pr-1 mb-5 scrollbar-thin" style={{ minHeight: 0 }}>
+                    {/* Quote text — scrollable if too long, sits right below the quote mark */}
+                    <div className="flex-1 overflow-y-auto pr-1 mb-4 scrollbar-thin" style={{ minHeight: 0 }}>
                       <p className="text-[14px] leading-[1.7] text-white italic">
                         {t.quote}
                       </p>
                     </div>
 
                     {/* Author */}
-                    <div className="flex items-center gap-3 flex-shrink-0 mt-auto">
+                    <div className="flex items-center gap-4 flex-shrink-0 mt-auto">
                       <div
-                        className="w-20 h-20 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
-                                   flex items-center justify-center font-bold text-[18px] text-white"
+                        className="w-28 h-28 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
+                                   flex items-center justify-center font-bold text-[22px] text-white"
                       >
                         {t.initials}
                       </div>
@@ -159,7 +155,7 @@ export default function Testimonials() {
               {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => goTo(i, i > page ? 1 : -1)}
+                  onClick={() => goTo(i)}
                   aria-label={`Go to page ${i + 1}`}
                   className={`rounded-full transition-all duration-300 ${
                     i === page

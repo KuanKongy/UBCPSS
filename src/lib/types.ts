@@ -32,6 +32,7 @@ export interface TeamMember {
   name: string
   role: string
   avatarIndex: 0 | 1 | 2 | 3
+  linkedin?: string
 }
 
 export interface FAQItem {

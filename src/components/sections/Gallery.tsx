@@ -3,6 +3,7 @@ import BlobLayer from '@/components/shared/BlobLayer'
 import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
+import { LINKS } from '@/lib/data'
 
 interface GalleryPhoto {
   label: string
@@ -49,10 +50,13 @@ const GALLERY_EVENTS: GalleryEvent[] = [
 function PhotoCard({ label, colorFrom, colorTo }: GalleryPhoto) {
   const lines = label.split('\n')
   return (
-    <motion.div
+    <motion.a
+      href={LINKS.instagram}
+      target="_blank"
+      rel="noopener noreferrer"
       whileHover={{ scale: 1.04, boxShadow: '0 20px 48px rgba(0,0,0,0.25)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className="relative rounded-[16px] overflow-hidden cursor-pointer"
+      className="relative rounded-[16px] overflow-hidden cursor-pointer block no-underline"
       style={{ aspectRatio: '4/3', background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
     >
       {/* Camera icon placeholder */}
@@ -79,9 +83,9 @@ function PhotoCard({ label, colorFrom, colorTo }: GalleryPhoto) {
             </p>
           ))}
         </div>
-        <span className="text-[10px] text-white/40 mt-1 italic">Photo coming soon</span>
+        <span className="text-[10px] text-white/40 mt-1 italic">View on Instagram ↗</span>
       </div>
-    </motion.div>
+    </motion.a>
   )
 }
 
@@ -127,7 +131,7 @@ export default function Gallery() {
         </div>
       </div>
 
-      <WaveTransition fillColor="#4A7A9B" />
+      <WaveTransition fillColor="#ffffff" />
     </section>
   )
 }
