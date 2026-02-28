@@ -18,7 +18,7 @@ export default function Footer() {
         </div>
 
         {/* Acknowledgement — centre, fills available space */}
-        <p className="flex-1 text-[11px] text-white/55 leading-relaxed text-center max-w-[380px] mx-auto">
+        <p className="flex-1 text-[11px] text-white/55 leading-relaxed text-center max-w-[580px] mx-auto">
           UBC Project STEM Search operates on the traditional, ancestral, and unceded territory of the{' '}
           <span className="text-white/80 font-medium">xʷməθkʷəy̓əm (Musqueam)</span> people. As we build
           tomorrow's research community, we acknowledge our responsibility to understand and respect

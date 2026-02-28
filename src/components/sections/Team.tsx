@@ -65,12 +65,12 @@ function TeamCard({ initials, name, role, avatarIndex, linkedin }: typeof TEAM_M
 
 export default function Team() {
   return (
-    <section id="team" className="bg-pss-700 pt-20 pb-24 overflow-hidden">
+    <section id="team" className="bg-pss-700 pt-20 pb-8 overflow-hidden">
       <div className="sc py-0">
         <ScrollReveal className="text-center mb-20">
           <h2
             className="font-syne font-bold text-white leading-[1.05] tracking-[-0.01em]"
-            style={{ fontSize: 'clamp(38px, 5vw, 64px)' }}
+            style={{ fontSize: 'clamp(38px, 5vw, 50px)' }}
           >
             Meet the minds behind PSS
           </h2>
@@ -87,7 +87,7 @@ export default function Team() {
       </div>
 
       {/* Row 2 — scrolls right */}
-      <div className="ticker-wrap mb-20" role="region" aria-label="Team members row 2">
+      <div className="ticker-wrap mb-6" role="region" aria-label="Team members row 2">
         <div className="flex gap-4 animate-ticker-rtl ticker-row" style={{ width: 'max-content' }}>
           {ROW2.map((m, i) => (
             <TeamCard key={`r2-${i}`} {...m} />
