@@ -1,20 +1,25 @@
+import { motion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
+import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
+import Sheen from '@/components/shared/Sheen'
 import StatCounter from '@/components/shared/StatCounter'
 import WaveTransition from '@/components/shared/WaveTransition'
 import LinkButton from '@/components/ui/LinkButton'
-import { LINKS, STATS } from '@/lib/data'
+import { LINKS, STATS, TRUST_POINTS } from '@/lib/data'
 
 export default function Hero() {
   return (
-    <section id="hero" className="bg-pss-100 min-h-screen pt-36 pb-36">
+    <section id="hero" className="bg-pss-100 min-h-screen pt-32 pb-24 grain">
       <BlobLayer variant="hero" />
+      <SciDoodles variant="hero" />
+      <Sheen delay={-4} />
 
       {/* Sparkles */}
       <Sparkle size={16} color="#6BB8D4" top="15%" right="8%"   delay={0.4} />
-      <Sparkle size={11} color="#6BB8D4" top="62%" right="14%"  delay={1.2} />
-      <Sparkle size={9}  color="#6BB8D4" bottom="20%" left="28%" delay={0.8} />
-      <Sparkle size={9}  color="#F0C060" top="28%"  left="36%"  delay={2.0} />
+      <Sparkle size={11} color="#6BB8D4" top="62%" right="14%"  delay={1.2} variant="rare" />
+      <Sparkle size={9}  color="#6BB8D4" bottom="12%" left="4%"  delay={0.8} />
+      <Sparkle size={9}  color="#F0C060" top="10%"  left="46%"  delay={2.0} variant="rare" />
       <Sparkle size={13} color="#6BB8D4" top="72%"  left="8%"   delay={1.6} />
 
       <div className="sc">
@@ -39,11 +44,11 @@ export default function Hero() {
               Finding<br />
               research<br />
               shouldn't be<br />
-              <em className="not-italic text-pss-500">daunting.</em>
+              <em className="not-italic bg-gradient-to-r from-pss-600 via-[#3E8E9A] to-teal bg-clip-text text-transparent">daunting.</em>
             </h1>
 
             <p className="text-[17px] leading-[1.7] text-pss-600 max-w-[480px] mb-10">
-              We bridge the gap between classroom learning and hands-on research — connecting UBC
+              We bridge the gap between classroom learning and hands-on research, connecting UBC
               undergrads with professors, labs, and the skills to land that first position.
             </p>
 
@@ -68,31 +73,37 @@ export default function Hero() {
           {/* --- Right column: atom illustration (desktop only) --- */}
           <div className="hidden lg:flex items-center justify-center" aria-hidden="true">
             <svg width="380" height="380" viewBox="0 0 380 380" fill="none">
-              {/* Atom orbits */}
-              <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(-30 190 190)"/>
-              <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(30 190 190)"/>
-              <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(90 190 190)"/>
+              {/* Orbits + electrons turn together, very slowly (120s per revolution),
+                  so the electrons stay on their rings */}
+              <g className="atom-spin">
+                <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(-30 190 190)"/>
+                <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(30 190 190)"/>
+                <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" strokeWidth="1.5" strokeDasharray="6 4" opacity=".45" transform="rotate(90 190 190)"/>
+                <circle cx="48"  cy="190" r="9" fill="#7DD4CC" opacity=".85"/>
+                <circle cx="332" cy="190" r="8" fill="#6BB8D4" opacity=".85"/>
+                <circle cx="190" cy="38"  r="8" fill="#7AAFC8" opacity=".8"/>
+                <circle cx="320" cy="100" r="7" fill="#7DD4CC" opacity=".75"/>
+                <circle cx="60"  cy="280" r="7" fill="#6BB8D4" opacity=".75"/>
+              </g>
               {/* Nucleus */}
               <circle cx="190" cy="190" r="30" fill="#4A7A9B" opacity=".9"/>
               <circle cx="190" cy="190" r="19" fill="#7AAFC8" opacity=".9"/>
               <circle cx="190" cy="190" r="8"  fill="white" opacity=".85"/>
-              {/* Electrons */}
-              <circle cx="48"  cy="190" r="9" fill="#7DD4CC" opacity=".85"/>
-              <circle cx="332" cy="190" r="8" fill="#6BB8D4" opacity=".85"/>
-              <circle cx="190" cy="38"  r="8" fill="#7AAFC8" opacity=".8"/>
-              <circle cx="320" cy="100" r="7" fill="#7DD4CC" opacity=".75"/>
-              <circle cx="60"  cy="280" r="7" fill="#6BB8D4" opacity=".75"/>
               {/* Sparkle decorations */}
               <path d="M344 58 L347 67 L356 70 L347 73 L344 82 L341 73 L332 70 L341 67Z" fill="#6BB8D4" opacity=".7"/>
               <path d="M36 312 L38 318 L44 320 L38 322 L36 328 L34 322 L28 320 L34 318Z"  fill="#6BB8D4" opacity=".6"/>
               <path d="M358 265 L360 271 L366 273 L360 275 L358 281 L356 275 L350 273 L356 271Z" fill="#F0C060" opacity=".7"/>
               <path d="M18 128 L20 134 L26 136 L20 138 L18 144 L16 138 L10 136 L16 134Z"  fill="#F0C060" opacity=".6"/>
-              {/* DNA helix */}
-              <path d="M296 282 Q307 267,320 282 Q333 297,344 282 Q355 267,364 282" stroke="#4A7A9B" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity=".55"/>
-              <path d="M296 294 Q307 309,320 294 Q333 279,344 294 Q355 309,364 294" stroke="#7AAFC8" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity=".55"/>
-              <line x1="307" y1="275" x2="307" y2="287" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
-              <line x1="332" y1="288" x2="332" y2="276" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
-              <line x1="355" y1="275" x2="355" y2="287" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              {/* DNA helix — two half-period-shifted strands crossing at the
+                  midline every 19.5px, base-pair rungs between crossings */}
+              <line x1="296.4" y1="285" x2="296.4" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <line x1="303.1" y1="285" x2="303.1" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <line x1="315.9" y1="285" x2="315.9" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <line x1="322.6" y1="285" x2="322.6" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <line x1="335.4" y1="285" x2="335.4" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <line x1="342.1" y1="285" x2="342.1" y2="299" stroke="#A4C4E0" strokeWidth="1.5" opacity=".5"/>
+              <path d="M290 292 Q299.75 274,309.5 292 Q319.25 310,329 292 Q338.75 274,348.5 292" stroke="#4A7A9B" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity=".6" pathLength={1} className="dna-ink"/>
+              <path d="M290 292 Q299.75 310,309.5 292 Q319.25 274,329 292 Q338.75 310,348.5 292" stroke="#7AAFC8" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity=".6" pathLength={1} className="dna-ink"/>
               {/* Magnifying glass */}
               <circle cx="78" cy="78" r="38" stroke="#2E5F82" strokeWidth="3.5" fill="rgba(184,212,236,.35)"/>
               <circle cx="78" cy="78" r="29" stroke="#4A7A9B" strokeWidth="1.5" fill="rgba(208,232,245,.4)"/>
@@ -104,6 +115,26 @@ export default function Hero() {
             </svg>
           </div>
         </div>
+
+        {/* Trust strip: four facts the rest of the page can back up */}
+        <motion.ul
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-14 pt-6 border-t border-pss-500/15 flex flex-wrap gap-x-6 gap-y-3 justify-center lg:justify-start list-none
+                     lg:max-w-[calc(50%-2rem)]"
+        >
+          {TRUST_POINTS.map((point) => (
+            <li key={point} className="inline-flex items-center gap-2 text-[13px] font-medium text-pss-700">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2E8E80" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="m8.5 12.5 2.5 2.5 4.5-5" />
+              </svg>
+              {point}
+            </li>
+          ))}
+        </motion.ul>
       </div>
 
       <WaveTransition fillColor="#ffffff" />

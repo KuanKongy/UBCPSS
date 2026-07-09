@@ -1,5 +1,7 @@
+import { MotionConfig } from 'framer-motion'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import ToastHost from '@/components/shared/Toast'
 import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import WhatWeDo from '@/components/sections/WhatWeDo'
@@ -12,20 +14,23 @@ import Team from '@/components/sections/Team'
 
 export default function App() {
   return (
-    <div className="overflow-x-hidden">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <WhatWeDo />
-        <Events />
-        <Testimonials />
-        <Gallery />
-        <FAQ />
-        <GetStarted />
-        <Team />
-      </main>
-      <Footer />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="overflow-x-hidden">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <WhatWeDo />
+          <Events />
+          <Testimonials />
+          <Gallery />
+          <FAQ />
+          <GetStarted />
+          <Team />
+        </main>
+        <Footer />
+        <ToastHost />
+      </div>
+    </MotionConfig>
   )
 }

@@ -30,13 +30,9 @@ const config: Config = {
           '0%,100%': { opacity: '0.9', transform: 'scale(1) rotate(0deg)' },
           '50%':      { opacity: '0.35', transform: 'scale(.65) rotate(18deg)' },
         },
-        tltr: {
-          '0%':   { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-        trtl: {
-          '0%':   { transform: 'translateX(-50%)' },
-          '100%': { transform: 'translateX(0)' },
+        spkRare: {
+          '0%,82%,100%': { opacity: '0', transform: 'scale(.4) rotate(0deg)' },
+          '88%':         { opacity: '0.85', transform: 'scale(1) rotate(24deg)' },
         },
         eyePulse: {
           '0%,100%': { opacity: '1', transform: 'scale(1)' },
@@ -52,9 +48,8 @@ const config: Config = {
         },
       },
       animation: {
-        sparkle:          'spk 2.5s ease-in-out infinite',
-        'ticker-ltr':     'tltr 35s linear infinite',
-        'ticker-rtl':     'trtl 40s linear infinite',
+        sparkle:          'spk 4s ease-in-out infinite',
+        'sparkle-rare':   'spkRare 9s ease-in-out infinite',
         'eye-pulse':      'eyePulse 2s ease-in-out infinite',
         'accordion-down': 'accordionDown 250ms ease-out',
         'accordion-up':   'accordionUp 250ms ease-in',

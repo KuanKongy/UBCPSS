@@ -1,9 +1,11 @@
+import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
+import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
-import { PILLARS } from '@/lib/data'
+import { PARTNERS, PILLARS } from '@/lib/data'
 
 // Ghost icons for pillar cards
 const PillarIcons = {
@@ -31,19 +33,34 @@ const PillarIcons = {
   ),
 }
 
+// Partner marks: all three are the organisations' official logos, tinted navy
+// mono for the chips (see scripts/mono-logo.mjs and public/logos/)
+const PARTNER_ICONS: Record<string, ReactNode> = {
+  'Thunderbird Elementary School': (
+    <img src="/logos/thunderbird-elementary-mono.png" alt="" aria-hidden="true" className="h-[20px] w-auto" />
+  ),
+  'Operation Smile Canada': (
+    <img src="/logos/operation-smile-mark.svg" alt="" aria-hidden="true" className="h-[19px] w-auto" />
+  ),
+  'Canadian Wheelchair Club': (
+    <img src="/logos/canadian-wheelchair-club-mono.png" alt="" aria-hidden="true" className="h-[17px] w-auto" />
+  ),
+}
+
 export default function WhatWeDo() {
   return (
-    <section id="what" className="bg-pss-100 py-20">
+    <section id="what" className="bg-pss-100 pt-16 pb-[92px] md:pb-[116px] grain">
       <BlobLayer variant="what" />
+      <SciDoodles variant="what" />
 
       <Sparkle size={16} color="#6BB8D4" top="8%"  right="10%" delay={0.3} />
-      <Sparkle size={12} color="#F0C060" bottom="15%" left="12%" delay={1.4} />
-      <Sparkle size={9}  color="#6BB8D4" top="50%" left="6%"  delay={2.2} />
+      <Sparkle size={12} color="#F0C060" bottom="15%" left="12%" delay={1.4} variant="rare" />
+      <Sparkle size={9}  color="#6BB8D4" top="50%" left="6%"  delay={2.2} variant="rare" />
 
       <div className="sc py-0">
         {/* Heading */}
-        <ScrollReveal className="text-center mb-14">
-          <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-pss-500 mb-3">
+        <ScrollReveal className="text-center mb-10">
+          <p className="kicker text-[11px] font-bold tracking-[0.12em] uppercase text-pss-600 mb-3">
             Our Programs
           </p>
           <h2
@@ -62,7 +79,7 @@ export default function WhatWeDo() {
                 whileHover={{ y: -8, boxShadow: '0 24px 64px rgba(46,95,130,.14)' }}
                 transition={{ duration: 0.25 }}
                 className="relative overflow-hidden rounded-[28px] p-10 border border-white/90
-                           bg-white/72 backdrop-blur-[8px] flex flex-col h-full"
+                           bg-white/70 backdrop-blur-[8px] flex flex-col h-full"
               >
                 <div
                   className="font-syne font-bold text-pss-200 leading-none mb-5"
@@ -74,11 +91,11 @@ export default function WhatWeDo() {
                 <h3 className="font-syne font-bold text-[20px] text-pss-700 mb-3 leading-[1.2]">
                   {pillar.title}
                 </h3>
-                <p className="text-[14px] leading-[1.7] text-pss-500 mb-6 flex-1">{pillar.desc}</p>
-                <ul className="flex flex-col gap-2.5 list-none">
+                <p className="text-[14px] leading-[1.7] text-pss-600 mb-6 flex-1">{pillar.desc}</p>
+                <ul className="flex flex-col gap-2.5 list-none pb-14">
                   {pillar.bullets.map((b) => (
-                    <li key={b} className="text-[13px] text-pss-500 flex items-start gap-2 leading-[1.4]">
-                      <span className="text-pss-500 font-bold flex-shrink-0 mt-px">→</span>
+                    <li key={b} className="text-[13px] text-pss-600 flex items-start gap-2 leading-[1.4]">
+                      <span className="text-[#2E8E80] font-bold flex-shrink-0 mt-px">→</span>
                       {b}
                     </li>
                   ))}
@@ -92,6 +109,30 @@ export default function WhatWeDo() {
             </ScrollReveal>
           ))}
         </div>
+
+        {/* Partner organizations */}
+        <ScrollReveal delay={0.15} className="mt-12 text-center">
+          <p className="kicker text-[11px] font-bold tracking-[0.12em] uppercase text-pss-600 mb-4">
+            We work with
+          </p>
+          <ul className="flex flex-wrap justify-center gap-3 list-none">
+            {PARTNERS.map((p) => (
+              <li
+                key={p}
+                className="flex items-center gap-2.5 rounded-full bg-white border border-pss-300/60
+                           pl-3 pr-4 py-2 text-[13px] font-semibold text-pss-700
+                           shadow-[0_2px_12px_rgba(74,122,155,.10)]
+                           hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(74,122,155,.18)] hover:border-teal/60
+                           transition-all duration-200"
+              >
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-pss-100 flex-shrink-0">
+                  {PARTNER_ICONS[p]}
+                </span>
+                {p}
+              </li>
+            ))}
+          </ul>
+        </ScrollReveal>
       </div>
 
       <WaveTransition fillColor="#F4F8FC" />

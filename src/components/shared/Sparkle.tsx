@@ -6,6 +6,8 @@ interface SparkleProps {
   right?: string
   bottom?: string
   delay?: number
+  /** 'rare' twinkles briefly every ~9s instead of pulsing constantly */
+  variant?: 'default' | 'rare'
 }
 
 export default function Sparkle({
@@ -16,10 +18,13 @@ export default function Sparkle({
   right,
   bottom,
   delay = 0,
+  variant = 'default',
 }: SparkleProps) {
   return (
     <div
-      className="absolute pointer-events-none z-[5] animate-sparkle"
+      className={`absolute pointer-events-none z-[5] ${
+        variant === 'rare' ? 'animate-sparkle-rare' : 'animate-sparkle'
+      }`}
       style={{ top, left, right, bottom, animationDelay: `${delay}s` }}
       aria-hidden="true"
     >

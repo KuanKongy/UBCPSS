@@ -7,7 +7,7 @@ if (import.meta.env.DEV) {
   const faviconLink = document.querySelector<HTMLLinkElement>('link[rel="icon"]')
 
   if (faviconLink) {
-    const baseHref = faviconLink.getAttribute('href')?.split('?')[0] ?? '/favicon.svg'
+    const baseHref = faviconLink.getAttribute('href')?.split('?')[0] ?? '/favicon-32.png'
     faviconLink.href = `${baseHref}?v=${Date.now()}`
   }
 }

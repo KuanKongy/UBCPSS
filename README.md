@@ -2,7 +2,7 @@
 
 The official website for **UBC Project STEM Search (PSS)**, a UBC AMS club that bridges the gap between classroom learning and hands-on undergraduate research.
 
-**Live site:** https://ubcpss.vercel.app *(update after first deploy)*
+**Live site:** https://www.ubcpss.ca
 
 ---
 

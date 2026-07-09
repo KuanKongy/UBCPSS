@@ -1,0 +1,143 @@
+{
+  "prof-panel-kevin-wei": [
+    {
+      "base": "20251121_185227",
+      "width": 4000,
+      "height": 2252,
+      "lg": "/photos/prof-panel-kevin-wei/20251121_185227-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/20251121_185227-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/20251121_185227-thumb.webp",
+      "ratio": 1.7758
+    },
+    {
+      "base": "20251121_185306",
+      "width": 4000,
+      "height": 2252,
+      "lg": "/photos/prof-panel-kevin-wei/20251121_185306-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/20251121_185306-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/20251121_185306-thumb.webp",
+      "ratio": 1.7758
+    },
+    {
+      "base": "IMG_5435",
+      "width": 5712,
+      "height": 4284,
+      "lg": "/photos/prof-panel-kevin-wei/IMG_5435-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/IMG_5435-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/IMG_5435-thumb.webp",
+      "ratio": 1.3333
+    },
+    {
+      "base": "IMG_5437",
+      "width": 5712,
+      "height": 4284,
+      "lg": "/photos/prof-panel-kevin-wei/IMG_5437-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/IMG_5437-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/IMG_5437-thumb.webp",
+      "ratio": 1.3333
+    },
+    {
+      "base": "IMG_5443",
+      "width": 3478,
+      "height": 2742,
+      "lg": "/photos/prof-panel-kevin-wei/IMG_5443-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/IMG_5443-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/IMG_5443-thumb.webp",
+      "ratio": 1.2688
+    },
+    {
+      "base": "IMG_5454",
+      "width": 3024,
+      "height": 4032,
+      "lg": "/photos/prof-panel-kevin-wei/IMG_5454-lg.webp",
+      "md": "/photos/prof-panel-kevin-wei/IMG_5454-md.webp",
+      "thumb": "/photos/prof-panel-kevin-wei/IMG_5454-thumb.webp",
+      "ratio": 0.7501
+    }
+  ],
+  "ultimate-prof-panel": [
+    {
+      "base": "IMG_3829",
+      "width": 4284,
+      "height": 5712,
+      "lg": "/photos/ultimate-prof-panel/IMG_3829-lg.webp",
+      "md": "/photos/ultimate-prof-panel/IMG_3829-md.webp",
+      "thumb": "/photos/ultimate-prof-panel/IMG_3829-thumb.webp",
+      "ratio": 0.7501
+    },
+    {
+      "base": "IMG_3830",
+      "width": 5712,
+      "height": 4284,
+      "lg": "/photos/ultimate-prof-panel/IMG_3830-lg.webp",
+      "md": "/photos/ultimate-prof-panel/IMG_3830-md.webp",
+      "thumb": "/photos/ultimate-prof-panel/IMG_3830-thumb.webp",
+      "ratio": 1.3333
+    },
+    {
+      "base": "IMG_3831",
+      "width": 5712,
+      "height": 4284,
+      "lg": "/photos/ultimate-prof-panel/IMG_3831-lg.webp",
+      "md": "/photos/ultimate-prof-panel/IMG_3831-md.webp",
+      "thumb": "/photos/ultimate-prof-panel/IMG_3831-thumb.webp",
+      "ratio": 1.3333
+    }
+  ],
+  "interview-prep-workshop": [
+    {
+      "base": "IMG_4498",
+      "width": 4032,
+      "height": 3024,
+      "lg": "/photos/interview-prep-workshop/IMG_4498-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_4498-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_4498-thumb.webp",
+      "ratio": 1.3333
+    },
+    {
+      "base": "IMG_4503",
+      "width": 3024,
+      "height": 4032,
+      "lg": "/photos/interview-prep-workshop/IMG_4503-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_4503-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_4503-thumb.webp",
+      "ratio": 0.7501
+    },
+    {
+      "base": "IMG_20241101_200804_260",
+      "width": 586,
+      "height": 780,
+      "lg": "/photos/interview-prep-workshop/IMG_20241101_200804_260-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_20241101_200804_260-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_20241101_200804_260-thumb.webp",
+      "ratio": 0.7513
+    },
+    {
+      "base": "IMG_20241101_200805_892",
+      "width": 586,
+      "height": 780,
+      "lg": "/photos/interview-prep-workshop/IMG_20241101_200805_892-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_20241101_200805_892-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_20241101_200805_892-thumb.webp",
+      "ratio": 0.7513
+    },
+    {
+      "base": "IMG_20241101_200807_019",
+      "width": 586,
+      "height": 780,
+      "lg": "/photos/interview-prep-workshop/IMG_20241101_200807_019-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_20241101_200807_019-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_20241101_200807_019-thumb.webp",
+      "ratio": 0.7513
+    },
+    {
+      "base": "IMG_20241101_200811_487",
+      "width": 582,
+      "height": 438,
+      "lg": "/photos/interview-prep-workshop/IMG_20241101_200811_487-lg.webp",
+      "md": "/photos/interview-prep-workshop/IMG_20241101_200811_487-md.webp",
+      "thumb": "/photos/interview-prep-workshop/IMG_20241101_200811_487-thumb.webp",
+      "ratio": 1.3288
+    }
+  ]
+}

@@ -72,6 +72,16 @@ section {
   .sc { padding: 0 22px; }
 }
 
+/* ── Keyboard focus rings: visible on Tab, silent on mouse clicks ── */
+@layer components {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pss-500 focus-visible:ring-offset-2;
+  }
+  .focus-ring-dark {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#4A7A9B];
+  }
+}
+
 /* ── Ticker carousel ── */
 .ticker-wrap {
   overflow-x: clip;   /* clip horizontal only — lets hover scale/translate-y escape */
@@ -86,7 +96,8 @@ section {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 120px;
+  /* Fixed 120px masks ate 62% of a 390px viewport, leaving one legible card */
+  width: min(120px, 12vw);
   z-index: 2;
   pointer-events: none;
 }
@@ -101,8 +112,107 @@ section {
   background: linear-gradient(to left, #1A3A5C, transparent);
 }
 
-.ticker-wrap:hover .ticker-row {
-  animation-play-state: paused;
+/* Pause-on-hover, drag and the touch fallback are handled by the framer-motion
+   strip in Team.tsx; only the clip + edge masks live here. */
+
+/* ── Film grain — SVG fractal noise as a data URI, no network request.
+   Painted after a section's children among z-0 layers, so it sits above the
+   blobs but below the z-1 .sc content. Kills the sterile flatness of large
+   solid-blue areas. ── */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+/* Dashes on the doodle trajectory line; the offset drifts so the line reads
+   as slowly drawing itself. Static dashes when reduced motion is set. */
+.doodle-draw { stroke-dasharray: 10 14; }
+
+/* ── Ambient background motion ──
+   Transforms/opacity only (GPU-composited), long co-prime periods so blobs
+   never sync up. Fully disabled for prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .blob-layer path {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .blob-drift-a { animation: blobDriftA 26s ease-in-out infinite alternate; }
+  .blob-drift-b { animation: blobDriftB 33s ease-in-out infinite alternate; }
+  .blob-drift-c { animation: blobDriftC 21s ease-in-out infinite alternate; }
+  .sheen-beam   { animation: sheenSweep 30s linear infinite; }
+  .doodle-draw  { animation: doodleDash 48s linear infinite; }
+  /* Light slowly moving through the static clouds (opacity only) */
+  .blob-breathe { animation: blobBreathe 40s ease-in-out infinite alternate; }
+  /* Hero atom: orbits + electrons turn once every two minutes */
+  .atom-spin    { transform-box: fill-box; transform-origin: center; animation: orbitSpin 120s linear infinite; }
+  /* DNA strands draw themselves once on load, then sit still */
+  .dna-ink      { stroke-dasharray: 1; stroke-dashoffset: 1; animation: inkDraw 1.6s ease-out .5s forwards; }
+  /* Back wave layer sways like water; the front edge stays put */
+  .wave-drift   { animation: waveDrift 20s ease-in-out infinite alternate; }
+}
+
+/* One dash period is 24px; -480 is 20 whole periods, so the loop is seamless */
+@keyframes doodleDash { to { stroke-dashoffset: -480; } }
+
+@keyframes blobDriftA { to { transform: translate(16px, -12px) rotate(1.5deg) scale(1.035); } }
+@keyframes blobDriftB { to { transform: translate(-14px, 10px) rotate(-2deg) scale(1.05); } }
+@keyframes blobDriftC { to { transform: translate(10px, 14px) scale(0.97); } }
+
+/* Applied only to paths whose base opacity is .4–.5, so the dip stays gentle */
+@keyframes blobBreathe { to { opacity: .28; } }
+@keyframes orbitSpin   { to { transform: rotate(360deg); } }
+@keyframes inkDraw     { to { stroke-dashoffset: 0; } }
+@keyframes waveDrift   { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
+
+/* Beam crosses in ~3.6s, then rests off-screen for the remaining ~26s */
+@keyframes sheenSweep {
+  0%        { transform: translateX(-160%) rotate(18deg); }
+  12%, 100% { transform: translateX(320%) rotate(18deg); }
+}
+
+@media (max-width: 768px) {
+  .blob-drift-a, .blob-drift-b, .blob-drift-c { animation-duration: 44s; }
+  .sheen-beam, .wave-drift, .atom-spin { animation: none; }
+}
+
+/* Catches everything the no-preference block above doesn't own: sparkles,
+   the team tickers, and every CSS transition. framer-motion is handled
+   separately by MotionConfig in App.tsx. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Horizontal snap tracks (gallery rows) hide their scrollbar.
+   Arrow steps are instant scrollTo calls: Chromium cancels smooth scrolls
+   (JS and CSS alike) on snap-mandatory containers, so instant + exact snap
+   offsets is the combination that actually works everywhere. ── */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ── Thin scrollbar inside testimonial cards (dark section, light thumb) ── */
+.testi-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.35) transparent; }
+.testi-scroll::-webkit-scrollbar { width: 4px; }
+.testi-scroll::-webkit-scrollbar-track { background: transparent; }
+.testi-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.35); border-radius: 2px; }
+
+/* ── Kicker labels get a small gold spark — warm counterpoint to the blues ── */
+.kicker::before {
+  content: '\2726';
+  color: #F0C060;
+  margin-right: 0.55em;
+  font-size: 0.9em;
 }
 
 /* ── Smooth scrollbar ── */

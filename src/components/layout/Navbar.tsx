@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useScroll } from 'framer-motion'
 import { LINKS } from '@/lib/data'
 
 const NAV_LINKS = [
@@ -16,6 +16,8 @@ export default function Navbar() {
   const [active, setActive] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
+  // Reading-progress hairline along the bottom edge of the bar
+  const { scrollYProgress } = useScroll()
 
   // Active section highlight on scroll
   useEffect(() => {
@@ -68,10 +70,10 @@ export default function Navbar() {
           href="#"
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
           className="flex items-center gap-2.5 text-decoration-none group"
-          aria-label="UBC Project STEM Search — back to top"
+          aria-label="UBC Project STEM Search, back to top"
         >
           <img
-            src="/favicon.svg"
+            src="/logo-96.webp"
             alt=""
             aria-hidden="true"
             className="w-[44px] h-[44px] flex-shrink-0 rounded-full border border-pss-500/40 bg-pss-100 p-0.5 object-cover"
@@ -84,24 +86,35 @@ export default function Navbar() {
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-7 list-none" role="list">
           {NAV_LINKS.map(({ label, href }) => (
-            <li key={href}>
+            <li key={href} className="relative">
+              {/* Weight never changes, so the row never shifts; the underline
+                  springs between items instead */}
               <a
                 href={href}
                 onClick={(e) => { e.preventDefault(); handleNavClick(href) }}
-                className={`text-[13px] font-medium no-underline transition-colors duration-200
-                            ${active === href.slice(1) ? 'text-pss-700 font-semibold' : 'text-pss-500 hover:text-pss-700'}`}
+                aria-current={active === href.slice(1) ? 'location' : undefined}
+                className={`text-[13px] font-medium no-underline transition-colors duration-200 rounded-sm focus-ring
+                            ${active === href.slice(1) ? 'text-pss-700' : 'text-pss-600 hover:text-pss-700'}`}
               >
                 {label}
               </a>
+              {active === href.slice(1) && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute -bottom-1.5 left-0 right-0 h-[2px] rounded-full bg-pss-700"
+                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  aria-hidden="true"
+                />
+              )}
             </li>
           ))}
           <li>
             <a
-              href={LINKS.linktree}
+              href={LINKS.amsSignup}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-pss-700 text-white text-[13px] font-bold px-[22px] py-2 rounded-full
-                         hover:bg-pss-600 transition-all duration-200 hover:-translate-y-px"
+                         hover:bg-pss-600 transition-all duration-200 hover:-translate-y-px focus-ring"
             >
               Join Now
             </a>
@@ -112,7 +125,7 @@ export default function Navbar() {
         <button
           onClick={() => setMenuOpen((o) => !o)}
           className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] cursor-pointer
-                     rounded-lg hover:bg-pss-100/60 transition-colors"
+                     rounded-lg hover:bg-pss-100/60 transition-colors focus-ring"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
         >
@@ -132,6 +145,13 @@ export default function Navbar() {
             className="block w-5 h-0.5 bg-pss-700 rounded-full origin-center"
           />
         </button>
+
+        {/* Scroll progress: scales with how far down the page the reader is */}
+        <motion.div
+          style={{ scaleX: scrollYProgress }}
+          className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-gradient-to-r from-pss-500 to-teal"
+          aria-hidden="true"
+        />
       </nav>
 
       {/* Mobile drawer */}
@@ -144,7 +164,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="fixed top-[57px] left-0 right-0 z-40 bg-pss-100/95 backdrop-blur-xl
+            className="fixed top-[73px] left-0 right-0 z-40 bg-pss-100/95 backdrop-blur-xl
                        border-b border-pss-400/20 shadow-lg md:hidden"
             style={{ WebkitBackdropFilter: 'blur(20px)' }}
           >
@@ -155,18 +175,18 @@ export default function Navbar() {
                   href={href}
                   onClick={(e) => { e.preventDefault(); handleNavClick(href) }}
                   className="text-[16px] font-medium text-pss-700 py-3 px-2 rounded-lg
-                             hover:bg-pss-200/60 transition-colors"
+                             hover:bg-pss-200/60 transition-colors focus-ring"
                 >
                   {label}
                 </a>
               ))}
               <div className="pt-3 pb-1">
                 <a
-                  href={LINKS.linktree}
+                  href={LINKS.amsSignup}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center bg-pss-700 text-white text-[15px] font-bold
-                             py-3 rounded-full hover:bg-pss-600 transition-colors"
+                             py-3 rounded-full hover:bg-pss-600 transition-colors focus-ring"
                 >
                   Join Now ↗
                 </a>

@@ -3,3 +3,7 @@ dist
 tsconfig.tsbuildinfo
 .DS_Store
 *.local
+
+# Local photo review output (never deployed)
+.contact-sheet/
+photos-src/

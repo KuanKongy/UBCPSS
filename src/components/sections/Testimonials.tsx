@@ -1,32 +1,97 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion, useReducedMotion, type PanInfo } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
+import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
+import Sheen from '@/components/shared/Sheen'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import { TESTIMONIALS } from '@/lib/data'
+import type { Testimonial } from '@/lib/types'
 
 const CARDS_PER_PAGE = 3
-const TOTAL_PAGES = Math.ceil(TESTIMONIALS.length / CARDS_PER_PAGE)
 const INTERVAL_MS = 6000
+// Swipe: either enough distance or enough speed flips a page
+const SWIPE_PX = 60
+const SWIPE_VX = 400
+// Trackpad: horizontal wheel steps one page per gesture
+const WHEEL_PX = 24
+const WHEEL_COOLDOWN_MS = 700
 
-const slideVariants = {
-  enter: { opacity: 0, scale: 0.97 },
-  center: { opacity: 1, scale: 1 },
-  exit:  { opacity: 0, scale: 0.97 },
+const PAGES: Testimonial[][] = []
+for (let i = 0; i < TESTIMONIALS.length; i += CARDS_PER_PAGE) {
+  PAGES.push(TESTIMONIALS.slice(i, i + CARDS_PER_PAGE))
+}
+const TOTAL_PAGES = PAGES.length
+
+const control =
+  'focus-ring-dark w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition-colors ' +
+  'flex items-center justify-center text-white'
+
+function TestimonialCard(t: Testimonial) {
+  const meta = [t.year, t.program].filter(Boolean).join(' · ')
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02, boxShadow: '0 20px 48px rgba(0,0,0,0.35)' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+      className="bg-pss-700/35 border border-white/20 rounded-[24px] p-5 flex flex-col h-[392px]"
+    >
+      {/* Fixed card height for every card; long text scrolls inside instead
+          of stretching the card */}
+      <div className="flex-1 min-h-0 overflow-y-auto testi-scroll pr-2 mb-4">
+        <p className={`text-[14px] leading-[1.7] text-white ${t.quote ? 'italic' : ''}`}>
+          {t.quote ?? t.description}
+        </p>
+      </div>
+
+      {/* Author */}
+      <div className="flex items-center gap-4 flex-shrink-0 mt-auto">
+        {t.photo ? (
+          <img
+            src={t.photo}
+            alt={`Photo of ${t.name}`}
+            loading="lazy"
+            draggable={false}
+            className="w-28 h-28 rounded-full object-cover border-2 border-white/35 flex-shrink-0"
+          />
+        ) : (
+          <div
+            className="w-28 h-28 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
+                       flex items-center justify-center font-bold text-[22px] text-white"
+          >
+            {t.initials}
+          </div>
+        )}
+        <div>
+          <div className="font-bold text-[14px] text-white">{t.name}</div>
+          <div className="text-[12px] text-white/90 mt-0.5">
+            {meta}
+            {t.position && (
+              <>{meta && <br />}<span className="text-white/85">{t.position}</span></>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
 }
 
 export default function Testimonials() {
-  const [page, setPage]       = useState(0)
-  const [paused, setPaused]   = useState(false)
-  const intervalRef           = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [page, setPage]         = useState(0)
+  const [hovered, setHovered]   = useState(false)
+  const [dragging, setDragging] = useState(false)
+  // User-controlled stop, distinct from the transient hover pause
+  const [playing, setPlaying]   = useState(true)
+  const intervalRef             = useRef<ReturnType<typeof setInterval> | null>(null)
+  const wheelLock               = useRef(0)
+  const reducedMotion           = useReducedMotion()
 
   const goTo = useCallback((next: number) => {
     setPage(next)
   }, [])
 
-  const goPrev = () => goTo((page - 1 + TOTAL_PAGES) % TOTAL_PAGES)
-  const goNext = () => goTo((page + 1) % TOTAL_PAGES)
+  const goPrev = useCallback(() => goTo((page - 1 + TOTAL_PAGES) % TOTAL_PAGES), [goTo, page])
+  const goNext = useCallback(() => goTo((page + 1) % TOTAL_PAGES), [goTo, page])
 
   const startInterval = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current)
@@ -35,37 +100,53 @@ export default function Testimonials() {
     }, INTERVAL_MS)
   }, [])
 
+  // Never auto-advance quotes out from under someone who is reading them:
+  // stopped by the toggle, by hover, by keyboard focus, mid-swipe, or by
+  // reduced motion. Any change restarts the 6 s clock, so a swipe is never
+  // immediately followed by an auto-advance.
+  const advancing = playing && !hovered && !dragging && !reducedMotion
+
   useEffect(() => {
-    if (!paused) startInterval()
+    if (advancing) startInterval()
     else if (intervalRef.current) clearInterval(intervalRef.current)
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [paused, startInterval])
+  }, [advancing, startInterval])
 
-  const visible = TESTIMONIALS.slice(
-    page * CARDS_PER_PAGE,
-    page * CARDS_PER_PAGE + CARDS_PER_PAGE,
-  )
+  const onDragEnd = (_: unknown, { offset, velocity }: PanInfo) => {
+    setDragging(false)
+    if (offset.x < -SWIPE_PX || velocity.x < -SWIPE_VX) goNext()
+    else if (offset.x > SWIPE_PX || velocity.x > SWIPE_VX) goPrev()
+  }
 
-  // Fill full width when fewer than 3 cards on last page
-  const colsClass =
-    visible.length === 1
-      ? 'grid-cols-1 max-w-md mx-auto'
-      : visible.length === 2
-        ? 'grid-cols-1 sm:grid-cols-2'
-        : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+  const onWheel = (e: React.WheelEvent) => {
+    // Only clearly horizontal gestures; vertical wheel keeps scrolling the page
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < WHEEL_PX) return
+    const now = Date.now()
+    if (now - wheelLock.current < WHEEL_COOLDOWN_MS) return
+    wheelLock.current = now
+    if (e.deltaX > 0) goNext()
+    else goPrev()
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); goNext() }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev() }
+  }
 
   return (
-    <section id="testimonials" className="py-20" style={{ background: '#4A7A9B' }}>
+    <section id="testimonials" className="pt-16 pb-[92px] md:pb-[116px]" style={{ background: '#4A7A9B' }}>
       <BlobLayer variant="testi" />
+      <SciDoodles variant="testi" />
+      <Sheen delay={-16} strength={0.05} />
 
       <Sparkle size={14} color="rgba(255,255,255,.6)" top="10%" right="6%"   delay={0.6} />
-      <Sparkle size={10} color="rgba(255,255,255,.5)" bottom="18%" left="4%" delay={1.8} />
-      <Sparkle size={8}  color="#F0C060"              top="40%"  left="20%"  delay={2.4} />
+      <Sparkle size={10} color="rgba(255,255,255,.5)" bottom="18%" left="4%" delay={1.8} variant="rare" />
+      <Sparkle size={8}  color="#F0C060"              top="40%"  left="20%"  delay={2.4} variant="rare" />
 
-      <div className="py-0" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 32px' }}>
+      <div className="sc py-0">
         {/* Section heading */}
-        <ScrollReveal className="text-center mb-14">
-          <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-white/55 mb-3">
+        <ScrollReveal className="text-center mb-10">
+          <p className="kicker text-[11px] font-bold tracking-[0.12em] uppercase text-white mb-3">
             Hear from our members
           </p>
           <h2
@@ -74,80 +155,60 @@ export default function Testimonials() {
           >
             Real students, real experiences
           </h2>
+          <p className="text-[13px] text-white/90 mt-3">
+            Quotes come from current and past members and are shared with their permission.
+          </p>
         </ScrollReveal>
 
         {/* Carousel */}
         <div
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          onFocusCapture={() => setHovered(true)}
+          onBlurCapture={() => setHovered(false)}
+          aria-live="polite"
         >
-          {/* Cards — no clip needed since animation is fade/scale */}
-          <div className="relative py-4">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={page}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className={`grid gap-5 ${colsClass}`}
+          {/* All pages stay mounted, stacked in the same grid cell, and only
+              fade, so the container always has the height of the tallest page
+              and switching pages can never jump the layout. The stack is
+              draggable: it nudges with the finger and springs back while the
+              page cross-fades. */}
+          <motion.div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Member testimonials"
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            onWheel={onWheel}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.12}
+            dragMomentum={false}
+            onDragStart={() => setDragging(true)}
+            onDragEnd={onDragEnd}
+            className="relative py-4 grid cursor-grab active:cursor-grabbing select-none rounded-[28px]
+                       [touch-action:pan-y] [overscroll-behavior-x:contain]
+                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70
+                       focus-visible:ring-offset-4 focus-visible:ring-offset-[#4A7A9B]"
+          >
+            {PAGES.map((cards, i) => (
+              <div
+                key={i}
+                aria-hidden={i !== page}
+                className="[grid-area:1/1] grid gap-5 items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-3
+                           transition-opacity duration-300 ease-in-out"
+                style={{ opacity: i === page ? 1 : 0, pointerEvents: i === page ? 'auto' : 'none' }}
               >
-                {visible.map((t) => (
-                  <motion.div
-                    key={t.name + t.year}
-                    whileHover={{ scale: 1.025, boxShadow: '0 20px 48px rgba(0,0,0,0.35)' }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                    className="bg-white/12 border border-white/20 rounded-[24px] p-5 flex flex-col h-[420px] cursor-default"
-                  >
-                    {/* Opening quote — tight margin so text is close */}
-                    <div
-                      className="font-syne font-bold text-white/20 leading-none mb-0 select-none flex-shrink-0"
-                      style={{ fontSize: '64px' }}
-                      aria-hidden="true"
-                    >
-                      "
-                    </div>
-
-                    {/* Quote text — scrollable if too long, sits right below the quote mark */}
-                    <div className="flex-1 overflow-y-auto pr-1 mb-4 scrollbar-thin" style={{ minHeight: 0 }}>
-                      <p className="text-[14px] leading-[1.7] text-white italic">
-                        {t.quote}
-                      </p>
-                    </div>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-4 flex-shrink-0 mt-auto">
-                      <div
-                        className="w-28 h-28 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
-                                   flex items-center justify-center font-bold text-[22px] text-white"
-                      >
-                        {t.initials}
-                      </div>
-                      <div>
-                        <div className="font-bold text-[14px] text-white">{t.name}</div>
-                        <div className="text-[11px] text-white/65 mt-0.5">
-                          {t.year} · {t.program}
-                          {t.position && (
-                            <><br /><span className="text-white/45">{t.position}</span></>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
+                {cards.map((t) => (
+                  <TestimonialCard key={t.name + (t.quote ?? t.description ?? '')} {...t} />
                 ))}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+              </div>
+            ))}
+          </motion.div>
 
           {/* Controls */}
-          <div className="flex items-center justify-center gap-6 mt-10">
-            <button
-              onClick={goPrev}
-              aria-label="Previous testimonials"
-              className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition-colors
-                         flex items-center justify-center text-white text-[18px] font-bold"
-            >
+          <div className="flex items-center justify-center gap-6 mt-8">
+            <button onClick={goPrev} aria-label="Previous testimonials" className={`${control} text-[18px] font-bold`}>
               ‹
             </button>
 
@@ -156,23 +217,27 @@ export default function Testimonials() {
                 <button
                   key={i}
                   onClick={() => goTo(i)}
-                  aria-label={`Go to page ${i + 1}`}
-                  className={`rounded-full transition-all duration-300 ${
+                  aria-label={`Go to page ${i + 1} of ${TOTAL_PAGES}`}
+                  aria-current={i === page ? 'true' : undefined}
+                  className={`focus-ring-dark rounded-full transition-all duration-300 ${
                     i === page
                       ? 'w-6 h-2.5 bg-white'
-                      : 'w-2.5 h-2.5 bg-white/35 hover:bg-white/55'
+                      : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/75'
                   }`}
                 />
               ))}
             </div>
 
-            <button
-              onClick={goNext}
-              aria-label="Next testimonials"
-              className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition-colors
-                         flex items-center justify-center text-white text-[18px] font-bold"
-            >
+            <button onClick={goNext} aria-label="Next testimonials" className={`${control} text-[18px] font-bold`}>
               ›
+            </button>
+
+            <button
+              onClick={() => setPlaying((p) => !p)}
+              aria-label={playing ? 'Pause automatic rotation' : 'Resume automatic rotation'}
+              className={`${control} text-[13px]`}
+            >
+              {playing ? '❙❙' : '▶'}
             </button>
           </div>
         </div>

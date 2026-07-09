@@ -1,0 +1,35 @@
+{
+  "_comment": "Explicit allowlist of photos approved for the website. Filled in from the contact-sheet review — a photo that is not listed here is never optimized, committed, or deployed. Files are read from photos-src/<slug>/<file>. User approved this set on 2026-08-24 (14 of 27 candidates; 13 excluded remain in photos-src/unsorted/).",
+  "groups": [
+    {
+      "slug": "prof-panel-kevin-wei",
+      "files": [
+        "20251121_185227.jpg",
+        "20251121_185306.jpg",
+        "IMG_5435.jpg",
+        "IMG_5437.jpg",
+        "IMG_5443.jpg",
+        "IMG_5454.jpg"
+      ]
+    },
+    {
+      "slug": "ultimate-prof-panel",
+      "files": [
+        "IMG_3829.jpg",
+        "IMG_3830.jpg",
+        "IMG_3831.jpg"
+      ]
+    },
+    {
+      "slug": "interview-prep-workshop",
+      "files": [
+        "IMG_4498.jpg",
+        "IMG_4503.jpg",
+        "IMG_20241101_200804_260.jpg",
+        "IMG_20241101_200805_892.jpg",
+        "IMG_20241101_200807_019.jpg",
+        "IMG_20241101_200811_487.jpg"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { type FC } from 'react'
 import { motion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
+import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
@@ -18,8 +19,9 @@ const IconMap: Record<AboutCard['iconName'], FC<IconProps>> = {
 
 export default function About() {
   return (
-    <section id="about" className="bg-white py-20">
+    <section id="about" className="bg-white pt-16 pb-[92px] md:pb-[116px] grain">
       <BlobLayer variant="about" />
+      <SciDoodles variant="about" />
 
       {/* Dot grid decoration */}
       <div className="absolute top-[8%] left-[3%] w-[120px] h-[120px] opacity-30 pointer-events-none z-[1]" aria-hidden="true">
@@ -40,7 +42,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-20 items-start">
           {/* Left: text */}
           <ScrollReveal>
-            <p className="text-[11px] font-bold tracking-[0.12em] uppercase text-pss-500 mb-3.5">
+            <p className="kicker text-[11px] font-bold tracking-[0.12em] uppercase text-pss-600 mb-3.5">
               What is Project STEM Search?
             </p>
             <h2
@@ -71,7 +73,7 @@ export default function About() {
                   >
                     <Icon size={26} className="text-pss-500 mb-2.5" />
                     <h3 className="font-semibold text-[15px] text-pss-700 mb-1.5">{card.title}</h3>
-                    <p className="text-[13px] leading-[1.6] text-pss-500">{card.body}</p>
+                    <p className="text-[13px] leading-[1.6] text-pss-600">{card.body}</p>
                   </motion.div>
                 </ScrollReveal>
               )
