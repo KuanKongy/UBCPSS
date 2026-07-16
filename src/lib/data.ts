@@ -15,11 +15,11 @@ export const EMAIL = 'pssubc@gmail.com'
 // Permalink for one of our Instagram posts
 export const igPost = (id: string) => `https://www.instagram.com/ubc_pss/p/${id}/`
 
+// Lead with the number that backs the hero promise
 export const STATS: Stat[] = [
-  { value: 50, suffix: '+', label: 'Members'              },
+  { value: 30, suffix: '+', label: 'Research placements', emphasis: true, caption: 'since 2024' },
   { value: 15, suffix: '+', label: 'Professors connected' },
-  //{ value: 10, suffix: '+', label: 'Events held'          },
-  { value: 30, suffix: '+', label: 'Research placements'  },
+  { value: 50, suffix: '+', label: 'Members' },
 ]
 
 // Short, verifiable facts shown under the hero copy

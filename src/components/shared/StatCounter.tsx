@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useReducedMotion } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 interface StatCounterProps {
   value: number
   suffix: string
   label: string
+  /** Lead stat: bigger number in the headline's teal gradient */
+  emphasis?: boolean
+  /** Tiny line under the label, e.g. "since 2024" */
+  caption?: string
 }
 
-export default function StatCounter({ value, suffix, label }: StatCounterProps) {
+export default function StatCounter({ value, suffix, label, emphasis, caption }: StatCounterProps) {
   const ref = useRef<HTMLDivElement>(null)
   const started = useRef(false)
   const [count, setCount] = useState(0)
@@ -49,11 +54,17 @@ export default function StatCounter({ value, suffix, label }: StatCounterProps) 
       <motion.div
         animate={done ? { scale: [1, 1.06, 1] } : undefined}
         transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="font-syne text-[42px] font-bold text-pss-700 leading-none tracking-tight origin-left"
+        className={cn(
+          'font-syne font-bold leading-none tracking-tight origin-left',
+          emphasis
+            ? 'text-[54px] bg-gradient-to-r from-pss-600 via-[#3E8E9A] to-teal bg-clip-text text-transparent'
+            : 'text-[42px] text-pss-700',
+        )}
       >
         {count}{suffix}
       </motion.div>
       <div className="text-[13px] text-pss-600 mt-1.5 font-medium">{label}</div>
+      {caption && <div className="text-[11px] text-pss-500 mt-0.5">{caption}</div>}
     </motion.div>
   )
 }

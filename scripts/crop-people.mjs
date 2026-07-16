@@ -27,7 +27,7 @@ const CROP = 0.72
 // or mis-frames the face (source coords on photos-src/people/<name>.png).
 const FACE_RECTS = {
   ahsaas:  { left: 60,  top: 20,  size: 660 },
-  nam:     { left: 474, top: 30,  size: 520 },
+  nam:     { left: 434, top: 0,   size: 560 },  // whole head, hair included
 }
 
 await mkdir(out, { recursive: true })

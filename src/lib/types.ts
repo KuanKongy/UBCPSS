@@ -2,6 +2,10 @@ export interface Stat {
   value: number
   suffix: string
   label: string
+  /** Lead stat: bigger, teal-gradient number */
+  emphasis?: boolean
+  /** Tiny line under the label, e.g. "since 2024" */
+  caption?: string
 }
 
 export interface PastEvent {

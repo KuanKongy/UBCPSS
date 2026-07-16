@@ -36,7 +36,7 @@ const GROUPS: GroupMeta[] = [
     slug: 'ultimate-prof-panel',
     title: 'The Ultimate Professor Panel Night',
     subtitle: 'Dr. Leluo Guan, Dr. Thibault Mayor & Dr. Amrit Singh · March 6, 2025',
-    description: 'Research panel on March 6, 2025 with Dr. Leluo Guan, Dr. Thibault Mayor, and Dr. Amrit Singh sharing their experiences and advice, followed by Q&A and networking. Co-hosted with the Canadian Wheelchair Club in the Swing Space, with free food and drinks.',
+    description: 'Research panel on March 6, 2025 with Dr. Leluo Guan, Dr. Thibault Mayor, and Dr. Amrit Singh sharing their experiences and advice, followed by Q&A and networking. Co-hosted with the Canadian Wheelchair Club in SWNG 205 (Swing Space), with free food and drinks.',
     instagram: igPost('DGrCU37Shda'),
     altBase: 'The Ultimate Professor Panel Night, March 2025',
   },

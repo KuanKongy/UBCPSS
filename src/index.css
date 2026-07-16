@@ -48,6 +48,12 @@ section {
   overflow: visible;
 }
 
+/* Nav links scroll sections into view; the fixed navbar is 73px tall, so
+   leave room for it or the section header lands behind the bar. */
+section[id] {
+  scroll-margin-top: 76px;
+}
+
 /* ── Blob layer ── */
 .blob-layer {
   position: absolute;
@@ -152,8 +158,9 @@ section {
   .blob-breathe { animation: blobBreathe 40s ease-in-out infinite alternate; }
   /* Hero atom: orbits + electrons turn once every two minutes */
   .atom-spin    { transform-box: fill-box; transform-origin: center; animation: orbitSpin 120s linear infinite; }
-  /* DNA strands draw themselves once on load, then sit still */
-  .dna-ink      { stroke-dasharray: 1; stroke-dashoffset: 1; animation: inkDraw 1.6s ease-out .5s forwards; }
+  /* The hero pathway draws itself once on load, then sits still; nodes fade in as the ink reaches them */
+  .ink-draw     { stroke-dasharray: 1; stroke-dashoffset: 1; animation: inkDraw 2s ease-out .4s forwards; }
+  .node-in      { transform-box: fill-box; animation: nodeIn .5s ease-out both; animation-delay: var(--d, 0s); }
   /* Back wave layer sways like water; the front edge stays put */
   .wave-drift   { animation: waveDrift 20s ease-in-out infinite alternate; }
 }
@@ -169,6 +176,7 @@ section {
 @keyframes blobBreathe { to { opacity: .28; } }
 @keyframes orbitSpin   { to { transform: rotate(360deg); } }
 @keyframes inkDraw     { to { stroke-dashoffset: 0; } }
+@keyframes nodeIn      { from { opacity: 0; transform: translateY(6px); } }
 @keyframes waveDrift   { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
 
 /* Beam crosses in ~3.6s, then rests off-screen for the remaining ~26s */
