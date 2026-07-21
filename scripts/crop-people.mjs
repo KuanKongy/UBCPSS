@@ -25,19 +25,46 @@ const CROP = 0.72
 
 // Hand-tuned face rectangles for captures where the default centre crop cuts
 // or mis-frames the face (source coords on photos-src/people/<name>.png).
+// `padTop` first mirrors that many pixels of the image above its top edge
+// (headroom for photos where the hair touches the frame); the rect is then in
+// the padded image's coordinates.
 const FACE_RECTS = {
   ahsaas:  { left: 60,  top: 20,  size: 660 },
-  nam:     { left: 434, top: 0,   size: 560 },  // whole head, hair included
+  // Original portrait from namkhanhle.dev (/assets/photo-ChwwxHpa.jpg, 430²):
+  // the hair touches the top edge, so 44px of soft headroom is added.
+  nam:     { padTop: 44, left: 80, top: 0, size: 260 },
+}
+
+// Extends the image upward by `pad` px. A plain mirror reads as a reflection
+// of the hair, so the padding is the strip's dominant colour with a heavily
+// blurred, half-transparent mirrored copy laid over it: a soft continuation
+// of the background rather than a visible flip.
+async function addHeadroom(file, pad) {
+  const { width } = await sharp(file).metadata()
+  const { dominant } = await sharp(file).extract({ left: 0, top: 0, width, height: 12 }).stats()
+  const strip = await sharp(file)
+    .extract({ left: 0, top: 0, width, height: pad })
+    .flip()
+    .blur(18)
+    .ensureAlpha(0.45)
+    .png()
+    .toBuffer()
+  return sharp(file)
+    .extend({ top: pad, background: { ...dominant, alpha: 1 } })
+    .composite([{ input: strip, top: 0, left: 0 }])
+    .png()
+    .toBuffer()
 }
 
 await mkdir(out, { recursive: true })
 
 const files = (await readdir(src)).filter((f) => /\.png$/i.test(f)).sort()
 for (const f of files) {
-  const input = path.join(src, f)
-  const { width, height } = await sharp(input).metadata()
   const name = path.parse(f).name
   const rect = FACE_RECTS[name]
+  const padTop = rect?.padTop ?? 0
+  const input = padTop ? await addHeadroom(path.join(src, f), padTop) : path.join(src, f)
+  const { width, height } = await sharp(input).metadata()
   const side = rect ? Math.min(rect.size, width, height) : Math.round(Math.min(width, height) * CROP)
   const left = rect ? Math.min(rect.left, width - side) : Math.round((width - side) / 2)
   const top = rect ? Math.min(rect.top, height - side) : Math.round((height - side) / 2)

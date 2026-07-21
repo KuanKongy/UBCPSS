@@ -27,8 +27,6 @@ interface PathNode {
   sub?: string
   /** The lead node: brighter fill and a dotted halo */
   emphasis?: boolean
-  /** Label sits inside the orbits: knock the dashes out behind it */
-  labelBacking?: boolean
   glyph: ReactNode
 }
 
@@ -43,7 +41,7 @@ const NODES: PathNode[] = [
     ),
   },
   {
-    cx: HUB.x, cy: HUB.y, r: 40, title: 'PSS', sub: 'PANELS & WORKSHOPS', labelBacking: true,
+    cx: HUB.x, cy: HUB.y, r: 40, title: 'PSS', sub: 'PANELS & WORKSHOPS',
     glyph: (
       <>
         {/* two speech bubbles */}
@@ -116,9 +114,14 @@ export default function PathwayIllustration() {
     >
       <defs>
         {/* The visible path keeps the drifting dash pattern; this mask draws it
-            in once (its own dasharray never conflicts with the dashes). */}
+            in once (its own dasharray never conflicts with the dashes) and
+            knocks it out under each node, so the line runs between the
+            stages but never shows inside them. */}
         <mask id="pathwayInk" maskUnits="userSpaceOnUse" x="0" y="0" width="580" height="480">
           <path d={PATH} pathLength={1} className="ink-draw" stroke="#fff" strokeWidth="16" strokeLinecap="round" fill="none" />
+          {NODES.map((n) => (
+            <circle key={n.title} cx={n.cx} cy={n.cy} r={n.r + 3} fill="#000" />
+          ))}
         </mask>
       </defs>
 
@@ -192,9 +195,6 @@ export default function PathwayIllustration() {
             <g stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none">
               {n.glyph}
             </g>
-            {n.labelBacking && (
-              <rect x="-76" y={n.r + 7} width="152" height={n.sub ? 30 : 18} rx="4" fill="#D0E8F5" opacity=".9" />
-            )}
             <text
               y={n.r + 18}
               textAnchor="middle"

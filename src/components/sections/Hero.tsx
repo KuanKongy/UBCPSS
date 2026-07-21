@@ -77,9 +77,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Trust strip: four facts the rest of the page can back up. Only the
-            divider is kept to the text column so it never runs into the cloud. */}
-        <div aria-hidden="true" className="mt-14 mb-6 h-px bg-pss-500/15 lg:max-w-[calc(50%-2rem)]" />
+        {/* Trust strip: four facts the rest of the page can back up. The
+            wrapper shrinks to the items, so the divider is exactly as wide as
+            the four facts and never runs into the cloud. */}
+        <div className="mt-14 w-fit max-w-full mx-auto lg:mx-0">
+        <div aria-hidden="true" className="h-px bg-pss-500/15 mb-6" />
         <motion.ul
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -97,6 +99,7 @@ export default function Hero() {
             </li>
           ))}
         </motion.ul>
+        </div>
       </div>
 
       <WaveTransition fillColor="#ffffff" />
