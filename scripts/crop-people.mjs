@@ -30,9 +30,10 @@ const CROP = 0.72
 // the padded image's coordinates.
 const FACE_RECTS = {
   ahsaas:  { left: 60,  top: 20,  size: 660 },
-  // Original portrait from namkhanhle.dev (/assets/photo-ChwwxHpa.jpg, 430²):
-  // the hair touches the top edge, so 44px of soft headroom is added.
-  nam:     { padTop: 44, left: 80, top: 0, size: 260 },
+  // Original portrait from namkhanhle.dev (/assets/photo-ChwwxHpa.jpg, 430²).
+  // Face centred, zoomed so the crop starts at the photo's own top edge
+  // (no synthetic headroom; the hair sits at the top of the circle).
+  nam:     { left: 112, top: 0, size: 196 },
 }
 
 // Extends the image upward by `pad` px. A plain mirror reads as a reflection
