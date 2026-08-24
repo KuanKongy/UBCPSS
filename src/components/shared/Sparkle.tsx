@@ -8,6 +8,8 @@ interface SparkleProps {
   delay?: number
   /** 'rare' twinkles briefly every ~9s instead of pulsing constantly */
   variant?: 'default' | 'rare'
+  /** false hides it below md, for sparkles that would land on copy on phones */
+  mobile?: boolean
 }
 
 export default function Sparkle({
@@ -19,12 +21,13 @@ export default function Sparkle({
   bottom,
   delay = 0,
   variant = 'default',
+  mobile = true,
 }: SparkleProps) {
   return (
     <div
       className={`absolute pointer-events-none z-[5] ${
         variant === 'rare' ? 'animate-sparkle-rare' : 'animate-sparkle'
-      }`}
+      } ${mobile ? '' : 'hidden md:block'}`}
       style={{ top, left, right, bottom, animationDelay: `${delay}s` }}
       aria-hidden="true"
     >

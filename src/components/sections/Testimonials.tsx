@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useReducedMotion, type PanInfo } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
 import SciDoodles from '@/components/shared/SciDoodles'
@@ -7,9 +7,9 @@ import Sheen from '@/components/shared/Sheen'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import { TESTIMONIALS } from '@/lib/data'
+import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { Testimonial } from '@/lib/types'
 
-const CARDS_PER_PAGE = 3
 const INTERVAL_MS = 6000
 // Swipe: either enough distance or enough speed flips a page
 const SWIPE_PX = 60
@@ -18,11 +18,12 @@ const SWIPE_VX = 400
 const WHEEL_PX = 24
 const WHEEL_COOLDOWN_MS = 700
 
-const PAGES: Testimonial[][] = []
-for (let i = 0; i < TESTIMONIALS.length; i += CARDS_PER_PAGE) {
-  PAGES.push(TESTIMONIALS.slice(i, i + CARDS_PER_PAGE))
+// Cards per page follows the grid: 1 column below md, 2 at md, 3 at lg
+function chunk(items: Testimonial[], size: number): Testimonial[][] {
+  const pages: Testimonial[][] = []
+  for (let i = 0; i < items.length; i += size) pages.push(items.slice(i, i + size))
+  return pages
 }
-const TOTAL_PAGES = PAGES.length
 
 const control =
   'focus-ring-dark w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition-colors ' +
@@ -34,7 +35,7 @@ function TestimonialCard(t: Testimonial) {
     <motion.div
       whileHover={{ scale: 1.02, boxShadow: '0 20px 48px rgba(0,0,0,0.35)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className="bg-pss-700/35 border border-white/20 rounded-[24px] p-5 flex flex-col h-[392px]"
+      className="bg-pss-700/35 border border-white/20 rounded-[24px] p-5 flex flex-col h-auto min-h-[300px] md:h-[392px]"
     >
       {/* Fixed card height for every card; long text scrolls inside instead
           of stretching the card */}
@@ -52,12 +53,12 @@ function TestimonialCard(t: Testimonial) {
             alt={`Photo of ${t.name}`}
             loading="lazy"
             draggable={false}
-            className="w-28 h-28 rounded-full object-cover border-2 border-white/35 flex-shrink-0"
+            className="w-20 h-20 md:w-28 md:h-28 rounded-full object-cover border-2 border-white/35 flex-shrink-0"
           />
         ) : (
           <div
-            className="w-28 h-28 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
-                       flex items-center justify-center font-bold text-[22px] text-white"
+            className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-white/20 border-2 border-white/35 flex-shrink-0
+                       flex items-center justify-center font-bold text-[18px] md:text-[22px] text-white"
           >
             {t.initials}
           </div>
@@ -85,6 +86,18 @@ export default function Testimonials() {
   const intervalRef             = useRef<ReturnType<typeof setInterval> | null>(null)
   const wheelLock               = useRef(0)
   const reducedMotion           = useReducedMotion()
+  const lg                      = useMediaQuery('(min-width: 1024px)')
+  const md                      = useMediaQuery('(min-width: 768px)')
+  // No hover on touch screens, so nothing would ever pause the rotation
+  const coarse                  = useMediaQuery('(hover: none)')
+  const perPage                 = lg ? 3 : md ? 2 : 1
+  const PAGES                   = useMemo(() => chunk(TESTIMONIALS, perPage), [perPage])
+  const TOTAL_PAGES             = PAGES.length
+
+  // Column count changed (rotation / resize): start over from the first page
+  useEffect(() => {
+    setPage(0)
+  }, [perPage])
 
   const goTo = useCallback((next: number) => {
     setPage(next)
@@ -98,13 +111,13 @@ export default function Testimonials() {
     intervalRef.current = setInterval(() => {
       setPage((p) => (p + 1) % TOTAL_PAGES)
     }, INTERVAL_MS)
-  }, [])
+  }, [TOTAL_PAGES])
 
   // Never auto-advance quotes out from under someone who is reading them:
   // stopped by the toggle, by hover, by keyboard focus, mid-swipe, or by
   // reduced motion. Any change restarts the 6 s clock, so a swipe is never
   // immediately followed by an auto-advance.
-  const advancing = playing && !hovered && !dragging && !reducedMotion
+  const advancing = playing && !hovered && !dragging && !reducedMotion && !coarse
 
   useEffect(() => {
     if (advancing) startInterval()

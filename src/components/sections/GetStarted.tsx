@@ -20,13 +20,13 @@ export default function GetStarted() {
       <SciDoodles variant="gs" />
       <Sheen delay={-26} />
 
-      <Sparkle size={15} color="#6BB8D4" top="18%"    left="10%"   delay={0.3} />
+      <Sparkle size={15} color="#6BB8D4" top="18%"    left="10%"   delay={0.3} mobile={false} />
       <Sparkle size={12} color="#F0C060" top="14%"    right="14%"  delay={1.1} />
       <Sparkle size={10} color="#6BB8D4" bottom="20%" left="22%"   delay={2.0} variant="rare" />
       <Sparkle size={11} color="#F0C060" bottom="25%" right="18%"  delay={0.7} variant="rare" />
       <Sparkle size={8}  color="#6BB8D4" top="55%"    right="8%"   delay={1.5} variant="rare" />
-      <Sparkle size={9}  color="#6BB8D4" top="40%"    left="42%"   delay={1.9} variant="rare" />
-      <Sparkle size={7}  color="#F0C060" bottom="35%" left="54%"   delay={0.5} variant="rare" />
+      <Sparkle size={9}  color="#6BB8D4" top="40%"    left="42%"   delay={1.9} variant="rare" mobile={false} />
+      <Sparkle size={7}  color="#F0C060" bottom="35%" left="54%"   delay={0.5} variant="rare" mobile={false} />
 
       <div className="sc py-0">
         <ScrollReveal>

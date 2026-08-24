@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
 import SciDoodles from '@/components/shared/SciDoodles'
@@ -8,6 +8,7 @@ import WaveTransition from '@/components/shared/WaveTransition'
 import Lightbox from '@/components/shared/Lightbox'
 import { GALLERY_GROUPS } from '@/lib/gallery'
 import { igPost } from '@/lib/data'
+import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { GalleryEventGroup, GalleryPhoto } from '@/lib/types'
 
 // Panels we have no approved photos of yet. Each card links to the event's
@@ -46,8 +47,9 @@ function LinkedEventCard({ label, href, colorFrom, colorTo }: LinkedEvent) {
       rel="noopener noreferrer"
       whileHover={{ scale: 1.04, boxShadow: '0 20px 48px rgba(0,0,0,0.25)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className="focus-ring relative rounded-[16px] overflow-hidden cursor-pointer block no-underline"
-      style={{ aspectRatio: '4/3', background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
+      className="focus-ring relative rounded-[16px] overflow-hidden cursor-pointer block no-underline
+                 aspect-[4/3] sm:aspect-auto sm:min-h-[190px] lg:aspect-[4/3]"
+      style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}
     >
       {/* Camera icon placeholder */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4">
@@ -79,15 +81,10 @@ function LinkedEventCard({ label, href, colorFrom, colorTo }: LinkedEvent) {
   )
 }
 
-// Checked once, like BlobLayer's smallScreen: a mid-session resize just keeps
-// the initial page size until reload, which is fine for a photo row.
-const PER_PAGE =
-  typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches ? 2 : 3
-
-function chunkPhotos(photos: GalleryPhoto[]): GalleryPhoto[][] {
+function chunkPhotos(photos: GalleryPhoto[], perPage: number): GalleryPhoto[][] {
   const pages: GalleryPhoto[][] = []
-  for (let i = 0; i < photos.length; i += PER_PAGE) {
-    pages.push(photos.slice(i, i + PER_PAGE))
+  for (let i = 0; i < photos.length; i += perPage) {
+    pages.push(photos.slice(i, i + perPage))
   }
   return pages
 }
@@ -107,8 +104,13 @@ function PhotoRow({
   groupIndex: number
   onOpen: (group: number, index: number) => void
 }) {
-  const pages = chunkPhotos(group.photos)
+  // Follows the row's grid-cols-2 sm:grid-cols-3, including rotation
+  const perPage = useMediaQuery('(max-width: 639px)') ? 2 : 3
+  const pages = chunkPhotos(group.photos, perPage)
   const [page, setPage] = useState(0)
+  useEffect(() => {
+    setPage(0)
+  }, [perPage])
   const step = (dir: 1 | -1) =>
     setPage((p) => (p + dir + pages.length) % pages.length)
 

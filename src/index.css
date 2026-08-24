@@ -36,7 +36,7 @@ html {
 body {
   font-family: 'DM Sans Variable', system-ui, sans-serif;
   color: var(--txt);
-  overflow-x: hidden;
+  overflow-x: clip;
   background: #D0E8F5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -74,7 +74,7 @@ section[id] {
   padding: 0 48px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   .sc { padding: 0 22px; }
 }
 
@@ -90,10 +90,9 @@ section[id] {
 
 /* ── Ticker carousel ── */
 .ticker-wrap {
-  overflow-x: clip;   /* clip horizontal only — lets hover scale/translate-y escape */
-  overflow-y: visible;
-  width: 100%;
   position: relative;
+  width: 100%;
+  overflow: hidden;   /* the scroller below does the real clipping; masks sit on top */
 }
 
 .ticker-wrap::before,
@@ -118,8 +117,19 @@ section[id] {
   background: linear-gradient(to left, #1A3A5C, transparent);
 }
 
-/* Pause-on-hover, drag and the touch fallback are handled by the framer-motion
-   strip in Team.tsx; only the clip + edge masks live here. */
+/* The strip is a real horizontal scroller that Team.tsx also nudges along via
+   scrollLeft. overflow-y must be hidden, not visible: paired with
+   overflow-x:auto, visible computes to auto and a vertical scrollbar appears
+   the moment a card lifts on hover. The scroller's vertical padding (pt-4
+   pb-10 in Team.tsx) is the room the lift, scale and shadow need. */
+.ticker-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;      /* no swipe-back / overscroll glow at the ends */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ticker-scroll::-webkit-scrollbar { display: none; }
 
 /* ── Film grain — SVG fractal noise as a data URI, no network request.
    Painted after a section's children among z-0 layers, so it sits above the
@@ -185,13 +195,13 @@ section[id] {
   12%, 100% { transform: translateX(320%) rotate(18deg); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   .blob-drift-a, .blob-drift-b, .blob-drift-c { animation-duration: 44s; }
   .sheen-beam, .wave-drift, .atom-spin { animation: none; }
 }
 
 /* Catches everything the no-preference block above doesn't own: sparkles,
-   the team tickers, and every CSS transition. framer-motion is handled
+   the team strip's hover effects, and every CSS transition. framer-motion is handled
    separately by MotionConfig in App.tsx. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

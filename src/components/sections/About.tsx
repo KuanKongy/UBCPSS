@@ -39,7 +39,7 @@ export default function About() {
       <Sparkle size={11} color="#F0C060" bottom="20%" right="8%" delay={1.8} />
 
       <div className="sc py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-10 lg:gap-20 items-start">
           {/* Left: text */}
           <ScrollReveal>
             <p className="kicker text-[11px] font-bold tracking-[0.12em] uppercase text-pss-600 mb-3.5">

@@ -12,6 +12,14 @@ interface BlobLayerProps {
 const smallScreen =
   typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
 
+// Mobile blob tints: [primary fill, opacity, secondary fill]
+const LIGHT: [string, number, string] = ['#C8E0F2', 0.45, '#B4D1E9']
+const DARK: [string, number, string] = ['rgba(255,255,255,.08)', 1, 'rgba(255,255,255,.08)']
+const MOBILE_FILLS: Record<BlobVariant, [string, number, string]> = {
+  hero: LIGHT, about: LIGHT, what: LIGHT, events: LIGHT, faq: LIGHT, gs: LIGHT, gallery: LIGHT,
+  testi: DARK, team: DARK,
+}
+
 export default function BlobLayer({ variant }: BlobLayerProps) {
   const ref = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
@@ -25,6 +33,17 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
   return (
     <div ref={ref} className="blob-layer" aria-hidden="true">
       <motion.div style={parallax} className="w-full h-full">
+        {smallScreen ? (
+          /* Phones: every desktop box is landscape and gets slice-scaled 3–5×
+             on a tall section, which pushes all the blobs off-screen. One
+             portrait set, tinted per section, keeps the clouds alive. */
+          <svg width="100%" height="100%" viewBox="0 0 480 1000" preserveAspectRatio="xMidYMin slice">
+            <path className="blob-drift-a" d="M380 -40 C450 -60,530 0,540 90 C550 180,500 260,430 270 C360 280,300 220,300 140 C300 70,320 -20,380 -40Z" fill={MOBILE_FILLS[variant][0]} opacity={MOBILE_FILLS[variant][1]}/>
+            <path className="blob-drift-b" d="M-60 420 C0 370,110 380,150 450 C190 520,170 620,100 650 C30 680,-60 640,-90 570 C-120 500,-110 450,-60 420Z" fill={MOBILE_FILLS[variant][2]} opacity={MOBILE_FILLS[variant][1]}/>
+            <path className="blob-drift-c" d="M360 800 C440 760,540 800,560 890 C580 980,530 1060,450 1070 C370 1080,300 1030,290 950 C280 880,300 830,360 800Z" fill={MOBILE_FILLS[variant][0]} opacity={MOBILE_FILLS[variant][1]}/>
+          </svg>
+        ) : (
+        <>
         {variant === 'hero' && (
           <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
             {/* Mesh washes: light pools inside each cloud instead of a flat
@@ -86,7 +105,10 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
           </svg>
         )}
         {variant === 'events' && (
-          <svg width="100%" height="100%" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice">
+          /* Width-driven scale anchored to the top (like faq/gallery): the list
+             grows when expanded, so a 700-unit xMidYMid box would blow up and
+             centre, pushing every side blob off-screen. */
+          <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice">
             <defs>
               <radialGradient id="eventsMesh0" cx="35%" cy="32%" r="82%">
                 <stop offset="0%"  stopColor="#DCEDF9"/>
@@ -99,8 +121,14 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
                 <stop offset="100%" stopColor="#A9C1E2"/>
               </radialGradient>
             </defs>
+            {/* 1 top-right, behind the heading */}
             <path className="blob-drift-a" d="M1180 -80 C1300 -60,1445 40,1462 162 C1480 282,1420 382,1320 410 C1220 438,1100 380,1080 278 C1060 188,1110 80,1180 -80Z" fill="url(#eventsMesh0)" opacity=".5"/>
-            <path className="blob-drift-c" d="M-60 480 C20 440,140 450,180 520 C220 590,200 680,130 710 C60 740,-40 700,-70 630 C-100 570,-100 510,-60 480Z" fill="url(#eventsMesh1)" opacity=".45"/>
+            {/* 2 left, beside the first cards */}
+            <path className="blob-drift-c" d="M-60 500 C20 460,140 470,180 540 C220 610,200 700,130 730 C60 760,-40 720,-70 650 C-100 590,-100 530,-60 500Z" fill="url(#eventsMesh1)" opacity=".45"/>
+            {/* 3 right, beside the lower cards (flat fill so the breathe reads) */}
+            <path className="blob-breathe" d="M1300 900 C1380 850,1520 880,1550 970 C1580 1060,1540 1180,1450 1220 C1360 1260,1260 1210,1240 1120 C1220 1030,1250 950,1300 900Z" fill="#B8D4EC" opacity=".45"/>
+            {/* 4 small bottom-left, under the expander */}
+            <path className="blob-drift-b" d="M-80 1260 C0 1200,130 1220,170 1300 C210 1380,180 1470,100 1500 C20 1530,-90 1490,-130 1410 C-170 1330,-150 1300,-80 1260Z" fill="url(#eventsMesh1)" opacity=".4"/>
           </svg>
         )}
         {variant === 'testi' && (
@@ -188,6 +216,8 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
             {/* 6 small top-right */}
             <path className="blob-drift-c" d="M1340 -30 C1420 -70,1520 -20,1540 70 C1560 160,1500 230,1420 230 C1340 230,1280 170,1280 90 C1280 30,1290 0,1340 -30Z" fill="url(#galleryMesh1)" opacity=".35"/>
           </svg>
+        )}
+        </>
         )}
       </motion.div>
     </div>

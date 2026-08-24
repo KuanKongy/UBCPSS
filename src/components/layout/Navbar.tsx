@@ -61,7 +61,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-3.5
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 md:px-12 py-3.5
                    bg-pss-100/85 backdrop-blur-[16px] border-b border-pss-400/20"
         style={{ WebkitBackdropFilter: 'blur(16px)' }}
       >
@@ -124,7 +124,7 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMenuOpen((o) => !o)}
-          className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-[5px] cursor-pointer
+          className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-[5px] cursor-pointer
                      rounded-lg hover:bg-pss-100/60 transition-colors focus-ring"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, useAnimationFrame, useMotionValue, useReducedMotion, wrap } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
 import SciDoodles from '@/components/shared/SciDoodles'
 import ScrollReveal from '@/components/shared/ScrollReveal'
@@ -12,19 +12,16 @@ const AVATAR_COLORS = [
   'rgba(125,212,204,0.50)',
 ]
 
-// Three copies of the roster: the strip is kept within the middle copy, so a
-// drag of up to one full roster in either direction never shows a gap before
-// it wraps.
+// Three copies of the roster. The viewport is always kept inside the middle
+// copy, so a scroll of up to one roster in either direction never reaches an
+// edge before scrollLeft is wrapped back by exactly one copy.
 const COPIES = 3
 const ROW = Array.from({ length: COPIES }, () => TEAM_MEMBERS).flat()
 
-// One roster width every 70 s, the same pace as the old CSS ticker
-const LOOP_SECONDS = 70
-
-// Touch screens have no hover to pause with, so the strip sits still there and
-// is dragged instead of chasing a moving target.
-const coarsePointer =
-  typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+const LOOP_SECONDS = 70 // one roster width per 70 s, the same pace as the old ticker
+const IDLE_MS = 1200    // hands-off time after any user scroll input
+const SETTLE_MS = 150   // "scroll has stopped" fallback where `scrollend` is missing
+const MAX_DT = 0.05     // seconds; caps the step after a hidden tab or a long frame
 
 function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof TEAM_MEMBERS[0]) {
   const Wrapper = linkedin ? motion.a : motion.div
@@ -34,6 +31,7 @@ function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof
   return (
     <Wrapper
       {...(wrapperProps as object)}
+      draggable={false}
       whileHover={{ y: -10, scale: 1.05, boxShadow: '0 24px 56px rgba(0,0,0,0.55)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       className={`group flex-shrink-0 w-[200px] h-[200px] relative rounded-[20px]
@@ -87,40 +85,134 @@ function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof
 }
 
 export default function Team() {
-  const x = useMotionValue(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
   const rowRef = useRef<HTMLDivElement>(null)
-  const [loop, setLoop] = useState(0)          // width of one roster copy (incl. its trailing gap)
-  const [paused, setPaused] = useState(false)  // hover / keyboard focus
-  const dragging = useRef(false)
   const reducedMotion = useReducedMotion()
 
-  // Measure one roster copy; re-measure if fonts/images change the row width
+  // The strip is a real horizontal scroller (trackpad, shift-wheel, touch,
+  // keyboard) that is also nudged along by scrollLeft writes each frame. All
+  // runtime state lives in plain variables here: nothing re-renders.
   useEffect(() => {
-    const el = rowRef.current
-    if (!el) return
-    const measure = () => setLoop(el.scrollWidth / COPIES)
+    const el = scrollRef.current
+    const row = rowRef.current
+    if (!el || !row) return
+
+    let loop = 0        // width of one roster copy incl. its trailing gap (px)
+    let pos = 0         // float position we own; scrollLeft rounds to whole px
+    let lastAuto = -1   // scrollLeft as we last wrote it; anything else is the user
+    let idleUntil = 0   // auto-scroll stays off until performance.now() > idleUntil
+    let hovered = false // mouse/pen only; touch has no hover
+    let touching = false // finger down, or a fling still running
+    let visible = true
+    let settle = 0
+    let raf = 0
+    let last = performance.now()
+
+    // Keep v inside the middle copy: [loop, 2·loop)
+    const wrapPos = (v: number) => (loop ? loop + ((((v - loop) % loop) + loop) % loop) : v)
+
+    const write = (v: number) => {
+      pos = v
+      el.scrollLeft = v
+      lastAuto = el.scrollLeft // read back: engines round to whole pixels
+    }
+
+    const userInput = () => { idleUntil = performance.now() + IDLE_MS }
+
+    // Snap back into the middle copy if the user has scrolled past a boundary
+    const normalise = () => {
+      if (!loop) return
+      const v = el.scrollLeft
+      if (v < loop || v >= 2 * loop) write(wrapPos(v))
+      else pos = v
+    }
+
+    // Measure one copy; the row has a trailing pr-4 so scrollWidth / 3 is exact
+    const measure = () => {
+      loop = row.scrollWidth / COPIES
+      if (!loop) return
+      write(lastAuto < 0 ? loop : wrapPos(pos)) // first run: start on the middle copy
+    }
     measure()
     const ro = new ResizeObserver(measure)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
+    ro.observe(row)
 
-  // Keep the strip inside the middle copy: x in (-2·loop, -loop]
-  const normalise = (value: number) => (loop ? wrap(-2 * loop, -loop, value) : value)
+    // No point scrolling (and firing scroll events) while off-screen
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting })
+    io.observe(el)
 
-  useEffect(() => {
-    if (loop) x.set(-loop)
-  }, [loop, x])
+    // Touch: iOS ignores scrollLeft writes mid-gesture and mid-fling, so wait
+    // for the scroller to come to rest, then wrap once.
+    const settled = () => {
+      window.clearTimeout(settle)
+      touching = false
+      normalise()
+      userInput() // grace period counts from rest, not from touchstart
+    }
+    const armSettle = () => {
+      window.clearTimeout(settle)
+      settle = window.setTimeout(settled, SETTLE_MS)
+    }
 
-  useAnimationFrame((_, delta) => {
-    if (!loop || paused || dragging.current || reducedMotion || coarsePointer) return
-    x.set(normalise(x.get() - (loop / LOOP_SECONDS) * (delta / 1000)))
-  })
+    const onScroll = () => {
+      if (el.scrollLeft !== lastAuto) { // not our write, so the user moved it
+        userInput()
+        pos = el.scrollLeft
+      }
+      if (touching) armSettle()  // fling still going; wrap when it stops
+      else normalise()           // wheel / keys / scrollbar: wrap immediately
+    }
+    const onScrollEnd = () => { if (touching) settled() }
+    const onTouchStart = () => { touching = true; window.clearTimeout(settle); userInput() }
+    const onTouchEnd = () => armSettle() // no fling: settles in 150 ms; a fling re-arms via scroll
+    const onPointerEnter = (e: PointerEvent) => { if (e.pointerType !== 'touch') hovered = true }
+    const onPointerLeave = (e: PointerEvent) => { if (e.pointerType !== 'touch') hovered = false }
+    const onPointerDown = (e: PointerEvent) => { if (e.pointerType !== 'touch') userInput() }
 
-  const onWheel = (e: React.WheelEvent) => {
-    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
-    x.set(normalise(x.get() - e.deltaX))
-  }
+    const passive = { passive: true } as const
+    el.addEventListener('scroll', onScroll, passive)
+    el.addEventListener('scrollend', onScrollEnd)
+    el.addEventListener('wheel', userInput, passive)
+    el.addEventListener('touchstart', onTouchStart, passive)
+    el.addEventListener('touchmove', onTouchStart, passive)
+    el.addEventListener('touchend', onTouchEnd)
+    el.addEventListener('touchcancel', onTouchEnd)
+    el.addEventListener('pointerdown', onPointerDown)
+    el.addEventListener('pointerenter', onPointerEnter)
+    el.addEventListener('pointerleave', onPointerLeave)
+
+    // Pause only for keyboard-visible focus: a mouse click also focuses the
+    // tabIndex=0 scroller, and that must not freeze the strip until the next click.
+    const keyboardFocused = () =>
+      el.matches(':focus-within') &&
+      (el.matches(':focus-visible') || el.querySelector(':focus-visible') !== null)
+
+    const tick = (now: number) => {
+      raf = requestAnimationFrame(tick)
+      const dt = Math.min((now - last) / 1000, MAX_DT)
+      last = now
+      if (!loop || !visible || hovered || touching || now < idleUntil || keyboardFocused()) return
+      write(wrapPos(pos + (loop / LOOP_SECONDS) * dt))
+    }
+    if (!reducedMotion) raf = requestAnimationFrame(tick)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.clearTimeout(settle)
+      ro.disconnect()
+      io.disconnect()
+      el.removeEventListener('scroll', onScroll)
+      el.removeEventListener('scrollend', onScrollEnd)
+      el.removeEventListener('wheel', userInput)
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchStart)
+      el.removeEventListener('touchend', onTouchEnd)
+      el.removeEventListener('touchcancel', onTouchEnd)
+      el.removeEventListener('pointerdown', onPointerDown)
+      el.removeEventListener('pointerenter', onPointerEnter)
+      el.removeEventListener('pointerleave', onPointerLeave)
+    }
+  }, [reducedMotion])
 
   return (
     <section id="team" className="bg-pss-700 pt-16 pb-8 overflow-hidden grain">
@@ -130,42 +222,31 @@ export default function Team() {
         <ScrollReveal className="text-center mb-14">
           <h2
             className="font-syne font-bold text-white leading-[1.05] tracking-[-0.01em]"
-            style={{ fontSize: 'clamp(38px, 5vw, 50px)' }}
+            style={{ fontSize: 'clamp(30px, 4vw, 50px)' }}
           >
             Meet the minds behind PSS
           </h2>
         </ScrollReveal>
       </div>
 
-      {/* One strip of everyone, scrolling left; pauses on hover and can be
-          dragged or wheel-scrolled sideways at any time. */}
-      <div
-        className="ticker-wrap mb-6"
-        role="region"
-        aria-label="Team members"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocusCapture={() => setPaused(true)}
-        onBlurCapture={() => setPaused(false)}
-        onWheel={onWheel}
-      >
-        <motion.div
-          ref={rowRef}
-          drag="x"
-          dragMomentum={false}
-          dragElastic={0}
-          onDragStart={() => { dragging.current = true }}
-          onDragEnd={() => {
-            dragging.current = false
-            x.set(normalise(x.get()))
-          }}
-          style={{ x, width: 'max-content' }}
-          className="flex gap-4 ticker-row cursor-grab active:cursor-grabbing select-none [touch-action:pan-y] py-3"
+      {/* One strip of everyone: a native horizontal scroller that also crawls
+          left on its own, pausing on hover, keyboard focus and for a moment
+          after any user scroll. */}
+      <div className="ticker-wrap">
+        <div
+          ref={scrollRef}
+          role="region"
+          aria-label="Team members"
+          tabIndex={0}
+          className="ticker-scroll pt-4 pb-10
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70"
         >
-          {ROW.map((m, i) => (
-            <TeamCard key={`m-${i}`} {...m} />
-          ))}
-        </motion.div>
+          <div ref={rowRef} className="flex gap-4 w-max pr-4 select-none">
+            {ROW.map((m, i) => (
+              <TeamCard key={`m-${i}`} {...m} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

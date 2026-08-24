@@ -81,24 +81,24 @@ export default function Events() {
           {(expanded ? EVENTS : EVENTS.slice(0, 3)).map((ev, i) => (
             <ScrollReveal key={`${ev.year}-${ev.month}-${ev.day}`} delay={0.1 * (i + 1)}>
               <div
-                className="group relative grid grid-cols-1 gap-2 sm:grid-cols-[80px_1fr_auto] sm:gap-7 sm:items-center
-                           bg-white rounded-[22px] px-5 py-5 sm:px-7
+                className="group relative grid grid-cols-1 gap-2 md:grid-cols-[80px_1fr_auto] md:gap-7 md:items-center
+                           bg-white rounded-[22px] px-5 py-5 md:px-7
                            border border-pss-300/70 shadow-[0_2px_12px_rgba(74,122,155,.08)]
                            hover:translate-x-1.5 hover:border-teal/60 hover:shadow-[0_8px_32px_rgba(74,122,155,.12)]
                            focus-within:border-teal/60 focus-within:shadow-[0_8px_32px_rgba(74,122,155,.12)]
                            transition-all duration-200"
               >
-                {/* Date: a compact inline row on mobile, a rail from sm up */}
-                <div className="flex items-baseline gap-1.5 sm:block sm:text-center">
-                  <div className="text-[11px] font-extrabold tracking-[0.1em] uppercase text-pss-600 sm:order-1">
+                {/* Date: a compact inline row on mobile, a rail from md up */}
+                <div className="flex items-baseline gap-1.5 md:block md:text-center">
+                  <div className="text-[11px] font-extrabold tracking-[0.1em] uppercase text-pss-600 md:order-1">
                     {ev.month}
                   </div>
                   <div
-                    className="font-syne font-bold text-pss-700 leading-none text-[22px] sm:text-[38px] sm:order-2"
+                    className="font-syne font-bold text-pss-700 leading-none text-[22px] md:text-[38px] md:order-2"
                   >
                     {ev.day}
                   </div>
-                  <div className="text-[11px] text-pss-600 sm:mt-0.5 sm:order-3">{ev.year}</div>
+                  <div className="text-[11px] text-pss-600 md:mt-0.5 md:order-3">{ev.year}</div>
                 </div>
 
                 {/* Info column */}
@@ -112,7 +112,7 @@ export default function Events() {
                   {ev.collab && (
                     <span
                       className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-[0.07em] uppercase
-                                 rounded-full px-2.5 py-0.5 mb-1.5 ml-1.5 bg-gold/20 text-pss-600 whitespace-nowrap"
+                                 rounded-full pl-2.5 pr-3 py-0.5 mb-1.5 ml-1.5 bg-gold/20 text-pss-600 whitespace-nowrap"
                     >
                       {COLLAB_LOGOS[ev.collab] && (
                         <img
@@ -148,7 +148,7 @@ export default function Events() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={ev.instagram ? `View ${ev.name} on Instagram` : 'See more from PSS on Instagram'}
-                  className="focus-ring mt-1 sm:mt-0 justify-self-start sm:justify-self-end inline-flex items-center gap-1.5
+                  className="focus-ring mt-1 md:mt-0 justify-self-start md:justify-self-end inline-flex items-center gap-1.5
                              rounded-full border-2 border-pss-400 bg-white/70 px-4 py-1.5 text-[12px] font-bold text-pss-700
                              whitespace-nowrap transition-colors group-hover:bg-pss-100 group-hover:border-pss-500
                              after:absolute after:inset-0 after:content-['']"

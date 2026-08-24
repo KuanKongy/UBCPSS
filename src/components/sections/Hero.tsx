@@ -11,7 +11,7 @@ import { LINKS, STATS, TRUST_POINTS } from '@/lib/data'
 
 export default function Hero() {
   return (
-    <section id="hero" className="bg-pss-100 min-h-screen pt-32 pb-24 grain">
+    <section id="hero" className="bg-pss-100 lg:min-h-screen pt-28 lg:pt-32 pb-24 grain">
       <BlobLayer variant="hero" />
       <SciDoodles variant="hero" />
       <Sheen delay={-4} />
@@ -19,9 +19,9 @@ export default function Hero() {
       {/* Sparkles */}
       <Sparkle size={16} color="#6BB8D4" top="15%" right="8%"   delay={0.4} />
       <Sparkle size={11} color="#6BB8D4" top="62%" right="14%"  delay={1.2} variant="rare" />
-      <Sparkle size={9}  color="#6BB8D4" bottom="12%" left="4%"  delay={0.8} />
-      <Sparkle size={9}  color="#F0C060" top="10%"  left="46%"  delay={2.0} variant="rare" />
-      <Sparkle size={13} color="#6BB8D4" top="72%"  left="8%"   delay={1.6} />
+      <Sparkle size={9}  color="#6BB8D4" bottom="12%" left="4%"  delay={0.8} mobile={false} />
+      <Sparkle size={9}  color="#F0C060" top="10%"  left="46%"  delay={2.0} variant="rare" mobile={false} />
+      <Sparkle size={13} color="#6BB8D4" top="72%"  left="8%"   delay={1.6} mobile={false} />
 
       <div className="sc">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -64,7 +64,7 @@ export default function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-10 items-baseline">
+            <div className="flex flex-wrap gap-x-10 gap-y-6 items-baseline">
               {STATS.map((s) => (
                 <StatCounter key={s.label} {...s} />
               ))}

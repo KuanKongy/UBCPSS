@@ -153,7 +153,7 @@ export default function Lightbox({
                 <button
                   onClick={onClose}
                   aria-label="Close photo viewer"
-                  className="focus-ring grid h-9 w-9 place-items-center rounded-full bg-pss-500/10 text-pss-700
+                  className="focus-ring grid h-11 w-11 sm:h-9 sm:w-9 place-items-center rounded-full bg-pss-500/10 text-pss-700
                              text-xl leading-none hover:bg-pss-500/25 transition-colors"
                 >
                   ×

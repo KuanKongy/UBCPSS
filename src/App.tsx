@@ -15,7 +15,7 @@ import Team from '@/components/sections/Team'
 export default function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <div className="overflow-x-hidden">
+      <div className="overflow-x-clip">
         <Navbar />
         <main>
           <Hero />

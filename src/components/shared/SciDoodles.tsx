@@ -115,15 +115,18 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
       )}
 
       {variant === 'events' && (
-        <svg width="100%" height="100%" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" fill="none">
+        /* Width-driven, top-anchored box (like gallery/faq): the section runs
+           ~1000px collapsed and ~1450px with every event shown, and the extra
+           clusters sit in the margins (x ≤ 130 / ≥ 1310) down its length. */
+        <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice" fill="none">
           {/* Trajectory across the top, diving toward the timeline */}
           <path
             className="doodle-draw"
             d="M-40 96 C 300 40, 760 30, 1100 78 C 1280 104, 1400 150, 1480 190"
             stroke="#4A7A9B" strokeWidth="1.6" strokeLinecap="round" opacity=".22"
           />
-          {/* Calendar cluster on the bottom-left cloud: calendar + pencil +
-              dotted check trail pointing into the list */}
+          {/* Calendar cluster on the left cloud: calendar + pencil + dotted
+              check trail pointing into the list */}
           <g opacity=".32" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="72" y="596" width="46" height="40" rx="7"/>
             <path d="M72 610 h46 M84 596 v-7 M106 596 v-7"/>
@@ -131,8 +134,32 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <path d="M128 640 l14 -18 M136 636 l3 3" strokeWidth="1.8"/>
           </g>
           <g opacity=".3">
-            <path d="M126 590 C 170 560, 220 556, 268 566" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
-            <circle cx="272" cy="567" r="3" fill="#2E5F82"/>
+            <path d="M100 646 C 80 700, 116 760, 92 820" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
+            <circle cx="91" cy="825" r="3" fill="#2E5F82"/>
+          </g>
+          {/* Microphone on a stand, right cloud beside the lower cards: the
+              speaker-panel motif, with two sound arcs */}
+          <g opacity=".32" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="1348" y="960" width="24" height="40" rx="12"/>
+            <path d="M1354 972 h12 M1354 980 h12 M1354 988 h12" strokeWidth="1.3"/>
+            <path d="M1340 984 v6 a20 20 0 0 0 40 0 v-6" strokeWidth="1.8"/>
+            <path d="M1360 1010 v16 M1346 1030 h28"/>
+            <path d="M1386 966 a14 14 0 0 1 0 28 M1394 958 a24 24 0 0 1 0 44" strokeWidth="1.5"/>
+          </g>
+          <g opacity=".3">
+            <path d="M1360 1040 C 1384 1070, 1340 1100, 1366 1120" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
+            <circle cx="1367" cy="1125" r="3" fill="#2E5F82"/>
+          </g>
+          {/* Location pin + clock, bottom-left cloud: where and when */}
+          <g opacity=".32" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M90 1300 c-18 0 -28 14 -28 28 c0 22 28 48 28 48 s28 -26 28 -48 c0 -14 -10 -28 -28 -28 Z"/>
+            <circle cx="90" cy="1328" r="8" strokeWidth="1.6"/>
+            <circle cx="140" cy="1290" r="14" strokeWidth="1.5"/>
+            <path d="M140 1290 v-9 M140 1290 h6" strokeWidth="1.5"/>
+          </g>
+          <g opacity=".3">
+            <path d="M100 1290 C 84 1250, 112 1215, 96 1180" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
+            <circle cx="95" cy="1175" r="3" fill="#2E5F82"/>
           </g>
         </svg>
       )}
@@ -294,7 +321,7 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <circle cx="1332" cy="138" r="1.4" strokeWidth="1.6"/>
           </g>
           <g opacity=".26" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M1392 160 h26 a8 8 0 0 1 8 8 v14 a8 8 0 0 1 -8 8 h-8 l-8 8 v-8 h-2 a8 8 0 0 1 -8 -8 v-14 a8 8 0 0 1 8 -8 Z"/>
+            <path d="M1400 160 h18 a8 8 0 0 1 8 8 v14 a8 8 0 0 1 -8 8 h-8 l-8 8 v-8 h-2 a8 8 0 0 1 -8 -8 v-14 a8 8 0 0 1 8 -8 Z"/>
             <path d="M1398 172 h14 M1398 179 h9" strokeWidth="1.3"/>
           </g>
           {/* Dotted thread from the bubbles down the right cloud edge */}
