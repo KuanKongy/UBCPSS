@@ -103,16 +103,19 @@ export default function Events() {
 
                 {/* Info column */}
                 <div>
+                  {/* Tag + partner badge share a wrapping row, so on phones the badge
+                      drops under the tag flush-left instead of hanging off an inline margin */}
+                  <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
                   <span
-                    className={`inline-block text-[11px] font-bold tracking-[0.07em] uppercase
-                                rounded-full px-2.5 py-0.5 mb-1.5 ${tagColors[ev.tagColor]}`}
+                    className={`inline-flex items-center text-[11px] font-bold tracking-[0.07em] uppercase
+                                rounded-full px-2.5 py-0.5 ${tagColors[ev.tagColor]}`}
                   >
                     {ev.tag}
                   </span>
                   {ev.collab && (
                     <span
                       className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-[0.07em] uppercase
-                                 rounded-full pl-2.5 pr-3 py-0.5 mb-1.5 ml-1.5 bg-gold/20 text-pss-600 whitespace-nowrap"
+                                 rounded-full pl-2.5 pr-4 py-0.5 bg-gold/20 text-pss-600 whitespace-nowrap w-max"
                     >
                       {COLLAB_LOGOS[ev.collab] && (
                         <img
@@ -125,6 +128,7 @@ export default function Events() {
                       with {ev.collab}
                     </span>
                   )}
+                  </div>
                   <h3 className="text-[17px] font-bold text-pss-700 mb-1">{ev.name}</h3>
                   <div className="text-[13px] text-pss-600">
                     {[

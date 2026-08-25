@@ -28,7 +28,7 @@ export default function Footer() {
             aria-hidden="true"
             className="w-9 h-9 rounded-full border border-white/30 bg-white/10 p-0.5 object-cover"
           />
-          <span className="font-syne text-[12px] font-bold tracking-wider text-white/80 whitespace-nowrap hidden lg:block">
+          <span className="font-syne text-[12px] font-bold tracking-wider text-white/80 whitespace-nowrap block">
             UBC Project STEM Search
           </span>
         </div>

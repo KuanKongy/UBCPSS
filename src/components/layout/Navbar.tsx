@@ -16,6 +16,7 @@ export default function Navbar() {
   const [active, setActive] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
   // Reading-progress hairline along the bottom edge of the bar
   const { scrollYProgress } = useScroll()
 
@@ -34,16 +35,20 @@ export default function Navbar() {
     return () => obs.disconnect()
   }, [])
 
-  // Close drawer on outside click
+  // Close the drawer on an outside tap. The hamburger itself is excluded:
+  // on touch the synthesized mousedown used to close the drawer here and the
+  // button's click then toggled it straight back open.
   useEffect(() => {
     if (!menuOpen) return
-    const handle = (e: MouseEvent) => {
-      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
+    const handle = (e: PointerEvent) => {
+      const target = e.target as Node
+      if (toggleRef.current?.contains(target)) return
+      if (drawerRef.current && !drawerRef.current.contains(target)) {
         setMenuOpen(false)
       }
     }
-    document.addEventListener('mousedown', handle)
-    return () => document.removeEventListener('mousedown', handle)
+    document.addEventListener('pointerdown', handle)
+    return () => document.removeEventListener('pointerdown', handle)
   }, [menuOpen])
 
   // Lock body scroll when drawer open
@@ -78,7 +83,7 @@ export default function Navbar() {
             aria-hidden="true"
             className="w-[44px] h-[44px] flex-shrink-0 rounded-full border border-pss-500/40 bg-pss-100 p-0.5 object-cover"
           />
-          <span className="font-syne text-[13px] font-bold tracking-[0.04em] text-pss-700 hidden sm:block">
+          <span className="font-syne text-[11px] sm:text-[13px] font-bold tracking-[0.04em] text-pss-700 block">
             UBC PROJECT STEM SEARCH
           </span>
         </a>
@@ -123,6 +128,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
+          ref={toggleRef}
           onClick={() => setMenuOpen((o) => !o)}
           className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-[5px] cursor-pointer
                      rounded-lg hover:bg-pss-100/60 transition-colors focus-ring"

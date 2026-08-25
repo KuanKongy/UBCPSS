@@ -21,7 +21,7 @@ interface SciDoodlesProps {
 
 export default function SciDoodles({ variant }: SciDoodlesProps) {
   return (
-    <div className="blob-layer" aria-hidden="true">
+    <div className="blob-layer hidden md:block" aria-hidden="true">
       {variant === 'hero' && (
         <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
           {/* Trajectory arc sweeping over the headline, feeding the hex pair */}
@@ -131,7 +131,6 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <rect x="72" y="596" width="46" height="40" rx="7"/>
             <path d="M72 610 h46 M84 596 v-7 M106 596 v-7"/>
             <path d="M84 622 h8 M100 622 h8 M84 630 h8" strokeWidth="1.5"/>
-            <path d="M128 640 l14 -18 M136 636 l3 3" strokeWidth="1.8"/>
           </g>
           <g opacity=".3">
             <path d="M100 646 C 80 700, 116 760, 92 820" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>

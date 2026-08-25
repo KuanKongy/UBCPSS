@@ -26,7 +26,7 @@ function chunk(items: Testimonial[], size: number): Testimonial[][] {
 }
 
 const control =
-  'focus-ring-dark w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition-colors ' +
+  'focus-ring-dark w-11 h-11 flex-shrink-0 rounded-full bg-white/15 hover:bg-white/25 transition-colors ' +
   'flex items-center justify-center text-white'
 
 function TestimonialCard(t: Testimonial) {
@@ -86,6 +86,18 @@ export default function Testimonials() {
   const intervalRef             = useRef<ReturnType<typeof setInterval> | null>(null)
   const wheelLock               = useRef(0)
   const reducedMotion           = useReducedMotion()
+  const dotsRef                 = useRef<HTMLDivElement>(null)
+  const dotRefs                 = useRef<(HTMLButtonElement | null)[]>([])
+
+  // On phones the dot strip is wider than the screen: keep the active dot
+  // visible. Desktop strips never overflow, so this never scrolls the page.
+  useEffect(() => {
+    const strip = dotsRef.current
+    const dot = dotRefs.current[page]
+    if (!strip || !dot || strip.scrollWidth <= strip.clientWidth) return
+    const target = dot.offsetLeft - strip.clientWidth / 2 + dot.offsetWidth / 2
+    strip.scrollTo({ left: target, behavior: reducedMotion ? 'instant' : 'smooth' })
+  }, [page, reducedMotion])
   const lg                      = useMediaQuery('(min-width: 1024px)')
   const md                      = useMediaQuery('(min-width: 768px)')
   // No hover on touch screens, so nothing would ever pause the rotation
@@ -219,25 +231,34 @@ export default function Testimonials() {
             ))}
           </motion.div>
 
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-6 mt-8">
+          {/* Controls: 44px buttons; the dot strip scrolls sideways on phones
+              (18 pages) and keeps the active dot in view */}
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mt-8 px-1">
             <button onClick={goPrev} aria-label="Previous testimonials" className={`${control} text-[18px] font-bold`}>
               ‹
             </button>
 
-            <div className="flex items-center gap-2">
+            <div
+              ref={dotsRef}
+              className="flex-1 min-w-0 sm:flex-none flex items-center gap-1 overflow-x-auto no-scrollbar px-1 py-1"
+            >
               {Array.from({ length: TOTAL_PAGES }).map((_, i) => (
                 <button
                   key={i}
+                  ref={(el) => { dotRefs.current[i] = el }}
                   onClick={() => goTo(i)}
                   aria-label={`Go to page ${i + 1} of ${TOTAL_PAGES}`}
                   aria-current={i === page ? 'true' : undefined}
-                  className={`focus-ring-dark rounded-full transition-all duration-300 ${
-                    i === page
-                      ? 'w-6 h-2.5 bg-white'
-                      : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/75'
-                  }`}
-                />
+                  className="focus-ring-dark grid h-6 w-6 flex-shrink-0 place-items-center rounded-full"
+                >
+                  <span
+                    className={`block rounded-full transition-all duration-300 ${
+                      i === page
+                        ? 'w-6 h-2.5 bg-white'
+                        : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/75'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
 
