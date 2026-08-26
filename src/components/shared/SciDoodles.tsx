@@ -19,9 +19,35 @@ interface SciDoodlesProps {
   variant: DoodleVariant
 }
 
+// Below md the landscape doodle boxes get slice-scaled 3–5× on tall sections
+// and land on the copy, so phones only get the hero's dotted trail, redrawn
+// in a portrait box anchored to the bottom edge (below the trust strip).
+const smallScreen =
+  typeof window !== 'undefined' && window.matchMedia('(max-width: 767.98px)').matches
+
 export default function SciDoodles({ variant }: SciDoodlesProps) {
+  if (smallScreen) {
+    if (variant !== 'hero') return null
+    return (
+      <div className="blob-layer" aria-hidden="true">
+        {/* Bottom-anchored: the trail stays in the hero's bottom padding, under
+            the trust strip and above the wave, whatever the hero's height */}
+        <svg width="100%" height="100%" viewBox="0 0 480 1000" preserveAspectRatio="xMidYMax slice" fill="none">
+          <g opacity=".45">
+            <circle cx="56" cy="950" r="3.5" fill="#4A7A9B"/>
+            <path
+              d="M60 950 C 150 934, 280 964, 420 946"
+              stroke="#4A7A9B" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 9"
+            />
+            <circle cx="424" cy="946" r="3.5" fill="#4A7A9B" opacity=".8"/>
+          </g>
+        </svg>
+      </div>
+    )
+  }
+
   return (
-    <div className="blob-layer hidden md:block" aria-hidden="true">
+    <div className="blob-layer" aria-hidden="true">
       {variant === 'hero' && (
         <svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none">
           {/* Trajectory arc sweeping over the headline, feeding the hex pair */}
