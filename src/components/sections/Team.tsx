@@ -32,7 +32,7 @@ function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof
     <Wrapper
       {...(wrapperProps as object)}
       draggable={false}
-      whileHover={{ y: -10, scale: 1.05, boxShadow: '0 24px 56px rgba(0,0,0,0.55)' }}
+      whileHover={{ y: -10, scale: 1.05, boxShadow: '0 14px 32px rgba(0,0,0,0.45)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
       className={`group flex-shrink-0 w-[200px] h-[200px] relative rounded-[20px]
                  border border-white/15 overflow-hidden no-underline block
@@ -111,10 +111,15 @@ export default function Team() {
     // Keep v inside the middle copy: [loop, 2·loop)
     const wrapPos = (v: number) => (loop ? loop + ((((v - loop) % loop) + loop) % loop) : v)
 
+    // scrollLeft renders on whole pixels, which at ~1.3px per frame reads as
+    // judder. The integer part goes to scrollLeft; the fraction rides on a
+    // tiny translate of the row, which the compositor renders sub-pixel.
     const write = (v: number) => {
       pos = v
-      el.scrollLeft = v
-      lastAuto = el.scrollLeft // read back: engines round to whole pixels
+      const whole = Math.floor(v)
+      el.scrollLeft = whole
+      lastAuto = el.scrollLeft
+      row.style.transform = `translate3d(${-(v - whole)}px, 0, 0)`
     }
 
     const userInput = () => { idleUntil = performance.now() + IDLE_MS }
@@ -156,6 +161,7 @@ export default function Team() {
 
     const onScroll = () => {
       if (el.scrollLeft !== lastAuto) { // not our write, so the user moved it
+        row.style.transform = ''
         userInput()
         pos = el.scrollLeft
       }
@@ -215,7 +221,7 @@ export default function Team() {
   }, [reducedMotion])
 
   return (
-    <section id="team" className="bg-pss-700 pt-16 pb-8 overflow-hidden grain">
+    <section id="team" className="bg-pss-700 pt-16 pb-0 overflow-hidden grain">
       <BlobLayer variant="team" />
       <SciDoodles variant="team" />
       <div className="sc py-0">
@@ -238,10 +244,10 @@ export default function Team() {
           role="region"
           aria-label="Team members"
           tabIndex={0}
-          className="ticker-scroll pt-4 pb-10
+          className="ticker-scroll pt-6 pb-14
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70"
         >
-          <div ref={rowRef} className="flex gap-4 w-max pr-4 select-none">
+          <div ref={rowRef} className="flex gap-4 w-max pr-4 select-none will-change-transform">
             {ROW.map((m, i) => (
               <TeamCard key={`m-${i}`} {...m} />
             ))}

@@ -108,7 +108,7 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
           /* Width-driven scale anchored to the top (like faq/gallery): the list
              grows when expanded, so a 700-unit xMidYMid box would blow up and
              centre, pushing every side blob off-screen. */
-          <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice">
+          <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }}>
             <defs>
               <radialGradient id="eventsMesh0" cx="35%" cy="32%" r="82%">
                 <stop offset="0%"  stopColor="#DCEDF9"/>
@@ -147,7 +147,7 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
           /* xMidYMin + tall viewBox: scale always driven by width (1×), anchored to top.
              As accordion opens and section grows, more of the SVG is revealed from the
              bottom — no jump/reposition. */
-          <svg width="100%" height="100%" viewBox="0 0 1440 1800" preserveAspectRatio="xMidYMin slice">
+          <svg width="100%" height="100%" viewBox="0 0 1440 1800" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }}>
             <defs>
               <radialGradient id="faqMesh0" cx="35%" cy="32%" r="82%">
                 <stop offset="0%"  stopColor="#E2F1FA"/>
@@ -190,7 +190,7 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
              ~1900px tall, so a 900-unit xMidYMid box would blow up and centre,
              pushing every side blob off-screen. Blobs stay in the margins
              (feathering to x≈200 / ≥1240 at most) down the whole section. */
-          <svg width="100%" height="100%" viewBox="0 0 1440 2000" preserveAspectRatio="xMidYMin slice">
+          <svg width="100%" height="100%" viewBox="0 0 1440 2000" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }}>
             <defs>
               <radialGradient id="galleryMesh0" cx="35%" cy="32%" r="82%">
                 <stop offset="0%"  stopColor="#DCEDF9"/>

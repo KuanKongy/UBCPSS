@@ -144,7 +144,7 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
         /* Width-driven, top-anchored box (like gallery/faq): the section runs
            ~1000px collapsed and ~1450px with every event shown, and the extra
            clusters sit in the margins (x ≤ 130 / ≥ 1310) down its length. */
-        <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice" fill="none">
+        <svg width="100%" height="100%" viewBox="0 0 1440 1500" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }} fill="none">
           {/* Trajectory across the top, diving toward the timeline */}
           <path
             className="doodle-draw"
@@ -220,7 +220,7 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
              clusters stay registered to the blob edges down the whole section.
              Everything sits at x ≤ 130 or ≥ 1310: outside the content column
              down to 1280px viewports. */
-          <svg width="100%" height="100%" viewBox="0 0 1440 2000" preserveAspectRatio="xMidYMin slice" fill="none">
+          <svg width="100%" height="100%" viewBox="0 0 1440 2000" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }} fill="none">
             {/* A. Camera on the top-left blob: camera + flash sparks, dotted
                 thread running down the margin */}
             <g transform="translate(-24 0)">
@@ -337,7 +337,7 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
       )}
 
       {variant === 'faq' && (
-        <svg width="100%" height="100%" viewBox="0 0 1440 1800" preserveAspectRatio="xMidYMin slice" fill="none">
+        <svg width="100%" height="100%" viewBox="0 0 1440 1800" preserveAspectRatio="xMidYMin slice" style={{ height: 'auto' }} fill="none">
           {/* Conversation cluster top-right: big question bubble + small answer
               bubble overlapping it, tied by dots */}
           <g opacity=".3" stroke="#4A7A9B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
