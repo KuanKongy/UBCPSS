@@ -29,8 +29,6 @@ interface PathNode {
   sub?: string
   /** The lead node: brighter fill and a dotted halo */
   emphasis?: boolean
-  /** Extra distance between the blob and its label (hub: clears the orbits) */
-  labelOffset?: number
   glyph: ReactNode
 }
 
@@ -45,7 +43,7 @@ const NODES: PathNode[] = [
     ),
   },
   {
-    cx: HUB.x, cy: HUB.y, r: 40, title: 'PSS', sub: 'PANELS & WORKSHOPS', labelOffset: 32,
+    cx: HUB.x, cy: HUB.y, r: 40, title: 'PSS', sub: 'PANELS & WORKSHOPS',
     glyph: (
       <>
         {/* two speech bubbles */}
@@ -131,7 +129,7 @@ export default function PathwayIllustration() {
 
       {/* Atom: orbits + electrons turn together around the hub */}
       <g className="atom-spin">
-        {[-30, 30, 0].map((deg) => (
+        {[-30, 30, 90].map((deg) => (
           <ellipse
             key={deg}
             cx={HUB.x} cy={HUB.y} rx={ORBIT.rx} ry={ORBIT.ry}
@@ -139,9 +137,9 @@ export default function PathwayIllustration() {
             transform={`rotate(${deg} ${HUB.x} ${HUB.y})`}
           />
         ))}
-        <circle cx="118" cy="262" r="4.5" fill="#7DD4CC" opacity=".85" />
-        <circle cx="382" cy="262" r="4" fill="#6BB8D4" opacity=".85" />
-        <circle cx="250" cy="212" r="4" fill="#7AAFC8" opacity=".8" />
+        <circle cx="132" cy="262" r="4.5" fill="#7DD4CC" opacity=".85" />
+        <circle cx="368" cy="262" r="4" fill="#6BB8D4" opacity=".85" />
+        <circle cx="250" cy="135" r="4" fill="#7AAFC8" opacity=".8" />
         <circle cx="358" cy="187" r="3.5" fill="#7DD4CC" opacity=".75" />
         <circle cx="142" cy="337" r="3.5" fill="#6BB8D4" opacity=".75" />
       </g>
@@ -200,7 +198,7 @@ export default function PathwayIllustration() {
               {n.glyph}
             </g>
             <text
-              y={n.r + 18 + (n.labelOffset ?? 0)}
+              y={n.r + 18}
               textAnchor="middle"
               fontSize="11"
               fontWeight="700"
@@ -212,7 +210,7 @@ export default function PathwayIllustration() {
             </text>
             {n.sub && (
               <text
-                y={n.r + 30 + (n.labelOffset ?? 0)}
+                y={n.r + 30}
                 textAnchor="middle"
                 fontSize="10"
                 fontWeight="600"
