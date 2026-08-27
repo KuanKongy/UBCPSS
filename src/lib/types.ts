@@ -77,8 +77,10 @@ export interface GalleryEventGroup {
   subtitle?: string
   /** One-paragraph album note shown in the lightbox under the photo */
   description?: string
-  /** Recap post; the lightbox shows a "full recap" link when set */
+  /** The event's Instagram post; the lightbox shows a link to it when set */
   instagram?: string
+  /** Text of that link, e.g. "See the full recap on Instagram" (recap) vs "See the announcement" */
+  instagramLabel?: string
   photos: GalleryPhoto[]
 }
 

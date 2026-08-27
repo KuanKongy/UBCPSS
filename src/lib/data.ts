@@ -85,8 +85,9 @@ export const EVENTS: PastEvent[] = [
   {
     month: 'NOV', day: '1', year: '2024',
     tag: 'Workshop', tagColor: 'blue',
-    // No permalink on file for this one; the card falls back to the profile
     name: 'Interview Prep Workshop',
+    // Announcement post (Oct 30, 2024): "Nov 1, 5:30-7 PM in Buchanan A104"
+    instagram: igPost('DBwyxLdznI-'),
     location: 'Buchanan A104',
     time: '5:30 PM',
   },

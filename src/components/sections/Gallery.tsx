@@ -272,7 +272,7 @@ export default function Gallery() {
         description={activeGroup?.description}
         link={
           activeGroup?.instagram
-            ? { href: activeGroup.instagram, label: 'See the full recap on Instagram ↗' }
+            ? { href: activeGroup.instagram, label: activeGroup.instagramLabel ?? 'See the post on Instagram ↗' }
             : undefined
         }
         onClose={() => setActive(null)}
