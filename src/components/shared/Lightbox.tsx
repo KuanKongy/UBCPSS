@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { InstagramIcon } from '@/components/icons'
 import { cn } from '@/lib/utils'
+import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { GalleryPhoto } from '@/lib/types'
 
 interface LightboxLink {
@@ -73,9 +74,16 @@ export default function Lightbox({
 }: LightboxProps) {
   const open = index !== null
   const photo = open ? photos[index] : undefined
-  // One stage for the whole album: as wide as its widest photo. Narrower or
-  // taller photos scale to fit inside it, so switching never resizes the panel.
+  const sm = useMediaQuery('(min-width: 640px)')
+  // One stage for the whole album, sized once from its widest photo: as wide
+  // as the panel allows, but no taller than a share of the viewport (the rest
+  // is for the header, note and thumbnails). Its size comes from explicit
+  // width + aspect-ratio rather than from the photo, and the photo sits
+  // absolutely inside it, so a portrait or narrower photo is centred and can
+  // never spill over the header or push the panel around.
   const stageRatio = photos.length ? Math.max(...photos.map((p) => p.ratio)) : 4 / 3
+  const stageMaxH = sm ? '56vh' : '44vh'
+  const stageInset = sm ? '3.5rem' : '2.5rem' // the panel's px-5 / sm:px-7 on both sides
 
   const step = useCallback(
     (delta: number) => {
@@ -138,7 +146,7 @@ export default function Lightbox({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-start justify-between gap-4 px-5 sm:px-7 pt-5 pb-3">
+            <div className="flex flex-shrink-0 items-start justify-between gap-4 px-5 sm:px-7 pt-5 pb-3">
               <div>
                 {caption && (
                   <h3 className="font-syne font-bold text-[19px] leading-tight text-pss-700">
@@ -164,17 +172,20 @@ export default function Lightbox({
               </div>
             </div>
 
-            {/* Photo with overlaid arrows */}
+            {/* Stage with overlaid arrows. On a very short viewport it is the
+                one part that gives way (min-h-0); the photo scales with it. */}
             <div
-              className="relative mx-5 sm:mx-7 min-h-0 flex items-center justify-center
-                         max-h-[44vh] sm:max-h-[56vh]"
-              style={{ aspectRatio: stageRatio }}
+              className="relative self-center min-h-0"
+              style={{
+                width: `min(calc(100% - ${stageInset}), calc(${stageMaxH} * ${stageRatio}))`,
+                aspectRatio: stageRatio,
+              }}
             >
               <img
                 key={photo.src}
                 src={photo.src}
                 alt={photo.alt}
-                className="max-h-full max-w-full h-auto w-auto rounded-2xl object-contain"
+                className="absolute inset-0 m-auto max-h-full max-w-full h-auto w-auto rounded-2xl object-contain"
               />
               {photos.length > 1 && (
                 <>
@@ -194,7 +205,7 @@ export default function Lightbox({
             )}
 
             {/* Thumbnail strip */}
-            <div className="flex gap-2.5 px-5 sm:px-7 pt-3 pb-4 overflow-x-auto no-scrollbar">
+            <div className="flex flex-shrink-0 gap-2.5 px-5 sm:px-7 pt-3 pb-4 overflow-x-auto no-scrollbar">
               {photos.map((p, i) => (
                 <button
                   key={p.thumb}
