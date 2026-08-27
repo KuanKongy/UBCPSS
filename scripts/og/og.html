@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: 'Syne'; src: url('../../node_modules/@fontsource-variable/syne/files/syne-latin-wght-normal.woff2') format('woff2'); font-weight: 400 800; }
+  @font-face { font-family: 'DM Sans'; src: url('../../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2') format('woff2'); font-weight: 100 1000; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; background: #D0E8F5; font-family: 'DM Sans', system-ui, sans-serif; color: #1A3A5C; -webkit-font-smoothing: antialiased; }
+  .bg { position: absolute; inset: 0; }
+  .content { position: absolute; left: 72px; top: 0; height: 630px; width: 700px; display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand img { width: 78px; height: 78px; border-radius: 20px; box-shadow: 0 10px 28px rgba(26,58,92,.18); }
+  .brand .name { font-family: 'Syne'; font-weight: 700; font-size: 26px; letter-spacing: .02em; color: #1A3A5C; }
+  .brand .kicker { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #2E5F82; margin-top: 4px; }
+  .kicker::before { content: '\2726'; color: #F0C060; margin-right: .55em; }
+  h1 { font-family: 'Syne'; font-weight: 700; font-size: 66px; line-height: 1.02; letter-spacing: -.02em; color: #1A3A5C; }
+  h1 em { font-style: normal; background: linear-gradient(90deg, #2E5F82, #3E8E9A, #7DD4CC); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p.lead { font-size: 22px; line-height: 1.5; color: #2E5F82; max-width: 620px; }
+  .pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-size: 15px; font-weight: 600; color: #1A3A5C; background: rgba(255,255,255,.7); border: 1.5px solid rgba(74,122,155,.35); border-radius: 999px; padding: 7px 14px; }
+  .url { position: absolute; left: 72px; bottom: 34px; font-family: 'Syne'; font-weight: 700; font-size: 16px; letter-spacing: .04em; color: #2E5F82; }
+  .art { position: absolute; right: 60px; top: 125px; width: 380px; height: 380px; }
+</style>
+</head>
+<body>
+  <svg class="bg" viewBox="0 0 1200 630" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <radialGradient id="m0" cx="38%" cy="30%" r="80%">
+        <stop offset="0%" stop-color="#C6DEF2"/><stop offset="55%" stop-color="#A4C4E0"/><stop offset="100%" stop-color="#90B6D8"/>
+      </radialGradient>
+      <radialGradient id="m1" cx="62%" cy="62%" r="85%">
+        <stop offset="0%" stop-color="#D9EBF9"/><stop offset="60%" stop-color="#B8D4EC"/><stop offset="100%" stop-color="#A6C6E2"/>
+      </radialGradient>
+    </defs>
+    <path d="M980 -80 C1090 -110,1260 -40,1290 110 C1320 260,1240 400,1120 430 C1000 460,880 380,860 260 C840 150,900 -50,980 -80Z" fill="url(#m0)" opacity=".55"/>
+    <path d="M-120 380 C-30 320,140 340,190 440 C240 540,180 660,60 690 C-60 720,-170 640,-180 540 C-190 460,-190 430,-120 380Z" fill="url(#m1)" opacity=".5"/>
+    <path d="M560 560 C640 530,760 550,800 620 C840 690,800 760,730 780 C660 800,570 760,540 690 C515 630,520 590,560 560Z" fill="#A4C4E0" opacity=".35"/>
+    <!-- dashed trajectory, like the hero -->
+    <path d="M-40 120 C 260 40, 620 20, 900 70 C 1060 100, 1160 150, 1240 220" stroke="#4A7A9B" stroke-width="1.8" stroke-dasharray="10 14" stroke-linecap="round" fill="none" opacity=".28"/>
+  </svg>
+
+  <div class="content">
+    <div class="brand">
+      <img src="../../public/logo-512.png" alt="" />
+      <div>
+        <div class="name">UBC Project STEM Search</div>
+        <div class="kicker">UBC AMS Club · Est. 2024</div>
+      </div>
+    </div>
+    <h1>Finding research<br/>shouldn't be <em>daunting.</em></h1>
+    <p class="lead">We help UBC students find research opportunities, connect with professors, and build the skills to get their first research position.</p>
+    <div class="pills">
+      <span class="pill">Professor panels</span>
+      <span class="pill">Resume &amp; interview workshops</span>
+      <span class="pill">30+ research placements</span>
+    </div>
+  </div>
+  <div class="url">ubcpss.ca</div>
+
+  <!-- atom + magnifier + DNA, as on the hero -->
+  <svg class="art" viewBox="0 0 380 380" fill="none" aria-hidden="true">
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(-30 190 190)"/>
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(30 190 190)"/>
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(90 190 190)"/>
+    <circle cx="48" cy="190" r="9" fill="#7DD4CC" opacity=".9"/>
+    <circle cx="332" cy="190" r="8" fill="#6BB8D4" opacity=".9"/>
+    <circle cx="190" cy="38" r="8" fill="#7AAFC8" opacity=".85"/>
+    <circle cx="320" cy="100" r="7" fill="#7DD4CC" opacity=".8"/>
+    <circle cx="60" cy="280" r="7" fill="#6BB8D4" opacity=".8"/>
+    <circle cx="190" cy="190" r="30" fill="#4A7A9B" opacity=".9"/>
+    <circle cx="190" cy="190" r="19" fill="#7AAFC8" opacity=".9"/>
+    <circle cx="190" cy="190" r="8" fill="white" opacity=".85"/>
+    <path d="M344 58 L347 67 L356 70 L347 73 L344 82 L341 73 L332 70 L341 67Z" fill="#6BB8D4" opacity=".7"/>
+    <path d="M36 312 L38 318 L44 320 L38 322 L36 328 L34 322 L28 320 L34 318Z" fill="#6BB8D4" opacity=".6"/>
+    <path d="M358 265 L360 271 L366 273 L360 275 L358 281 L356 275 L350 273 L356 271Z" fill="#F0C060" opacity=".75"/>
+    <path d="M18 128 L20 134 L26 136 L20 138 L18 144 L16 138 L10 136 L16 134Z" fill="#F0C060" opacity=".65"/>
+    <g stroke="#A4C4E0" stroke-width="1.5" opacity=".55">
+      <line x1="296.4" y1="285" x2="296.4" y2="299"/><line x1="303.1" y1="285" x2="303.1" y2="299"/><line x1="315.9" y1="285" x2="315.9" y2="299"/>
+      <line x1="322.6" y1="285" x2="322.6" y2="299"/><line x1="335.4" y1="285" x2="335.4" y2="299"/><line x1="342.1" y1="285" x2="342.1" y2="299"/>
+    </g>
+    <path d="M290 292 Q299.75 274,309.5 292 Q319.25 310,329 292 Q338.75 274,348.5 292" stroke="#4A7A9B" stroke-width="2.5" stroke-linecap="round" opacity=".65"/>
+    <path d="M290 292 Q299.75 310,309.5 292 Q319.25 274,329 292 Q338.75 310,348.5 292" stroke="#7AAFC8" stroke-width="2.5" stroke-linecap="round" opacity=".65"/>
+    <circle cx="78" cy="78" r="38" stroke="#2E5F82" stroke-width="3.5" fill="rgba(184,212,236,.4)"/>
+    <circle cx="78" cy="78" r="29" stroke="#4A7A9B" stroke-width="1.5" fill="rgba(208,232,245,.45)"/>
+    <line x1="107" y1="107" x2="130" y2="130" stroke="#2E5F82" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="72" cy="72" r="4.5" fill="#4A7A9B" opacity=".6"/><circle cx="85" cy="76" r="3.5" fill="#7AAFC8" opacity=".7"/>
+    <circle cx="76" cy="86" r="4" fill="#4A7A9B" opacity=".5"/><circle cx="88" cy="66" r="3" fill="#7DD4CC" opacity=".65"/>
+  </svg>
+</body>
+</html>
