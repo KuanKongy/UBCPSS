@@ -9,19 +9,19 @@
   html, body { width: 1200px; height: 630px; overflow: hidden; }
   body { position: relative; background: #D0E8F5; font-family: 'DM Sans', system-ui, sans-serif; color: #1A3A5C; -webkit-font-smoothing: antialiased; }
   .bg { position: absolute; inset: 0; }
-  .content { position: absolute; left: 72px; top: 0; height: 630px; width: 700px; display: flex; flex-direction: column; justify-content: center; gap: 22px; }
+  .content { position: absolute; left: 64px; top: 0; height: 630px; width: 770px; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
   .brand { display: flex; align-items: center; gap: 18px; }
-  .brand img { width: 78px; height: 78px; border-radius: 20px; box-shadow: 0 10px 28px rgba(26,58,92,.18); }
-  .brand .name { font-family: 'Syne'; font-weight: 700; font-size: 26px; letter-spacing: .02em; color: #1A3A5C; }
-  .brand .kicker { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #2E5F82; margin-top: 4px; }
+  .brand img { width: 86px; height: 86px; border-radius: 20px; box-shadow: 0 10px 28px rgba(26,58,92,.18); }
+  .brand .name { font-family: 'Syne'; font-weight: 700; font-size: 31px; letter-spacing: .02em; color: #1A3A5C; }
+  .brand .kicker { font-size: 15px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #2E5F82; margin-top: 4px; }
   .kicker::before { content: '\2726'; color: #F0C060; margin-right: .55em; }
-  h1 { font-family: 'Syne'; font-weight: 700; font-size: 66px; line-height: 1.02; letter-spacing: -.02em; color: #1A3A5C; }
+  h1 { font-family: 'Syne'; font-weight: 700; font-size: 70px; line-height: 1.02; letter-spacing: -.02em; color: #1A3A5C; }
   h1 em { font-style: normal; background: linear-gradient(90deg, #2E5F82, #3E8E9A, #7DD4CC); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  p.lead { font-size: 22px; line-height: 1.5; color: #2E5F82; max-width: 620px; }
-  .pills { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-  .pill { font-size: 15px; font-weight: 600; color: #1A3A5C; background: rgba(255,255,255,.7); border: 1.5px solid rgba(74,122,155,.35); border-radius: 999px; padding: 7px 14px; }
-  .url { position: absolute; left: 72px; bottom: 34px; font-family: 'Syne'; font-weight: 700; font-size: 16px; letter-spacing: .04em; color: #2E5F82; }
-  .art { position: absolute; right: 60px; top: 125px; width: 380px; height: 380px; }
+  p.lead { font-size: 24px; line-height: 1.45; color: #2E5F82; max-width: 690px; }
+  .pills { display: flex; gap: 10px; flex-wrap: nowrap; margin-top: 2px; }
+  .pill { font-size: 16px; font-weight: 600; color: #1A3A5C; background: rgba(255,255,255,.7); border: 1.5px solid rgba(74,122,155,.35); border-radius: 999px; padding: 8px 16px; }
+  .url { position: absolute; right: 48px; bottom: 26px; font-family: 'Syne'; font-weight: 700; font-size: 19px; letter-spacing: .04em; color: #2E5F82; }
+  .art { position: absolute; right: 44px; top: 130px; width: 370px; height: 370px; }
 </style>
 </head>
 <body>
@@ -61,9 +61,9 @@
 
   <!-- atom + magnifier + DNA, as on the hero -->
   <svg class="art" viewBox="0 0 380 380" fill="none" aria-hidden="true">
-    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(-30 190 190)"/>
-    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(30 190 190)"/>
-    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#7AAFC8" stroke-width="1.5" stroke-dasharray="6 4" opacity=".55" transform="rotate(90 190 190)"/>
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#2E5F82" stroke-width="2.4" stroke-dasharray="7 5" opacity=".8" transform="rotate(-30 190 190)"/>
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#2E5F82" stroke-width="2.4" stroke-dasharray="7 5" opacity=".8" transform="rotate(30 190 190)"/>
+    <ellipse cx="190" cy="190" rx="162" ry="62" stroke="#2E5F82" stroke-width="2.4" stroke-dasharray="7 5" opacity=".8" transform="rotate(90 190 190)"/>
     <circle cx="48" cy="190" r="9" fill="#7DD4CC" opacity=".9"/>
     <circle cx="332" cy="190" r="8" fill="#6BB8D4" opacity=".9"/>
     <circle cx="190" cy="38" r="8" fill="#7AAFC8" opacity=".85"/>
