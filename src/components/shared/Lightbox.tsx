@@ -73,6 +73,9 @@ export default function Lightbox({
 }: LightboxProps) {
   const open = index !== null
   const photo = open ? photos[index] : undefined
+  // One stage for the whole album: as wide as its widest photo. Narrower or
+  // taller photos scale to fit inside it, so switching never resizes the panel.
+  const stageRatio = photos.length ? Math.max(...photos.map((p) => p.ratio)) : 4 / 3
 
   const step = useCallback(
     (delta: number) => {
@@ -162,12 +165,16 @@ export default function Lightbox({
             </div>
 
             {/* Photo with overlaid arrows */}
-            <div className="relative mx-5 sm:mx-7 min-h-0 flex-1 flex items-center justify-center">
+            <div
+              className="relative mx-5 sm:mx-7 min-h-0 flex items-center justify-center
+                         max-h-[44vh] sm:max-h-[56vh]"
+              style={{ aspectRatio: stageRatio }}
+            >
               <img
                 key={photo.src}
                 src={photo.src}
                 alt={photo.alt}
-                className="max-h-[44vh] sm:max-h-[56vh] w-auto max-w-full rounded-2xl object-contain"
+                className="max-h-full max-w-full h-auto w-auto rounded-2xl object-contain"
               />
               {photos.length > 1 && (
                 <>

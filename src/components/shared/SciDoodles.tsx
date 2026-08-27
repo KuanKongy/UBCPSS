@@ -321,17 +321,17 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
           </g>
           <path
             className="doodle-draw"
-            d="M232 606 C 460 640, 700 620, 900 560 C 1060 512, 1200 420, 1300 320"
+            d="M232 606 C 460 640, 700 620, 900 560 C 1060 512, 1200 420, 1262 358"
             stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" opacity=".28"
           />
           <g opacity=".42" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             {/* Paper plane: nose up-right, two wings, centre crease */}
-            <path d="M1344 286 L1300 300 L1318 306 L1322 330 Z"/>
-            <path d="M1344 286 L1318 306" strokeWidth="1.5"/>
+            <path d="M1338 290 L1301 310 L1315 313 L1322 326 Z"/>
+            <path d="M1338 290 L1315 313" strokeWidth="1.5"/>
           </g>
           {/* Wind ticks behind the plane */}
           <g opacity=".3" stroke="#4A7A9B" strokeWidth="1.6" strokeLinecap="round">
-            <path d="M1282 322 l14 -8 M1290 336 l12 -7"/>
+            <path d="M1256 347 l14 -14 M1263 357 l18 -18 M1272 365 l14 -14"/>
           </g>
         </svg>
       )}

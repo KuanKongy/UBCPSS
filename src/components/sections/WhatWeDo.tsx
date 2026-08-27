@@ -25,10 +25,10 @@ const PillarIcons = {
   ),
   '03': (
     <svg width="80" height="80" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-      <circle cx="28" cy="30" r="10" fill="#1A3A5C"/>
-      <circle cx="52" cy="30" r="10" fill="#1A3A5C" opacity=".7"/>
-      <path d="M10 58 Q28 46 46 58" stroke="#1A3A5C" strokeWidth="4" strokeLinecap="round" fill="none"/>
-      <path d="M34 58 Q52 46 70 58" stroke="#1A3A5C" strokeWidth="4" strokeLinecap="round" fill="none" opacity=".7"/>
+      <circle cx="30" cy="26" r="10" fill="#1A3A5C"/>
+      <path d="M12 62 a18 16 0 0 1 36 0 Z" fill="#1A3A5C"/>
+      <circle cx="54" cy="26" r="10" fill="#1A3A5C" opacity=".7"/>
+      <path d="M36 62 a18 16 0 0 1 36 0 Z" fill="#1A3A5C" opacity=".7"/>
     </svg>
   ),
 }
