@@ -56,11 +56,19 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             d="M-40 210 C 260 120, 620 96, 900 150 C 1120 192, 1330 288, 1480 400"
             stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" opacity=".28"
           />
-          {/* Hex pair hangs off the arc via a short dotted spur */}
-          <g opacity=".3" stroke="#4A7A9B" strokeWidth="1.8" strokeLinejoin="round">
-            <path d="M782 124 v-16" strokeDasharray="1 6" strokeLinecap="round"/>
+          {/* Molecule hangs off the arc via a short dotted spur: two fused
+              rings — aromatic circle in one, double bonds in the other — an
+              atom dot on the shared vertex and two substituent stubs */}
+          <g opacity=".3" stroke="#4A7A9B" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
+            <path d="M782 124 v-16" strokeDasharray="1 6"/>
             <path d="M760 132 l14 8 v16 l-14 8 -14 -8 v-16 Z"/>
             <path d="M788 148 l14 8 v16 l-14 8 -14 -8 v-16 Z"/>
+            <circle cx="760" cy="148" r="8" strokeWidth="1.3"/>
+            <path d="M789 152.5 L797.7 157.5 M797.7 170.5 L788.9 175.5 M777.5 169 V159" strokeWidth="1.4"/>
+            <circle cx="774" cy="156" r="2" fill="#4A7A9B" stroke="none"/>
+            <path d="M746 140 L738 135.4 M802 172 L810 176.6" strokeWidth="1.6"/>
+            <circle cx="736" cy="134" r="2.2" strokeWidth="1.4"/>
+            <circle cx="812" cy="178" r="2.2" strokeWidth="1.4"/>
           </g>
           {/* Flask cluster on the bottom-left cloud edge: flask + rising dotted
               bubbles that become the swipe connector line */}
@@ -98,16 +106,19 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <path d="M1190 428 C 1100 470, 990 480, 880 462" stroke="#4A7A9B" strokeWidth="2" strokeLinecap="round" strokeDasharray="1 9"/>
             <circle cx="876" cy="461" r="3.6" fill="#4A7A9B"/>
           </g>
-          {/* Notebook cluster on the bottom-left cloud: open book + pencil tick
-              marks + connector dots rising off the page */}
-          <g opacity=".32" stroke="#4A7A9B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {/* Notebook cluster in the LOWER half of the bottom-left cloud's
+              visible body (cloud top y≈440, wave from y≈608; the book sits at
+              519–571), well clear of the wave. The dotted trail rises off the
+              pages toward the copy and stops at x 198, short of the paragraph
+              from 1440px viewports up. */}
+          <g transform="translate(-36 -105) rotate(7 122 650)" opacity=".32" stroke="#4A7A9B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M96 636 q26 -12 52 0 v40 q-26 -12 -52 0 Z"/>
             <path d="M122 630 v40" strokeWidth="1.5"/>
             <path d="M104 646 h12 M104 654 h12 M132 646 h12 M132 654 h12" strokeWidth="1.4"/>
           </g>
           <g opacity=".3">
-            <path d="M160 640 C 210 610, 260 604, 310 616" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
-            <circle cx="314" cy="617" r="3.2" fill="#4A7A9B"/>
+            <path d="M114 527 C 132 500, 160 478, 194 470" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
+            <circle cx="198" cy="469" r="3.2" fill="#4A7A9B"/>
           </g>
         </svg>
       )}
@@ -129,12 +140,19 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <path d="M1352 714 C 1340 680, 1360 650, 1344 618" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
             <circle cx="1343" cy="613" r="2.8" fill="#2E5F82"/>
           </g>
-          {/* Hex lattice growing off the top-left cloud edge, tied down with a
-              dotted bond line */}
-          <g opacity=".28" stroke="#4A7A9B" strokeWidth="1.8" strokeLinejoin="round">
+          {/* Molecule growing off the top-left cloud edge, tied down with a
+              dotted bond line: aromatic circle in the upper ring, double
+              bonds in the lower, atom dot on the shared vertex, two stubs */}
+          <g opacity=".28" stroke="#4A7A9B" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round">
             <path d="M96 116 l14 8 v16 l-14 8 -14 -8 v-16 Z"/>
             <path d="M124 132 l14 8 v16 l-14 8 -14 -8 v-16 Z"/>
-            <path d="M110 148 v14" strokeDasharray="1 6" strokeLinecap="round"/>
+            <circle cx="96" cy="132" r="8" strokeWidth="1.3"/>
+            <path d="M125 136.5 L133.7 141.5 M133.7 154.5 L124.9 159.5 M113.5 153 V143" strokeWidth="1.4"/>
+            <circle cx="110" cy="140" r="2" fill="#4A7A9B" stroke="none"/>
+            <path d="M82 124 L74 119.4 M138 140 L146 135.4" strokeWidth="1.6"/>
+            <circle cx="72" cy="118" r="2.2" strokeWidth="1.4"/>
+            <circle cx="148" cy="134" r="2.2" strokeWidth="1.4"/>
+            <path d="M110 148 v14" strokeDasharray="1 6"/>
             <circle cx="110" cy="167" r="2.6" fill="#4A7A9B" stroke="none"/>
           </g>
         </svg>
@@ -249,8 +267,9 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
               <path d="M1362 802 C 1382 852, 1348 900, 1370 950" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
               <circle cx="1371" cy="955" r="3" fill="#4A7A9B"/>
             </g>
-            {/* C. Polaroid stack with a paper clip on the lower-left blob */}
-            <g opacity=".32" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            {/* C. Polaroid stack with a paper clip on the lower-left blob,
+                lifted 40 units so the lower print clears the FAQ wave */}
+            <g opacity=".32" stroke="#2E5F82" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(0 -40)">
               <g transform="rotate(-9 86 1330)">
                 <rect x="60" y="1300" width="52" height="60" rx="3"/>
                 <rect x="66" y="1306" width="40" height="38" rx="1.5" strokeWidth="1.3"/>
@@ -263,7 +282,7 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
                 <path d="M78 1318 v-14 a5 5 0 0 1 10 0 v22 a8 8 0 0 1 -16 0 v-18" strokeWidth="1.6"/>
               </g>
             </g>
-            <g opacity=".3">
+            <g opacity=".3" transform="translate(0 -40)">
               <path d="M96 1392 C 70 1440, 110 1490, 84 1540" stroke="#2E5F82" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
               <circle cx="83" cy="1545" r="3" fill="#2E5F82"/>
             </g>
@@ -355,15 +374,23 @@ export default function SciDoodles({ variant }: SciDoodlesProps) {
             <path d="M1348 200 C 1330 260, 1350 320, 1330 380" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 9"/>
             <circle cx="1329" cy="385" r="3" fill="#4A7A9B"/>
           </g>
-          {/* Lightbulb cluster mid-left ("answered") on the left cloud */}
-          <g opacity=".3" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M84 540 a18 18 0 1 1 24 17 v9 h-24 v-9 a18 18 0 0 1 0 -17 Z" transform="translate(8 0)"/>
-            <path d="M96 572 h16 M98 578 h12" strokeWidth="1.5"/>
-            <path d="M104 512 v-10 M84 520 l-8 -7 M124 520 l8 -7" strokeWidth="1.6"/>
+          {/* Lightbulb cluster ("answered") on the left cloud, its ray tips on
+              the cloud's mid-height line (cloud crest y≈136, wave cuts it at
+              ≈507–545, so the middle is ≈330; the bulb spans 330–395). Drawn
+              around a local origin: glass arc, neck, screw base, filament,
+              three rays. The dotted trail leaves at neck height and runs right
+              toward the column, stopping at x 204, below the intro paragraph
+              at every width down to 1280px. */}
+          <g transform="translate(78 362) rotate(-6)" opacity=".3" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M-8 15 A17 17 0 1 1 8 15"/>
+            <path d="M-8 15 v6 h16 v-6"/>
+            <path d="M-7 25 h14 M-6 29 h12 M-3 33 h6" strokeWidth="1.5"/>
+            <path d="M-4 15 v-6 l4 -4 4 4 v6" strokeWidth="1.4"/>
+            <path d="M0 -24 v-8 M-17 -17 l-6 -6 M17 -17 l6 -6" strokeWidth="1.6"/>
           </g>
           <g opacity=".3">
-            <path d="M132 560 C 200 542, 270 546, 340 556" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
-            <circle cx="344" cy="557" r="3" fill="#4A7A9B"/>
+            <path d="M98 370 C 130 364, 165 364, 200 370" stroke="#4A7A9B" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="1 8"/>
+            <circle cx="204" cy="370" r="3" fill="#4A7A9B"/>
           </g>
         </svg>
       )}

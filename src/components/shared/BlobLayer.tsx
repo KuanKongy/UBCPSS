@@ -30,8 +30,12 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
   const y = useTransform(scrollYProgress, [0, 1], [24, -24])
   const parallax = reducedMotion || smallScreen ? undefined : { y }
 
-  return (
-    <div ref={ref} className="blob-layer" aria-hidden="true">
+  // One element tree, rendered twice: once in the seam cap band, once in the
+  // normal layer. Both copies share the same parallax MotionValue, so the
+  // band's bubble tops stay pixel-continuous with the bubbles below the seam
+  // at every scroll position. (Duplicate gradient ids across the two copies
+  // are harmless: the defs are identical and object-bounding-box relative.)
+  const blobs = (
       <motion.div style={parallax} className="w-full h-full">
         {smallScreen ? (
           /* Phones: every desktop box is landscape and gets slice-scaled 3–5×
@@ -220,6 +224,26 @@ export default function BlobLayer({ variant }: BlobLayerProps) {
         </>
         )}
       </motion.div>
-    </div>
+  )
+
+  // Hero has no seam above it. Every other section adds the cap band (one
+  // wave box, --wave-h + --wave-lead, above the section; masked to the front
+  // wave) that completes the bubbles the seam used to cut, with band grain
+  // for every grained section (all but testi).
+  const seamed = variant !== 'hero'
+  return (
+    <>
+      {seamed && (
+        <div
+          className={variant === 'testi' ? 'cap-band' : 'cap-band cap-band--grain'}
+          aria-hidden="true"
+        >
+          <div className="cap-band-inner">{blobs}</div>
+        </div>
+      )}
+      <div ref={ref} className={seamed ? 'blob-layer seamed' : 'blob-layer'} aria-hidden="true">
+        {blobs}
+      </div>
+    </>
   )
 }

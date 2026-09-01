@@ -53,12 +53,9 @@ export default function GetStarted() {
                 @ubc_pss
               </a>
               <a href={LINKS.linktree} target="_blank" rel="noopener noreferrer" className={pill}>
-                {/* Linktree mark, an asterisk "tree": stem, horizontal, N + NE + NW rays */}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                  <path d="M12 22V2" />
-                  <path d="M4.5 9h15" />
-                  <path d="M12 9 6.8 3.8" />
-                  <path d="M12 9l5.2-5.2" />
+                {/* Linktree mark (simple-icons, CC0): seven-ray asterisk with a detached trunk */}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="m13.73635 5.85251 4.00467-4.11665 2.3248 2.3808-4.20064 4.00466h5.9085v3.30473h-5.9365l4.22865 4.10766-2.3248 2.3338L12.0005 12.099l-5.74052 5.76852-2.3248-2.3248 4.22864-4.10766h-5.9375V8.12132h5.9085L3.93417 4.11666l2.3248-2.3808 4.00468 4.11665V0h3.4727zm-3.4727 10.30614h3.4727V24h-3.4727z" />
                 </svg>
                 Linktree
               </a>

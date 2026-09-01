@@ -22,6 +22,17 @@
   --c4:     #7AAFC8;
   --c5:     #4A7A9B;
   --c6:     #2E5F82;
+  /* WaveTransition band: --wave-h is the visible band (band top .. next
+     section top). --wave-lead is extra room above it so the front curve's
+     tangent lead-in (7.2px above the band top at the left edge) can render
+     instead of being clipped into a flat run: 25% of --wave-h = 25 of the
+     svg's 125 viewBox units, same 0.72px/unit scale as the band itself. */
+  --wave-h: 44px;
+  --wave-lead: 11px;
+}
+
+@media (min-width: 768px) {
+  :root { --wave-h: 72px; --wave-lead: 18px; }
 }
 
 /* ── Base reset ── */
@@ -63,6 +74,83 @@ section[id] {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+}
+
+/* ── Seam cap band ──
+   Paints the section's solid wave: the front curve is this element's mask,
+   the fill is the section's own background (inherit), and inside it
+   BlobLayer renders the section's blob svg a second time so bubbles the
+   seam used to cut flat are completed, with the same grain on top. The band
+   reaches one wave box (--wave-h + --wave-lead) above the section and 2px
+   into it (mask positioned 0 2px; WaveTransition's box sits at bottom:-2px
+   of the previous section). Everything below the mask strip is alpha-0, so
+   the duplicate svg's body can never show twice.
+
+   Fill, bubble copies and grain live in this ONE compositor layer on
+   purpose: a mask promotes the band to its own layer, section boundaries
+   land on fractional page offsets, and when the band's grain edge and a
+   separately painted solid wave both ended at +2px the GPU path snapped
+   them to different device rows — a one-pixel row of double or missing
+   grain read as a hairline between the sections. With the band opaque and
+   grained down to +2px and the section opaque and grained from 0, any
+   snapping only moves a grained/grained boundary. The translucent back wave
+   (the thick line between sections) is WaveTransition's job, z-10 beneath
+   this z-11 band, and shows only above the front curve. */
+.cap-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(-1 * (var(--wave-h) + var(--wave-lead)));
+  z-index: 11;
+  background-color: inherit;
+  pointer-events: none;
+  overflow: hidden;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-20 -25 1480 125' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M-20 -10 L0 0 C200 100,500 100,720 50 C940 0,1200 90,1440 60 L1460 58 L1460 100 L-20 100Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% calc(var(--wave-h) + var(--wave-lead));
+  -webkit-mask-position: 0 2px;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-20 -25 1480 125' preserveAspectRatio='none'%3E%3Cpath fill='%23000' d='M-20 -10 L0 0 C200 100,500 100,720 50 C940 0,1200 90,1440 60 L1460 58 L1460 100 L-20 100Z'/%3E%3C/svg%3E");
+  mask-size: 100% calc(var(--wave-h) + var(--wave-lead));
+  mask-position: 0 2px;
+  mask-repeat: no-repeat;
+}
+
+/* Restores the EXACT section rect inside the box-high wrapper, so the
+   duplicate svg maps identically to the main layer's; overflow:visible on
+   the svgs is what lets the above-the-box path parts actually draw. The
+   main layer of a seamed section needs it too (.blob-layer.seamed): its div
+   still clips hard at the section rect, but during scroll parallax (±24px)
+   the svg content now stays continuous across the seam instead of exposing
+   an empty strip. */
+.cap-band-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--wave-h) + var(--wave-lead));
+}
+.cap-band-inner svg,
+.blob-layer.seamed svg {
+  overflow: visible;
+}
+
+/* Band grain — same tile and opacity as .grain::after, running to the
+   mask's bottom edge (2px into the section) and tiled from the section top
+   so its phase matches the section's own grain across the boundary. Omitted
+   for Testimonials, the one section without grain. */
+.cap-band--grain::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--wave-h) + var(--wave-lead) + 2px);
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  background-position: 0 calc(var(--wave-h) + var(--wave-lead));
+  opacity: 0.06;
 }
 
 /* ── Content container ── */
@@ -154,7 +242,8 @@ section[id] {
    Transforms/opacity only (GPU-composited), long co-prime periods so blobs
    never sync up. Fully disabled for prefers-reduced-motion. */
 @media (prefers-reduced-motion: no-preference) {
-  .blob-layer path {
+  .blob-layer path,
+  .cap-band path {
     transform-box: fill-box;
     transform-origin: center;
   }

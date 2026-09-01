@@ -221,7 +221,9 @@ export default function Team() {
   }, [reducedMotion])
 
   return (
-    <section id="team" className="bg-pss-700 pt-16 pb-0 overflow-hidden grain">
+    <section id="team" className="bg-pss-700 pt-16 pb-0 overflow-x-clip grain">
+      {/* overflow-x-clip, not hidden: the seam cap band above the section must
+          stay visible; horizontal ticker bleed is contained by .ticker-scroll */}
       <BlobLayer variant="team" />
       <SciDoodles variant="team" />
       <div className="sc py-0">
