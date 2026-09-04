@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { InstagramIcon } from '@/components/icons'
+import ZoomableImage from '@/components/shared/ZoomableImage'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { GalleryPhoto } from '@/lib/types'
@@ -28,6 +29,16 @@ interface LightboxProps {
 const pill =
   'focus-ring inline-flex items-center gap-2 rounded-full border-2 border-pss-400 bg-white/70 px-4 py-1.5 ' +
   'text-[12px] font-bold text-pss-700 whitespace-nowrap hover:bg-white transition-colors'
+
+/** Expand-corners glyph for the inspect button */
+function InspectIcon() {
+  return (
+    <svg width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+    </svg>
+  )
+}
 
 /** Album text under the showcase. Clamped on phones with a More/Less toggle. */
 function AlbumNote({ description, link }: { description?: string; link?: LightboxLink }) {
@@ -75,6 +86,8 @@ export default function Lightbox({
   const open = index !== null
   const photo = open ? photos[index] : undefined
   const sm = useMediaQuery('(min-width: 640px)')
+  // Full-size "inspect" view layered over the panel
+  const [inspecting, setInspecting] = useState(false)
   // One stage for the whole album, sized once from its widest photo: as wide
   // as the panel allows, but no taller than a share of the viewport (the rest
   // is for the header, note and thumbnails). Its size comes from explicit
@@ -82,7 +95,16 @@ export default function Lightbox({
   // absolutely inside it, so a portrait or narrower photo is centred and can
   // never spill over the header or push the panel around.
   const stageRatio = photos.length ? Math.max(...photos.map((p) => p.ratio)) : 4 / 3
-  const stageMaxH = sm ? '56vh' : '44vh'
+  // Pixel width of that widest photo. The stage and the inspect frame are
+  // both capped at it: an <img> never renders past its natural size, so a
+  // frame allowed to grow wider would letterbox the very photo that defines
+  // its shape and the overlaid buttons would drift off the photo's edges.
+  const stageMaxW =
+    Math.max(0, ...photos.filter((p) => p.ratio === stageRatio).map((p) => p.width)) || 1600
+  // dvh, not vh: on phones vh is the toolbar-hidden viewport, taller than
+  // what a fixed overlay actually gets, and a frame sized from it would be
+  // height-clamped out of its aspect ratio (buttons drift off the photo)
+  const stageMaxH = sm ? '56dvh' : '44dvh'
   const stageInset = sm ? '3.5rem' : '2.5rem' // the panel's px-5 / sm:px-7 on both sides
 
   const step = useCallback(
@@ -94,9 +116,17 @@ export default function Lightbox({
   )
 
   useEffect(() => {
+    if (!open) setInspecting(false)
+  }, [open])
+
+  useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+      // Escape peels back one layer: first the inspect view, then the panel
+      if (e.key === 'Escape') {
+        if (inspecting) setInspecting(false)
+        else onClose()
+      }
       if (e.key === 'ArrowRight') step(1)
       if (e.key === 'ArrowLeft') step(-1)
     }
@@ -107,7 +137,7 @@ export default function Lightbox({
       window.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [open, onClose, step])
+  }, [open, inspecting, onClose, step])
 
   // Preload neighbours so arrow navigation feels instant
   useEffect(() => {
@@ -118,9 +148,14 @@ export default function Lightbox({
     }
   }, [index, photos])
 
+  // Overlay controls: the white hairline ring keeps them visible on photo
+  // and backdrop alike; the panel's stage stays flat (no shadow)
   const arrow =
     'focus-ring absolute top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full ' +
-    'bg-pss-900/35 text-white text-xl backdrop-blur-sm hover:bg-pss-900/60 transition-colors'
+    'bg-pss-900/40 text-white text-xl backdrop-blur-sm border border-white/45 ' +
+    'hover:bg-pss-900/65 transition-colors'
+  // Inspect-view controls get livelier hover/press feedback
+  const inspectCtl = cn(arrow, 'transition hover:border-white/80 hover:bg-pss-900/75 active:scale-90')
 
   return (
     <AnimatePresence>
@@ -141,7 +176,7 @@ export default function Lightbox({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden
+            className="w-full max-w-5xl max-h-[92dvh] flex flex-col overflow-hidden
                        rounded-[24px] bg-[#F4F8FC] shadow-[0_32px_90px_rgba(15,30,46,.5)]"
             onClick={(e) => e.stopPropagation()}
           >
@@ -177,16 +212,11 @@ export default function Lightbox({
             <div
               className="relative self-center min-h-0"
               style={{
-                width: `min(calc(100% - ${stageInset}), calc(${stageMaxH} * ${stageRatio}))`,
+                width: `min(calc(100% - ${stageInset}), calc(${stageMaxH} * ${stageRatio}), ${stageMaxW}px)`,
                 aspectRatio: stageRatio,
               }}
             >
-              <img
-                key={photo.src}
-                src={photo.src}
-                alt={photo.alt}
-                className="absolute inset-0 m-auto max-h-full max-w-full h-auto w-auto rounded-2xl object-contain"
-              />
+              <ZoomableImage key={photo.src} src={photo.src} alt={photo.alt} imgClassName="rounded-2xl" />
               {photos.length > 1 && (
                 <>
                   <button onClick={() => step(-1)} aria-label="Previous photo" className={cn(arrow, 'left-3')}>
@@ -197,6 +227,13 @@ export default function Lightbox({
                   </button>
                 </>
               )}
+              <button
+                onClick={() => setInspecting(true)}
+                aria-label="Inspect photo at full size"
+                className={cn(arrow, 'right-3 top-3 translate-y-0')}
+              >
+                <InspectIcon />
+              </button>
             </div>
 
             {/* Album note: the whole event, not just this photo */}
@@ -222,6 +259,65 @@ export default function Lightbox({
               ))}
             </div>
           </motion.div>
+
+          {/* Inspect view: the photo alone, as large as the viewport allows
+              (still inset from its edges), with its own zoom-and-pan. The
+              frame is the album's, not the photo's: shaped and capped by the
+              widest photo (which therefore always fills it exactly), with
+              narrower photos letterboxed inside, so the overlaid buttons
+              keep one place across the whole album. */}
+          <AnimatePresence>
+            {inspecting && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+                className="fixed inset-0 z-[120] flex items-center justify-center bg-pss-900/90 p-3 sm:p-8"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setInspecting(false)
+                }}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Full-size photo"
+              >
+                <div
+                  className="relative max-h-full"
+                  style={{
+                    width: `min(100%, calc((100dvh - ${sm ? '4rem' : '1.5rem'}) * ${stageRatio}), ${stageMaxW}px)`,
+                    aspectRatio: stageRatio,
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ZoomableImage key={photo.src} src={photo.src} alt={photo.alt} imgClassName="rounded-xl" zoomIndicator />
+                  {photos.length > 1 && (
+                    <>
+                      <button onClick={() => step(-1)} aria-label="Previous photo" className={cn(inspectCtl, 'left-3')}>
+                        ‹
+                      </button>
+                      <button onClick={() => step(1)} aria-label="Next photo" className={cn(inspectCtl, 'right-3')}>
+                        ›
+                      </button>
+                      <span
+                        className="absolute left-3 top-3 rounded-full bg-pss-900/40 border border-white/45 px-3 py-1.5
+                                   text-[12px] font-bold text-white tabular-nums backdrop-blur-sm"
+                      >
+                        {index + 1} / {photos.length}
+                      </span>
+                    </>
+                  )}
+                  <button
+                    onClick={() => setInspecting(false)}
+                    aria-label="Close full-size view"
+                    className={cn(inspectCtl, 'right-3 top-3 translate-y-0 text-xl leading-none')}
+                  >
+                    ×
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>

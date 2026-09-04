@@ -69,6 +69,8 @@ export interface GalleryPhoto {
   alt: string
   /** width / height of the rendered image, for reserving grid space */
   ratio: number
+  /** Pixel width of the lightbox (lg) variant — the image never renders wider */
+  width: number
 }
 
 export interface GalleryEventGroup {

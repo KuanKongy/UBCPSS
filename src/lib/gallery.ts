@@ -2,7 +2,7 @@ import type { GalleryEventGroup, GalleryPhoto } from './types'
 import manifest from './gallery-manifest.json'
 import { igPost } from './data'
 
-type ManifestEntry = { base: string; lg: string; md: string; thumb: string; ratio: number }
+type ManifestEntry = { base: string; width: number; height: number; lg: string; md: string; thumb: string; ratio: number }
 type Manifest = Record<string, ManifestEntry[]>
 
 /**
@@ -65,6 +65,8 @@ export const GALLERY_GROUPS: GalleryEventGroup[] = GROUPS.map((g) => {
     thumb: e.md,
     alt: `${g.altBase} (photo ${i + 1})`,
     ratio: e.ratio,
+    // optimize-photos.mjs resizes lg to ≤1600px wide, never enlarging
+    width: Math.min(1600, e.width),
   }))
   return {
     slug: g.slug, title: g.title, subtitle: g.subtitle,
