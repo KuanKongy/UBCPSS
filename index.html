@@ -19,9 +19,11 @@
     <meta name="twitter:title" content="UBC Project STEM Search" />
     <meta name="twitter:description" content="We help UBC students find research opportunities, connect with professors, and build the skills to get their first research position." />
     <meta name="twitter:image" content="https://www.ubcpss.ca/og-image.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Relative paths, not public/: Vite hashes these into assets/ on build, and in
+         dev the /favicon/ path keeps them apart from other apps on this port -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./favicon/favicon-192.png" />
+    <link rel="apple-touch-icon" href="./favicon/apple-touch-icon.png" />
   </head>
   <body>
     <div id="root"></div>
