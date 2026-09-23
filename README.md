@@ -1,6 +1,6 @@
 # UBC Project STEM Search — Website
 
-The official website for **UBC Project STEM Search (PSS)**, a UBC AMS club that bridges the gap between classroom learning and hands-on undergraduate research.
+The official website for **UBC Project STEM Search (PSS)**, a UBC club that bridges the gap between classroom learning and hands-on undergraduate research.
 
 **Live site:** https://www.ubcpss.ca
 
@@ -13,7 +13,7 @@ The official website for **UBC Project STEM Search (PSS)**, a UBC AMS club that 
 | Linktree | https://linktr.ee/PSSUBC |
 | Instagram | https://www.instagram.com/ubc_pss/ |
 | Email | pssubc@gmail.com |
-| AMS Membership Form | https://docs.google.com/forms/d/e/1FAIpQLScf5hQmJ5BKwbeeHQupnHS-51tXgEBQfu-_mitP3zmwET37xA/viewform |
+| Membership Form | https://docs.google.com/forms/d/e/1FAIpQLScf5hQmJ5BKwbeeHQupnHS-51tXgEBQfu-_mitP3zmwET37xA/viewform |
 | GitHub Repo | https://github.com/KuanKongy/UBCPSS |
 
 ---
@@ -155,4 +155,4 @@ UBC Project STEM Search operates on the traditional, ancestral, and unceded terr
 
 ---
 
-*Built with ❤️ by the PSS Software Team · UBC AMS Club Est. 2024*
+*Built with ❤️ by the PSS Software Team · UBC Club Est. 2024*

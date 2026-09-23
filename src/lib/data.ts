@@ -17,14 +17,14 @@ export const igPost = (id: string) => `https://www.instagram.com/ubc_pss/p/${id}
 
 // Lead with the number that backs the hero promise
 export const STATS: Stat[] = [
-  { value: 30, suffix: '+', label: 'Research placements', emphasis: true, caption: 'since 2024' },
+  { value: 20, suffix: '+', label: 'Research placements', emphasis: true, caption: 'since 2024' },
   { value: 15, suffix: '+', label: 'Professors connected' },
   { value: 50, suffix: '+', label: 'Members' },
 ]
 
 // Short, verifiable facts shown under the hero copy
 export const TRUST_POINTS: string[] = [
-  'AMS-registered club',
+  'Student-run UBC club',
   'Free to join',
   'No research experience needed',
   'Open to every year and faculty',
@@ -309,7 +309,7 @@ export const FAQ_ITEMS: FAQItem[] = [
   },
   {
     q: 'Is PSS a welcoming space?',
-    a: 'Yes. We\'re an AMS-registered club open to every year and faculty, with no experience required. Events are free, most are on campus in the evening or online, and you can come to as many or as few as you like.',
+    a: 'Yes. We\'re a student-run UBC club open to every year and faculty, with no experience required. Events are free, most are on campus in the evening or online, and you can come to as many or as few as you like.',
   },
 ]
 
