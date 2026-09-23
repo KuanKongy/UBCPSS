@@ -7,9 +7,11 @@ import StatCounter from '@/components/shared/StatCounter'
 import WaveTransition from '@/components/shared/WaveTransition'
 import LinkButton from '@/components/ui/LinkButton'
 import PathwayIllustration from '@/components/shared/PathwayIllustration'
-import { LINKS, STATS, TRUST_POINTS } from '@/lib/data'
+import { LINKS, TRUST_POINTS } from '@/lib/data'
+import { useStats } from '@/lib/cms/content'
 
 export default function Hero() {
+  const stats = useStats()
   return (
     <section id="hero" className="bg-pss-100 lg:min-h-screen pt-28 lg:pt-32 pb-24 grain">
       <BlobLayer variant="hero" />
@@ -34,7 +36,7 @@ export default function Hero() {
                 className="w-[7px] h-[7px] rounded-full bg-pss-500 animate-eye-pulse"
                 aria-hidden="true"
               />
-              UBC AMS Club &nbsp;·&nbsp; Est. 2024
+              UBC Club &nbsp;·&nbsp; Est. 2024
             </div>
 
             {/* Headline */}
@@ -65,7 +67,7 @@ export default function Hero() {
 
             {/* Stats */}
             <div className="flex flex-wrap gap-x-10 gap-y-6 items-baseline">
-              {STATS.map((s) => (
+              {stats.map((s) => (
                 <StatCounter key={s.label} {...s} />
               ))}
             </div>

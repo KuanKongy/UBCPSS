@@ -6,7 +6,7 @@ import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import Lightbox from '@/components/shared/Lightbox'
-import { GALLERY_GROUPS } from '@/lib/gallery'
+import { useGallery } from '@/lib/cms/content'
 import { igPost } from '@/lib/data'
 import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { GalleryEventGroup, GalleryPhoto } from '@/lib/types'
@@ -210,7 +210,8 @@ function PhotoRow({
 
 export default function Gallery() {
   const [active, setActive] = useState<{ group: number; index: number } | null>(null)
-  const activeGroup = active !== null ? GALLERY_GROUPS[active.group] : null
+  const groups = useGallery()
+  const activeGroup = active !== null ? groups[active.group] : null
 
   return (
     <section id="gallery" className="bg-pss-100 pt-16 pb-[92px] md:pb-[116px] grain">
@@ -236,7 +237,7 @@ export default function Gallery() {
         </ScrollReveal>
 
         <div className="flex flex-col gap-10">
-          {GALLERY_GROUPS.map((group, gi) => (
+          {groups.map((group, gi) => (
             <ScrollReveal key={group.slug} delay={0.05 * gi}>
               <PhotoRow
                 group={group}
@@ -246,7 +247,7 @@ export default function Gallery() {
             </ScrollReveal>
           ))}
 
-          <ScrollReveal delay={0.05 * GALLERY_GROUPS.length}>
+          <ScrollReveal delay={0.05 * groups.length}>
             <div className="mb-5">
               <h3 className="font-syne font-bold text-[19px] text-pss-700 mb-1">
                 More professor panels

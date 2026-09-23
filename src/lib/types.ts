@@ -47,7 +47,15 @@ export interface TeamMember {
   photo?: string
   role: string
   avatarIndex: 0 | 1 | 2 | 3
+  /** Shown as a copy-to-clipboard action on the card's hover icons */
+  email?: string
   linkedin?: string
+}
+
+/** The event the admin has flagged as upcoming; drives the Events banner */
+export interface CurrentEvent extends PastEvent {
+  /** Optional extra sentence shown under the event facts in the banner */
+  bannerNote?: string
 }
 
 export interface FAQItem {

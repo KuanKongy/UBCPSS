@@ -6,7 +6,7 @@ import Sparkle from '@/components/shared/Sparkle'
 import Sheen from '@/components/shared/Sheen'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
-import { TESTIMONIALS } from '@/lib/data'
+import { useTestimonials } from '@/lib/cms/content'
 import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { Testimonial } from '@/lib/types'
 
@@ -103,7 +103,8 @@ export default function Testimonials() {
   // No hover on touch screens, so nothing would ever pause the rotation
   const coarse                  = useMediaQuery('(hover: none)')
   const perPage                 = lg ? 3 : md ? 2 : 1
-  const PAGES                   = useMemo(() => chunk(TESTIMONIALS, perPage), [perPage])
+  const testimonials            = useTestimonials()
+  const PAGES                   = useMemo(() => chunk(testimonials, perPage), [testimonials, perPage])
   const TOTAL_PAGES             = PAGES.length
 
   // Column count changed (rotation / resize): start over from the first page

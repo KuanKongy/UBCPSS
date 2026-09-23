@@ -4,7 +4,9 @@ import SciDoodles from '@/components/shared/SciDoodles'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import { InstagramIcon } from '@/components/icons'
-import { EVENTS, LINKS } from '@/lib/data'
+import { LINKS } from '@/lib/data'
+import { useCurrentEvent, useEvents } from '@/lib/cms/content'
+import type { CurrentEvent } from '@/lib/types'
 
 const tagColors = {
   blue: 'bg-pss-500/10 text-pss-600',
@@ -21,8 +23,70 @@ const COLLAB_LOGOS: Record<string, string> = {
 const inlineLink =
   'focus-ring rounded-sm font-semibold text-pss-700 underline underline-offset-2'
 
+// 'MAR' → 'Mar', for the banner's prose date
+const monthLabel = (m: string) => m.charAt(0).toUpperCase() + m.slice(1).toLowerCase()
+
+/** The admin-flagged upcoming event, in the same card chrome as the static box */
+function CurrentEventBanner({ event }: { event: CurrentEvent }) {
+  return (
+    <div className="mb-8 rounded-[22px] border border-teal/60 border-l-4 border-l-teal bg-white px-7 py-6
+                    shadow-[0_2px_12px_rgba(74,122,155,.08)]">
+      <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-pss-600 mb-2">
+        Up next
+      </p>
+      <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
+        <span
+          className={`inline-flex items-center text-[11px] font-bold tracking-[0.07em] uppercase
+                      rounded-full px-2.5 py-0.5 ${tagColors[event.tagColor]}`}
+        >
+          {event.tag}
+        </span>
+        {event.collab && (
+          <span
+            className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-[0.07em] uppercase
+                       rounded-full px-2.5 py-0.5 bg-gold/20 text-pss-600 whitespace-nowrap w-max"
+          >
+            with {event.collab}
+          </span>
+        )}
+      </div>
+      <h3 className="text-[17px] font-bold text-pss-700 mb-1">{event.name}</h3>
+      <div className="text-[13px] text-pss-600">
+        {[
+          `${monthLabel(event.month)} ${event.day}, ${event.year}`,
+          event.speakerTitle && event.department
+            ? `${event.speakerTitle}, ${event.department}`
+            : event.speakerTitle || event.department,
+          event.speakers?.join(', '),
+          event.location,
+          event.time,
+        ]
+          .filter(Boolean)
+          .join(' · ')}
+      </div>
+      {event.bannerNote && (
+        <p className="text-[15px] leading-[1.65] text-pss-600 mt-2">{event.bannerNote}</p>
+      )}
+      <a
+        href={event.instagram ?? LINKS.linktree}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="focus-ring mt-3.5 inline-flex items-center gap-1.5 rounded-full border-2 border-pss-400 bg-white/70
+                   px-4 py-1.5 text-[12px] font-bold text-pss-700 whitespace-nowrap transition-colors
+                   hover:bg-pss-100 hover:border-pss-500"
+      >
+        {event.instagram ? <InstagramIcon size={13} /> : null}
+        {event.instagram ? 'View on Instagram' : 'RSVP on Linktree'}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  )
+}
+
 export default function Events() {
   const [expanded, setExpanded] = useState(false)
+  const events = useEvents()
+  const current = useCurrentEvent()
   return (
     <section id="events" className="grain pt-16 pb-[92px] md:pb-[116px]" style={{ background: '#F4F8FC' }}>
       <BlobLayer variant="events" />
@@ -54,31 +118,37 @@ export default function Events() {
           </div>
         </ScrollReveal>
 
-        {/* Next term, so a summer visitor isn't left staring at an archive */}
+        {/* The upcoming event when the dashboard has one flagged; otherwise the
+            evergreen next-term note, so a summer visitor isn't left staring at
+            an archive */}
         <ScrollReveal>
-          <div className="mb-8 rounded-[22px] border border-teal/60 border-l-4 border-l-teal bg-white px-7 py-6
-                          shadow-[0_2px_12px_rgba(74,122,155,.08)]">
-            <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-pss-600 mb-2">
-              Up next
-            </p>
-            <p className="text-[15px] leading-[1.65] text-pss-600">
-              Our panels and workshops run September through April. Dates for the new
-              term go up on{' '}
-              <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" className={inlineLink}>
-                Instagram
-              </a>{' '}
-              and{' '}
-              <a href={LINKS.linktree} target="_blank" rel="noopener noreferrer" className={inlineLink}>
-                Linktree
-              </a>{' '}
-              first. Follow along so you don't miss an RSVP.
-            </p>
-          </div>
+          {current ? (
+            <CurrentEventBanner event={current} />
+          ) : (
+            <div className="mb-8 rounded-[22px] border border-teal/60 border-l-4 border-l-teal bg-white px-7 py-6
+                            shadow-[0_2px_12px_rgba(74,122,155,.08)]">
+              <p className="text-[11px] font-bold tracking-[0.1em] uppercase text-pss-600 mb-2">
+                Up next
+              </p>
+              <p className="text-[15px] leading-[1.65] text-pss-600">
+                Our panels and workshops run September through April. Dates for the new
+                term go up on{' '}
+                <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" className={inlineLink}>
+                  Instagram
+                </a>{' '}
+                and{' '}
+                <a href={LINKS.linktree} target="_blank" rel="noopener noreferrer" className={inlineLink}>
+                  Linktree
+                </a>{' '}
+                first. Follow along so you don't miss an RSVP.
+              </p>
+            </div>
+          )}
         </ScrollReveal>
 
         {/* Event list: first three; the rest behind the expander */}
         <div className="flex flex-col gap-3.5">
-          {(expanded ? EVENTS : EVENTS.slice(0, 3)).map((ev, i) => (
+          {(expanded ? events : events.slice(0, 3)).map((ev, i) => (
             <ScrollReveal key={`${ev.year}-${ev.month}-${ev.day}`} delay={0.1 * (i + 1)}>
               <div
                 className="group relative grid grid-cols-1 gap-2 md:grid-cols-[80px_1fr_auto] md:gap-7 md:items-center
@@ -171,7 +241,7 @@ export default function Events() {
           ))}
         </div>
 
-        {EVENTS.length > 3 && (
+        {events.length > 3 && (
           <div className="mt-6 text-center">
             <button
               type="button"
@@ -180,7 +250,7 @@ export default function Events() {
                          px-6 py-2.5 text-[13px] font-bold text-pss-700 transition-all duration-200
                          hover:bg-white hover:-translate-y-0.5 active:scale-95"
             >
-              {expanded ? 'Show fewer events' : `Show all ${EVENTS.length} events`}
+              {expanded ? 'Show fewer events' : `Show all ${events.length} events`}
               <span
                 aria-hidden="true"
                 className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}

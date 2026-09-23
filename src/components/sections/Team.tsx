@@ -1,9 +1,13 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import BlobLayer from '@/components/shared/BlobLayer'
 import SciDoodles from '@/components/shared/SciDoodles'
 import ScrollReveal from '@/components/shared/ScrollReveal'
-import { TEAM_MEMBERS } from '@/lib/data'
+import { useTeam } from '@/lib/cms/content'
+import { copyText } from '@/lib/clipboard'
+import { toast } from '@/lib/toast'
+import { useMediaQuery } from '@/lib/useMediaQuery'
+import type { TeamMember } from '@/lib/types'
 
 const AVATAR_COLORS = [
   'rgba(122,175,200,0.55)',
@@ -16,28 +20,35 @@ const AVATAR_COLORS = [
 // copy, so a scroll of up to one roster in either direction never reaches an
 // edge before scrollLeft is wrapped back by exactly one copy.
 const COPIES = 3
-const ROW = Array.from({ length: COPIES }, () => TEAM_MEMBERS).flat()
 
 const LOOP_SECONDS = 70 // one roster width per 70 s, the same pace as the old ticker
 const IDLE_MS = 1200    // hands-off time after any user scroll input
 const SETTLE_MS = 150   // "scroll has stopped" fallback where `scrollend` is missing
 const MAX_DT = 0.05     // seconds; caps the step after a hidden tab or a long frame
 
-function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof TEAM_MEMBERS[0]) {
-  const Wrapper = linkedin ? motion.a : motion.div
-  const wrapperProps = linkedin
-    ? { href: linkedin, target: '_blank', rel: 'noopener noreferrer' }
-    : {}
+function TeamCard({ member, iconsAlwaysOn }: { member: TeamMember; iconsAlwaysOn: boolean }) {
+  const { initials, name, photo, role, avatarIndex, email, linkedin } = member
+
+  const copyMemberEmail = async () => {
+    if (!email) return
+    const ok = await copyText(email)
+    toast(ok ? `Email copied: ${email}` : `Copy failed. Email: ${email}`)
+  }
+
+  // Touch screens have no hover, so the action icons stay visible there
+  const iconWrap = `absolute top-2 z-20 transition-opacity ${
+    iconsAlwaysOn ? '' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
+  }`
+  const iconBtn = `w-6 h-6 rounded bg-white/20 hover:bg-white/40 flex items-center justify-center
+                   transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80`
+
   return (
-    <Wrapper
-      {...(wrapperProps as object)}
+    <motion.div
       draggable={false}
       whileHover={{ y: -10, scale: 1.05, boxShadow: '0 14px 32px rgba(0,0,0,0.45)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className={`group flex-shrink-0 w-[200px] h-[200px] relative rounded-[20px]
-                 border border-white/15 overflow-hidden no-underline block
-                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80
-                 ${linkedin ? 'cursor-pointer' : ''}`}
+      className="group flex-shrink-0 w-[200px] h-[200px] relative rounded-[20px]
+                 border border-white/15 overflow-hidden block"
       style={{ background: 'rgba(255,255,255,0.09)' }}
     >
       {/* Large circle, z-10 so it stays above the gradient overlay */}
@@ -70,17 +81,39 @@ function TeamCard({ initials, name, photo, role, avatarIndex, linkedin }: typeof
         <div className="text-[11px] text-white/75 mt-0.5 leading-tight">{role}</div>
       </div>
 
-      {/* LinkedIn hover hint */}
-      {linkedin && (
-        <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="w-5 h-5 rounded bg-white/20 flex items-center justify-center">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-              <path d="M20.447 20.452H16.89v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.98 1.98 0 0 1-2.006-1.99 1.985 1.985 0 1 1 2.006 1.99zm1.76 13.019H3.576V9h3.52v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      {/* Action icons: copy email on the left, LinkedIn on the right. Shown on
+          hover/focus (always on touch); each renders only when its field exists. */}
+      {email && (
+        <div className={`${iconWrap} left-2`}>
+          <button
+            type="button"
+            onClick={copyMemberEmail}
+            aria-label={`Copy ${name}'s email`}
+            className={iconBtn}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+              <path d="m3.5 6.5 8.5 6 8.5-6" />
             </svg>
-          </div>
+          </button>
         </div>
       )}
-    </Wrapper>
+      {linkedin && (
+        <div className={`${iconWrap} right-2`}>
+          <a
+            href={linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${name} on LinkedIn`}
+            className={iconBtn}
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+              <path d="M20.447 20.452H16.89v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.98 1.98 0 0 1-2.006-1.99 1.985 1.985 0 1 1 2.006 1.99zm1.76 13.019H3.576V9h3.52v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+        </div>
+      )}
+    </motion.div>
   )
 }
 
@@ -88,6 +121,13 @@ export default function Team() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const rowRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
+  const members = useTeam()
+  const iconsAlwaysOn = useMediaQuery('(hover: none)')
+  // The tripled roster; the ResizeObserver below re-measures when it changes
+  const row = useMemo(
+    () => Array.from({ length: COPIES }, () => members).flat(),
+    [members],
+  )
 
   // The strip is a real horizontal scroller (trackpad, shift-wheel, touch,
   // keyboard) that is also nudged along by scrollLeft writes each frame. All
@@ -250,8 +290,8 @@ export default function Team() {
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/70"
         >
           <div ref={rowRef} className="flex gap-4 w-max pr-4 select-none will-change-transform">
-            {ROW.map((m, i) => (
-              <TeamCard key={`m-${i}`} {...m} />
+            {row.map((m, i) => (
+              <TeamCard key={`m-${i}`} member={m} iconsAlwaysOn={iconsAlwaysOn} />
             ))}
           </div>
         </div>
