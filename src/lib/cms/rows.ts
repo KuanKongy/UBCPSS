@@ -93,3 +93,33 @@ export interface GalleryPhotoRow {
 export interface GalleryAlbumWithPhotos extends GalleryAlbumRow {
   gallery_photos: GalleryPhotoRow[]
 }
+
+export interface FaqRow {
+  id: string
+  question: string
+  answer: string
+  sort_order: number
+  published: boolean
+}
+
+export interface PartnerRow {
+  id: string
+  name: string
+  logo_url: string | null
+  sort_order: number
+  published: boolean
+}
+
+export interface LinkedEventRow {
+  id: string
+  title: string
+  subtitle: string | null
+  instagram_url: string
+  sort_order: number
+  published: boolean
+}
+
+export interface SettingRow {
+  key: string
+  value: string
+}

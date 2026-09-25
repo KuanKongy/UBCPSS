@@ -8,16 +8,21 @@ import EventsEditor from './editors/EventsEditor'
 import TeamEditor from './editors/TeamEditor'
 import TestimonialsEditor from './editors/TestimonialsEditor'
 import GalleryEditor from './editors/GalleryEditor'
+import PartnersEditor from './editors/PartnersEditor'
+import FaqEditor from './editors/FaqEditor'
 import StatsEditor from './editors/StatsEditor'
+import LinksEditor from './editors/LinksEditor'
 
-type Tab = 'events' | 'team' | 'testimonials' | 'gallery' | 'stats'
+type Tab = 'events' | 'team' | 'testimonials' | 'gallery' | 'partners' | 'faq' | 'site'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'events', label: 'Events' },
   { id: 'team', label: 'Team' },
   { id: 'testimonials', label: 'Testimonials' },
   { id: 'gallery', label: 'Gallery' },
-  { id: 'stats', label: 'Site stats' },
+  { id: 'partners', label: 'Partners' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'site', label: 'Site' },
 ]
 
 function Centered({ children }: { children: ReactNode }) {
@@ -141,7 +146,14 @@ export default function AdminApp() {
         {tab === 'team' && <TeamEditor />}
         {tab === 'testimonials' && <TestimonialsEditor />}
         {tab === 'gallery' && <GalleryEditor />}
-        {tab === 'stats' && <StatsEditor />}
+        {tab === 'partners' && <PartnersEditor />}
+        {tab === 'faq' && <FaqEditor />}
+        {tab === 'site' && (
+          <>
+            <StatsEditor />
+            <LinksEditor />
+          </>
+        )}
       </main>
 
       <ToastHost />

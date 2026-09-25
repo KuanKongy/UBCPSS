@@ -2,7 +2,20 @@
  * Tiny shared styling vocabulary for the dashboard. Utilitarian on purpose:
  * the admin is a tool, not part of the public site's design language.
  */
-import type { ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
+
+/**
+ * Scrolls the element into view when it mounts. The edit forms render above
+ * the list, so without this, clicking Edit far down the page looks like
+ * nothing happened.
+ */
+export function useRevealOnMount<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [])
+  return ref
+}
 
 export const inputCls =
   'w-full rounded-lg border border-pss-300 bg-white px-3 py-2 text-[14px] text-pss-700 ' +

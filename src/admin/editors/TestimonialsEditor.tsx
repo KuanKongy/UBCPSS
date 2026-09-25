@@ -3,7 +3,7 @@ import type { TestimonialRow } from '@/lib/cms/rows'
 import { toast } from '@/lib/toast'
 import { makeAvatar, slugify, uploadImage } from '../imageTools'
 import { useTable } from '../useTable'
-import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls } from '../ui'
+import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls, useRevealOnMount } from '../ui'
 
 type Editing = TestimonialRow | 'new' | null
 
@@ -27,6 +27,7 @@ function TestimonialForm({ editing, onSave, onCancel }: {
   onCancel: () => void
 }) {
   const [f, setF] = useState(editing === 'new' ? empty : toForm(editing))
+  const formRef = useRevealOnMount<HTMLFormElement>()
   const [uploading, setUploading] = useState(false)
   const set = (k: keyof typeof empty) => (v: string | boolean) => setF((p) => ({ ...p, [k]: v }))
 
@@ -66,7 +67,7 @@ function TestimonialForm({ editing, onSave, onCancel }: {
   }
 
   return (
-    <form onSubmit={submit} className="mb-6 rounded-[16px] border border-pss-300 bg-white p-5">
+    <form ref={formRef} onSubmit={submit} className="mb-6 scroll-mt-4 rounded-[16px] border border-pss-300 bg-white p-5">
       <h3 className="mb-4 font-syne text-[16px] font-bold text-pss-700">
         {editing === 'new' ? 'New testimonial' : `Edit: ${editing.name}`}
       </h3>

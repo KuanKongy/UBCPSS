@@ -11,7 +11,10 @@
 // they carry no runtime-affecting TypeScript syntax).
 import { readFile } from 'node:fs/promises'
 import { createClient } from '@supabase/supabase-js'
-import { STATS, EVENTS, TESTIMONIALS, TEAM_MEMBERS } from '../src/lib/data.ts'
+import {
+  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, PARTNER_LOGOS,
+  PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
+} from '../src/lib/data.ts'
 import { GALLERY_GROUP_META } from '../src/lib/gallery-meta.ts'
 
 const url = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL
@@ -56,6 +59,9 @@ await wipe('team_members')
 await wipe('testimonials')
 await wipe('events')
 await wipe('stats')
+await wipe('faq_items')
+await wipe('partners')
+await wipe('linked_events')
 
 // sort_order = array index everywhere: data.ts is already in display order
 await insert('stats', STATS.map((s, i) => ({
@@ -84,6 +90,31 @@ await insert('team_members', TEAM_MEMBERS.map((m, i) => ({
   role: m.role, role_group: roleGroup(m.role), avatar_index: m.avatarIndex,
   email: null, linkedin_url: m.linkedin ?? null, sort_order: i,
 })))
+
+await insert('faq_items', FAQ_ITEMS.map((f, i) => ({
+  question: f.q, answer: f.a, sort_order: i,
+})))
+
+await insert('partners', PARTNERS.map((name, i) => ({
+  name, logo_url: PARTNER_LOGOS[name] ?? null, sort_order: i,
+})))
+
+await insert('linked_events', LINKED_EVENT_META.map((e, i) => ({
+  title: e.title, subtitle: e.subtitle ?? null, instagram_url: e.href, sort_order: i,
+})))
+
+// settings has no id column: upsert by key instead of wipe-and-insert
+{
+  const rows = [
+    { key: 'linktree', value: LINKS.linktree },
+    { key: 'instagram', value: LINKS.instagram },
+    { key: 'signup_form', value: LINKS.amsSignup },
+    { key: 'email', value: EMAIL },
+  ]
+  const { error } = await db.from('settings').upsert(rows)
+  if (error) throw new Error(`upsert settings: ${error.message}`)
+  console.log(`settings: ${rows.length} keys`)
+}
 
 const manifest = JSON.parse(
   await readFile(new URL('../src/lib/gallery-manifest.json', import.meta.url), 'utf8'),

@@ -4,9 +4,11 @@ import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
-import { FAQ_ITEMS, LINKS } from '@/lib/data'
+import { useFaq, useLinks } from '@/lib/cms/content'
 
 export default function FAQ() {
+  const items = useFaq()
+  const links = useLinks()
   return (
     <section id="faq" className="bg-white pt-16 pb-[92px] md:pb-[116px] grain">
       <BlobLayer variant="faq" />
@@ -43,7 +45,7 @@ export default function FAQ() {
             <p className="text-[16px] leading-[1.75] text-pss-600 mb-0">
               Can't find what you're looking for? Reach out on Instagram{' '}
               <a
-                href={LINKS.instagram}
+                href={links.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="focus-ring rounded-sm text-pss-600 font-semibold hover:text-pss-700 transition-colors"
@@ -56,7 +58,7 @@ export default function FAQ() {
           {/* Right: accordion */}
           <ScrollReveal delay={0.1}>
             <RadixAccordion.Root type="single" collapsible className="flex flex-col gap-1.5">
-              {FAQ_ITEMS.map((item, i) => (
+              {items.map((item, i) => (
                 <RadixAccordion.Item
                   key={i}
                   value={`item-${i}`}

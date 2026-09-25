@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useScroll } from 'framer-motion'
-import { LINKS } from '@/lib/data'
+import { useLinks } from '@/lib/cms/content'
 
 const NAV_LINKS = [
   { label: 'About',        href: '#about'        },
@@ -13,6 +13,7 @@ const NAV_LINKS = [
 ] as const
 
 export default function Navbar() {
+  const links = useLinks()
   const [active, setActive] = useState('')
   const [menuOpen, setMenuOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -115,7 +116,7 @@ export default function Navbar() {
           ))}
           <li>
             <a
-              href={LINKS.amsSignup}
+              href={links.signup}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-pss-700 text-white text-[13px] font-bold px-[22px] py-2 rounded-full
@@ -188,7 +189,7 @@ export default function Navbar() {
               ))}
               <div className="pt-3 pb-1">
                 <a
-                  href={LINKS.amsSignup}
+                  href={links.signup}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center bg-pss-700 text-white text-[15px] font-bold

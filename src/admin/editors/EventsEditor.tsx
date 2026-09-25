@@ -3,7 +3,7 @@ import type { EventRow } from '@/lib/cms/rows'
 import { toast } from '@/lib/toast'
 import { supabase } from '../supabase'
 import { useTable } from '../useTable'
-import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls } from '../ui'
+import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls, useRevealOnMount } from '../ui'
 
 type Editing = EventRow | 'new' | null
 
@@ -29,6 +29,7 @@ function EventForm({ editing, onSave, onCancel }: {
   onCancel: () => void
 }) {
   const [f, setF] = useState(editing === 'new' ? empty : toForm(editing))
+  const formRef = useRevealOnMount<HTMLFormElement>()
   const set = (k: keyof typeof empty) => (v: string | boolean) => setF((p) => ({ ...p, [k]: v }))
   const text = (k: keyof typeof empty) => ({
     value: f[k] as string,
@@ -59,7 +60,7 @@ function EventForm({ editing, onSave, onCancel }: {
   }
 
   return (
-    <form onSubmit={submit} className="mb-6 rounded-[16px] border border-pss-300 bg-white p-5">
+    <form ref={formRef} onSubmit={submit} className="mb-6 scroll-mt-4 rounded-[16px] border border-pss-300 bg-white p-5">
       <h3 className="mb-4 font-syne text-[16px] font-bold text-pss-700">
         {editing === 'new' ? 'New event' : `Edit: ${editing.name}`}
       </h3>

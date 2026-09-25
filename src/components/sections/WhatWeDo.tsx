@@ -5,7 +5,8 @@ import SciDoodles from '@/components/shared/SciDoodles'
 import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
-import { PARTNERS, PILLARS } from '@/lib/data'
+import { PILLARS } from '@/lib/data'
+import { usePartners } from '@/lib/cms/content'
 
 // Ghost icons for pillar cards
 const PillarIcons = {
@@ -33,8 +34,9 @@ const PillarIcons = {
   ),
 }
 
-// Partner marks: all three are the organisations' official logos, tinted navy
-// mono for the chips (see scripts/mono-logo.mjs and public/logos/)
+// Partner marks: the original three logos keep their hand-tuned chip heights;
+// any partner added through the dashboard falls back to a generic fit of its
+// uploaded logo (see scripts/mono-logo.mjs and public/logos/)
 const PARTNER_ICONS: Record<string, ReactNode> = {
   'Thunderbird Elementary School': (
     <img src="/logos/thunderbird-elementary-mono.png" alt="" aria-hidden="true" className="h-[20px] w-auto" />
@@ -48,6 +50,7 @@ const PARTNER_ICONS: Record<string, ReactNode> = {
 }
 
 export default function WhatWeDo() {
+  const partners = usePartners()
   return (
     <section id="what" className="bg-pss-100 pt-16 pb-[92px] md:pb-[116px] grain">
       <BlobLayer variant="what" />
@@ -116,21 +119,30 @@ export default function WhatWeDo() {
             We work with
           </p>
           <ul className="flex flex-wrap justify-center gap-3 list-none">
-            {PARTNERS.map((p) => (
-              <li
-                key={p}
-                className="flex items-center gap-2.5 rounded-full bg-white border border-pss-300/60
-                           pl-3 pr-4 py-2 text-[13px] font-semibold text-pss-700
-                           shadow-[0_2px_12px_rgba(74,122,155,.10)]
-                           hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(74,122,155,.18)] hover:border-teal/60
-                           transition-all duration-200"
-              >
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-pss-100 flex-shrink-0">
-                  {PARTNER_ICONS[p]}
-                </span>
-                {p}
-              </li>
-            ))}
+            {partners.map((p) => {
+              const icon =
+                PARTNER_ICONS[p.name] ??
+                (p.logo ? (
+                  <img src={p.logo} alt="" aria-hidden="true" className="max-h-[19px] max-w-[20px] h-auto w-auto" />
+                ) : null)
+              return (
+                <li
+                  key={p.name}
+                  className={`flex items-center gap-2.5 rounded-full bg-white border border-pss-300/60
+                             ${icon ? 'pl-3' : 'pl-4'} pr-4 py-2 text-[13px] font-semibold text-pss-700
+                             shadow-[0_2px_12px_rgba(74,122,155,.10)]
+                             hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(74,122,155,.18)] hover:border-teal/60
+                             transition-all duration-200`}
+                >
+                  {icon && (
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-pss-100 flex-shrink-0">
+                      {icon}
+                    </span>
+                  )}
+                  {p.name}
+                </li>
+              )
+            })}
           </ul>
         </ScrollReveal>
       </div>

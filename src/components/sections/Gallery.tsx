@@ -6,40 +6,23 @@ import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import Lightbox from '@/components/shared/Lightbox'
-import { useGallery } from '@/lib/cms/content'
-import { igPost } from '@/lib/data'
+import { useGallery, useLinkedEvents } from '@/lib/cms/content'
 import { useMediaQuery } from '@/lib/useMediaQuery'
-import type { GalleryEventGroup, GalleryPhoto } from '@/lib/types'
+import type { GalleryEventGroup, GalleryPhoto, LinkedEventItem } from '@/lib/types'
 
-// Panels we have no approved photos of yet. Each card links to the event's
-// own Instagram post so every professor event still appears here.
-interface LinkedEvent {
-  label: string
-  href: string
-  colorFrom: string
-  colorTo: string
-}
-
-const LINKED_EVENTS: LinkedEvent[] = [
-  {
-    label: 'Researcher Speaker Panel — Dr. Joy Richman\nMarch 20, 2026 · with Operation Smile Canada',
-    href: igPost('DWALWo5Ad5E'),
-    colorFrom: '#2E5F82', colorTo: '#4A7A9B',
-  },
-  {
-    label: 'Prof Panel — Dr. Alice Mui\nJanuary 30, 2026 · Online',
-    href: igPost('DUB1syfEhFm'),
-    colorFrom: '#1A3A5C', colorTo: '#2E5F82',
-  },
-  {
-    label: 'Prof Panel — Dr. Kayla King\nDecember 5, 2025 · Buchanan A203',
-    href: igPost('DRnUhafkn71'),
-    colorFrom: '#4A7A9B', colorTo: '#7AAFC8',
-  },
+// Panels we have no approved photos of yet ("More professor panels"). The
+// cards come from the CMS; the navy gradients cycle by position so the row
+// always reads as one set.
+const LINKED_GRADIENTS: [string, string][] = [
+  ['#2E5F82', '#4A7A9B'],
+  ['#1A3A5C', '#2E5F82'],
+  ['#4A7A9B', '#7AAFC8'],
 ]
 
-function LinkedEventCard({ label, href, colorFrom, colorTo }: LinkedEvent) {
-  const lines = label.split('\n')
+function LinkedEventCard({ item, index }: { item: LinkedEventItem; index: number }) {
+  const { title, subtitle, href } = item
+  const lines = subtitle ? [title, subtitle] : [title]
+  const [colorFrom, colorTo] = LINKED_GRADIENTS[index % LINKED_GRADIENTS.length]
   return (
     <motion.a
       href={href}
@@ -211,6 +194,7 @@ function PhotoRow({
 export default function Gallery() {
   const [active, setActive] = useState<{ group: number; index: number } | null>(null)
   const groups = useGallery()
+  const linkedEvents = useLinkedEvents()
   const activeGroup = active !== null ? groups[active.group] : null
 
   return (
@@ -247,21 +231,23 @@ export default function Gallery() {
             </ScrollReveal>
           ))}
 
-          <ScrollReveal delay={0.05 * groups.length}>
-            <div className="mb-5">
-              <h3 className="font-syne font-bold text-[19px] text-pss-700 mb-1">
-                More professor panels
-              </h3>
-              <p className="text-[13px] text-pss-600">
-                No photos from these yet. The full recaps live on our Instagram.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {LINKED_EVENTS.map((event) => (
-                <LinkedEventCard key={event.href} {...event} />
-              ))}
-            </div>
-          </ScrollReveal>
+          {linkedEvents.length > 0 && (
+            <ScrollReveal delay={0.05 * groups.length}>
+              <div className="mb-5">
+                <h3 className="font-syne font-bold text-[19px] text-pss-700 mb-1">
+                  More professor panels
+                </h3>
+                <p className="text-[13px] text-pss-600">
+                  No photos from these yet. The full recaps live on our Instagram.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {linkedEvents.map((event, i) => (
+                  <LinkedEventCard key={event.href} item={event} index={i} />
+                ))}
+              </div>
+            </ScrollReveal>
+          )}
         </div>
       </div>
 

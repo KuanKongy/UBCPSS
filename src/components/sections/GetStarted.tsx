@@ -6,7 +6,7 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import LinkButton from '@/components/ui/LinkButton'
 import { InstagramIcon } from '@/components/icons'
-import { EMAIL, LINKS } from '@/lib/data'
+import { useLinks } from '@/lib/cms/content'
 import { copyEmail } from '@/lib/clipboard'
 
 const pill =
@@ -14,6 +14,7 @@ const pill =
   'text-[13px] font-bold px-5 py-2 hover:bg-white/60 hover:-translate-y-0.5 transition-all duration-200 active:scale-95'
 
 export default function GetStarted() {
+  const links = useLinks()
   return (
     <section id="get-started" className="bg-pss-100 pt-16 pb-[96px] md:pb-[120px] grain">
       <BlobLayer variant="gs" />
@@ -45,14 +46,14 @@ export default function GetStarted() {
               real research experience.
             </p>
             <div className="flex gap-3 justify-center flex-wrap items-center">
-              <LinkButton href={LINKS.amsSignup} external size="sm">
+              <LinkButton href={links.signup} external size="sm">
                 Apply to Join ↗
               </LinkButton>
-              <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" className={pill}>
+              <a href={links.instagram} target="_blank" rel="noopener noreferrer" className={pill}>
                 <InstagramIcon size={15} />
                 @ubc_pss
               </a>
-              <a href={LINKS.linktree} target="_blank" rel="noopener noreferrer" className={pill}>
+              <a href={links.linktree} target="_blank" rel="noopener noreferrer" className={pill}>
                 {/* Linktree mark (simple-icons, CC0): seven-ray asterisk with a detached trunk */}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="m13.73635 5.85251 4.00467-4.11665 2.3248 2.3808-4.20064 4.00466h5.9085v3.30473h-5.9365l4.22865 4.10766-2.3248 2.3338L12.0005 12.099l-5.74052 5.76852-2.3248-2.3248 4.22864-4.10766h-5.9375V8.12132h5.9085L3.93417 4.11666l2.3248-2.3808 4.00468 4.11665V0h3.4727zm-3.4727 10.30614h3.4727V24h-3.4727z" />
@@ -60,7 +61,7 @@ export default function GetStarted() {
                 Linktree
               </a>
               {/* Copies the address instead of opening a mail client; a toast confirms */}
-              <button type="button" onClick={copyEmail} title={`Copy ${EMAIL} to clipboard`} className={pill}>
+              <button type="button" onClick={() => void copyEmail(links.email)} title={`Copy ${links.email} to clipboard`} className={pill}>
                 {/* Mail icon */}
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="2" y="4" width="20" height="16" rx="2"/>

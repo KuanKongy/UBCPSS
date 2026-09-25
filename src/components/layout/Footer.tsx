@@ -1,4 +1,4 @@
-import { EMAIL, LINKS } from '@/lib/data'
+import { useLinks } from '@/lib/cms/content'
 import { copyEmail } from '@/lib/clipboard'
 import { cn } from '@/lib/utils'
 
@@ -9,14 +9,14 @@ type FooterItem =
   | { label: string; href: string; external: boolean }
   | { label: string; onClick: () => void; title: string }
 
-const ITEMS: FooterItem[] = [
-  { label: 'Instagram', href: LINKS.instagram, external: true },
-  { label: 'Linktree',  href: LINKS.linktree,  external: true },
-  { label: 'Email',     onClick: copyEmail,    title: `Copy ${EMAIL} to clipboard` },
-  { label: 'Join PSS',  href: LINKS.amsSignup, external: true },
-]
-
 export default function Footer() {
+  const links = useLinks()
+  const ITEMS: FooterItem[] = [
+    { label: 'Instagram', href: links.instagram, external: true },
+    { label: 'Linktree',  href: links.linktree,  external: true },
+    { label: 'Email',     onClick: () => void copyEmail(links.email), title: `Copy ${links.email} to clipboard` },
+    { label: 'Join PSS',  href: links.signup, external: true },
+  ]
   return (
     <footer className="bg-pss-900 px-8 md:px-12 py-7">
       <div className="flex flex-col md:flex-row items-center gap-6">

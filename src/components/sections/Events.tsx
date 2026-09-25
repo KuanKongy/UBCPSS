@@ -4,8 +4,7 @@ import SciDoodles from '@/components/shared/SciDoodles'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import { InstagramIcon } from '@/components/icons'
-import { LINKS } from '@/lib/data'
-import { useCurrentEvent, useEvents } from '@/lib/cms/content'
+import { useCurrentEvent, useEvents, useLinks, usePartners } from '@/lib/cms/content'
 import type { CurrentEvent } from '@/lib/types'
 
 const tagColors = {
@@ -28,6 +27,7 @@ const monthLabel = (m: string) => m.charAt(0).toUpperCase() + m.slice(1).toLower
 
 /** The admin-flagged upcoming event, in the same card chrome as the static box */
 function CurrentEventBanner({ event }: { event: CurrentEvent }) {
+  const links = useLinks()
   return (
     <div className="mb-8 rounded-[22px] border border-teal/60 border-l-4 border-l-teal bg-white px-7 py-6
                     shadow-[0_2px_12px_rgba(74,122,155,.08)]">
@@ -68,7 +68,7 @@ function CurrentEventBanner({ event }: { event: CurrentEvent }) {
         <p className="text-[15px] leading-[1.65] text-pss-600 mt-2">{event.bannerNote}</p>
       )}
       <a
-        href={event.instagram ?? LINKS.linktree}
+        href={event.instagram ?? links.linktree}
         target="_blank"
         rel="noopener noreferrer"
         className="focus-ring mt-3.5 inline-flex items-center gap-1.5 rounded-full border-2 border-pss-400 bg-white/70
@@ -87,6 +87,11 @@ export default function Events() {
   const [expanded, setExpanded] = useState(false)
   const events = useEvents()
   const current = useCurrentEvent()
+  const links = useLinks()
+  const partners = usePartners()
+  // CMS partner logos first, then the built-in marks for the original names
+  const collabLogo = (name: string) =>
+    partners.find((p) => p.name === name)?.logo ?? COLLAB_LOGOS[name]
   return (
     <section id="events" className="grain pt-16 pb-[92px] md:pb-[116px]" style={{ background: '#F4F8FC' }}>
       <BlobLayer variant="events" />
@@ -108,7 +113,7 @@ export default function Events() {
               </h2>
             </div>
             <a
-              href={LINKS.linktree}
+              href={links.linktree}
               target="_blank"
               rel="noopener noreferrer"
               className="focus-ring rounded-sm text-[14px] font-semibold text-pss-600 hover:text-pss-700 transition-colors no-underline"
@@ -133,11 +138,11 @@ export default function Events() {
               <p className="text-[15px] leading-[1.65] text-pss-600">
                 Our panels and workshops run September through April. Dates for the new
                 term go up on{' '}
-                <a href={LINKS.instagram} target="_blank" rel="noopener noreferrer" className={inlineLink}>
+                <a href={links.instagram} target="_blank" rel="noopener noreferrer" className={inlineLink}>
                   Instagram
                 </a>{' '}
                 and{' '}
-                <a href={LINKS.linktree} target="_blank" rel="noopener noreferrer" className={inlineLink}>
+                <a href={links.linktree} target="_blank" rel="noopener noreferrer" className={inlineLink}>
                   Linktree
                 </a>{' '}
                 first. Follow along so you don't miss an RSVP.
@@ -187,9 +192,9 @@ export default function Events() {
                       className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-[0.07em] uppercase
                                  rounded-full pl-2.5 pr-4 py-0.5 bg-gold/20 text-pss-600 whitespace-nowrap w-max"
                     >
-                      {COLLAB_LOGOS[ev.collab] && (
+                      {collabLogo(ev.collab) && (
                         <img
-                          src={COLLAB_LOGOS[ev.collab]}
+                          src={collabLogo(ev.collab)}
                           alt=""
                           aria-hidden="true"
                           className="max-h-3.5 max-w-[24px] h-auto w-auto"
@@ -218,7 +223,7 @@ export default function Events() {
                     card, so the hover slide finally leads somewhere while the
                     accessible name stays short. */}
                 <a
-                  href={ev.instagram ?? LINKS.instagram}
+                  href={ev.instagram ?? links.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={ev.instagram ? `View ${ev.name} on Instagram` : 'See more from PSS on Instagram'}

@@ -3,7 +3,7 @@ import type { TeamMemberRow } from '@/lib/cms/rows'
 import { toast } from '@/lib/toast'
 import { makeAvatar, removeUploaded, slugify, uploadImage } from '../imageTools'
 import { useTable } from '../useTable'
-import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls } from '../ui'
+import { EditorHeader, Field, RowActions, btnGhost, btnPrimary, inputCls, useRevealOnMount } from '../ui'
 
 // Mirrors AVATAR_COLORS in components/sections/Team.tsx (initials fallback)
 const AVATAR_COLORS = [
@@ -36,6 +36,7 @@ function MemberForm({ editing, onSave, onCancel }: {
   onCancel: () => void
 }) {
   const [f, setF] = useState(editing === 'new' ? empty : toForm(editing))
+  const formRef = useRevealOnMount<HTMLFormElement>()
   const [uploading, setUploading] = useState(false)
 
   const uploadAvatar = async (file: File | undefined) => {
@@ -74,7 +75,7 @@ function MemberForm({ editing, onSave, onCancel }: {
   }
 
   return (
-    <form onSubmit={submit} className="mb-6 rounded-[16px] border border-pss-300 bg-white p-5">
+    <form ref={formRef} onSubmit={submit} className="mb-6 scroll-mt-4 rounded-[16px] border border-pss-300 bg-white p-5">
       <h3 className="mb-4 font-syne text-[16px] font-bold text-pss-700">
         {editing === 'new' ? 'New member' : `Edit: ${editing.name}`}
       </h3>

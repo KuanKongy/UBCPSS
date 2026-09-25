@@ -94,6 +94,16 @@ export async function makeAvatar(file: File): Promise<Encoded> {
   }
 }
 
+/** Small non-square image (partner logos): scaled down, aspect kept. */
+export async function makeSmallImage(file: File, maxW = 256): Promise<Encoded> {
+  const bmp = await bitmapFrom(file)
+  try {
+    return await encode(drawScaled(bmp, maxW), AVATAR_QUALITY)
+  } finally {
+    bmp.close()
+  }
+}
+
 /** Upload one encoded image; returns its public URL. */
 export async function uploadImage(
   bucket: 'people' | 'photos',

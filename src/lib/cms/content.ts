@@ -8,12 +8,17 @@
 import { useSyncExternalStore } from 'react'
 import { cmsConfigured, cmsGet } from './client'
 import type {
-  EventRow, GalleryAlbumWithPhotos, StatRow, TeamMemberRow, TestimonialRow,
+  EventRow, FaqRow, GalleryAlbumWithPhotos, LinkedEventRow, PartnerRow,
+  SettingRow, StatRow, TeamMemberRow, TestimonialRow,
 } from './rows'
 import type {
-  CurrentEvent, GalleryEventGroup, PastEvent, Stat, TeamMember, Testimonial,
+  CurrentEvent, FAQItem, GalleryEventGroup, LinkedEventItem, PastEvent,
+  Partner, SiteLinks, Stat, TeamMember, Testimonial,
 } from '../types'
-import { EVENTS, STATS, TEAM_MEMBERS, TESTIMONIALS } from '../data'
+import {
+  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, PARTNER_LOGOS,
+  PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
+} from '../data'
 import { GALLERY_GROUPS } from '../gallery'
 
 function createRemote<T>(fallback: T, load: () => Promise<T | null>): () => T {
@@ -139,6 +144,71 @@ export const useTestimonials = createRemote<Testimonial[]>(TESTIMONIALS, async (
     description: orUndef(r.description),
     featured: r.featured || undefined,
   }))
+})
+
+// ---------------------------------------------------------------- faq
+
+export const useFaq = createRemote<FAQItem[]>(FAQ_ITEMS, async () => {
+  const rows = await cmsGet<FaqRow[]>(
+    'faq_items?select=*&published=eq.true&order=sort_order.asc',
+  )
+  if (!rows || rows.length === 0) return null
+  return rows.map((r) => ({ q: r.question, a: r.answer }))
+})
+
+// ---------------------------------------------------------------- partners
+
+const PARTNER_FALLBACK: Partner[] = PARTNERS.map((name) => ({
+  name,
+  logo: PARTNER_LOGOS[name],
+}))
+
+export const usePartners = createRemote<Partner[]>(PARTNER_FALLBACK, async () => {
+  const rows = await cmsGet<PartnerRow[]>(
+    'partners?select=*&published=eq.true&order=sort_order.asc',
+  )
+  if (!rows || rows.length === 0) return null
+  return rows.map((r) => ({ name: r.name, logo: orUndef(r.logo_url) }))
+})
+
+// ---------------------------------------------------------------- linked events
+
+export const useLinkedEvents = createRemote<LinkedEventItem[]>(
+  LINKED_EVENT_META,
+  async () => {
+    const rows = await cmsGet<LinkedEventRow[]>(
+      'linked_events?select=*&published=eq.true&order=sort_order.asc',
+    )
+    if (!rows) return null
+    // An empty list is meaningful here: the block hides entirely
+    return rows.map((r) => ({
+      title: r.title,
+      subtitle: orUndef(r.subtitle),
+      href: r.instagram_url,
+    }))
+  },
+)
+
+// ---------------------------------------------------------------- site links
+
+const LINKS_FALLBACK: SiteLinks = {
+  linktree: LINKS.linktree,
+  instagram: LINKS.instagram,
+  signup: LINKS.amsSignup,
+  email: EMAIL,
+}
+
+export const useLinks = createRemote<SiteLinks>(LINKS_FALLBACK, async () => {
+  const rows = await cmsGet<SettingRow[]>('settings?select=*')
+  if (!rows || rows.length === 0) return null
+  const get = (key: string, fallback: string) =>
+    rows.find((r) => r.key === key)?.value || fallback
+  return {
+    linktree: get('linktree', LINKS.linktree),
+    instagram: get('instagram', LINKS.instagram),
+    signup: get('signup_form', LINKS.amsSignup),
+    email: get('email', EMAIL),
+  }
 })
 
 // ---------------------------------------------------------------- gallery

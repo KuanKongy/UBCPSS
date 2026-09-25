@@ -7,11 +7,12 @@ import StatCounter from '@/components/shared/StatCounter'
 import WaveTransition from '@/components/shared/WaveTransition'
 import LinkButton from '@/components/ui/LinkButton'
 import PathwayIllustration from '@/components/shared/PathwayIllustration'
-import { LINKS, TRUST_POINTS } from '@/lib/data'
-import { useStats } from '@/lib/cms/content'
+import { TRUST_POINTS } from '@/lib/data'
+import { useLinks, useStats } from '@/lib/cms/content'
 
 export default function Hero() {
   const stats = useStats()
+  const links = useLinks()
   return (
     <section id="hero" className="bg-pss-100 lg:min-h-screen pt-28 lg:pt-32 pb-24 grain">
       <BlobLayer variant="hero" />
@@ -57,10 +58,10 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3.5 mb-12">
-              <LinkButton href={LINKS.amsSignup} external>
+              <LinkButton href={links.signup} external>
                 Join the Club ↗
               </LinkButton>
-              <LinkButton href={LINKS.linktree} external variant="outline">
+              <LinkButton href={links.linktree} external variant="outline">
                 See Events ↗
               </LinkButton>
             </div>

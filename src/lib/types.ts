@@ -63,6 +63,28 @@ export interface FAQItem {
   a: string
 }
 
+/** "We work with" chip; logo is a small mono mark under public/logos/ or Storage */
+export interface Partner {
+  name: string
+  logo?: string
+}
+
+/** Gallery's "More professor panels" card: an event with no photos yet */
+export interface LinkedEventItem {
+  title: string
+  subtitle?: string
+  href: string
+}
+
+/** Site-wide URLs and the contact address, editable from the dashboard */
+export interface SiteLinks {
+  linktree: string
+  instagram: string
+  /** Membership sign-up form (the "Join" buttons) */
+  signup: string
+  email: string
+}
+
 export interface AboutCard {
   iconName: 'microscope' | 'people' | 'trophy' | 'leaf'
   title: string

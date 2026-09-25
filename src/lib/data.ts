@@ -375,3 +375,32 @@ export const PARTNERS: string[] = [
   'Operation Smile Canada',
   'Canadian Wheelchair Club',
 ]
+
+// Their official marks (navy mono, see scripts/mono-logo.mjs). Used as the
+// seed's logo_url values and as the fallback for the partner chips and the
+// event cards' "with <partner>" badges.
+export const PARTNER_LOGOS: Record<string, string> = {
+  'Thunderbird Elementary School': '/logos/thunderbird-elementary-mono.png',
+  'Operation Smile Canada': '/logos/operation-smile-mark.svg',
+  'Canadian Wheelchair Club': '/logos/canadian-wheelchair-club-mono.png',
+}
+
+// Gallery's "More professor panels" cards: events with no approved photos,
+// linking to their Instagram post
+export const LINKED_EVENT_META = [
+  {
+    title: 'Researcher Speaker Panel — Dr. Joy Richman',
+    subtitle: 'March 20, 2026 · with Operation Smile Canada',
+    href: igPost('DWALWo5Ad5E'),
+  },
+  {
+    title: 'Prof Panel — Dr. Alice Mui',
+    subtitle: 'January 30, 2026 · Online',
+    href: igPost('DUB1syfEhFm'),
+  },
+  {
+    title: 'Prof Panel — Dr. Kayla King',
+    subtitle: 'December 5, 2025 · Buchanan A203',
+    href: igPost('DRnUhafkn71'),
+  },
+]

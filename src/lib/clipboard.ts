@@ -35,7 +35,7 @@ export async function copyText(text: string): Promise<boolean> {
 }
 
 /** Copy the club email and confirm with a toast. Shared by every "Email" control. */
-export async function copyEmail() {
-  const ok = await copyText(EMAIL)
-  toast(ok ? `Email copied: ${EMAIL}` : `Copy failed. Email us at ${EMAIL}`)
+export async function copyEmail(address: string = EMAIL) {
+  const ok = await copyText(address)
+  toast(ok ? `Email copied: ${address}` : `Copy failed. Email us at ${address}`)
 }
