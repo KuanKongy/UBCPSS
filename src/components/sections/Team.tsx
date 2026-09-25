@@ -72,15 +72,24 @@ function TeamCard({ member }: { member: TeamMember }) {
       {/* Gradient overlay bottom bar. With contact actions: name/role left,
           always-visible icons right (LinkedIn outermost). Without: centred,
           like the original card. */}
+      {/* z-10 after the photo in the DOM: the bar paints above it, so a
+          clamped two-line name is never tucked under the circle. The bar's
+          top is transparent fade, so the usual ~12px overlap stays invisible. */}
       <div
-        className={`absolute bottom-0 left-0 right-0 z-0 pt-6 pb-2.5 flex items-center gap-2 ${
+        className={`absolute bottom-0 left-0 right-0 z-10 pt-6 pb-2.5 flex items-center gap-2 ${
           hasActions ? 'pl-3.5 pr-2.5' : 'px-3 justify-center'
         }`}
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.80) 60%, transparent)' }}
       >
-        <div className={hasActions ? 'min-w-0 flex-1 text-left' : 'text-center'}>
-          <div className="font-syne font-bold text-[13px] text-white leading-tight">{name}</div>
-          <div className="text-[11px] text-white/75 mt-0.5 leading-tight">{role}</div>
+        <div className={hasActions ? 'min-w-0 flex-1 text-left' : 'min-w-0 text-center'}>
+          {/* Overlong entries clamp to two lines with an ellipsis; the title
+              attribute still offers the full text on hover */}
+          <div className="font-syne font-bold text-[13px] text-white leading-tight line-clamp-2 break-words" title={name}>
+            {name}
+          </div>
+          <div className="text-[11px] text-white/75 mt-0.5 leading-tight line-clamp-2 break-words" title={role}>
+            {role}
+          </div>
         </div>
         {hasActions && (
           <div className="flex items-center gap-1.5 flex-shrink-0">
