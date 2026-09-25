@@ -13,25 +13,81 @@ const AVATAR_COLORS = [
   'rgba(125,212,204,0.9)',
 ]
 
-const ROLE_GROUPS = ['VP Admin', 'Social Media', 'PR Committee', 'Events Committee', 'Software']
+// Starter groups; the picker also offers every group already in the table,
+// and "+ New group…" creates one on the spot.
+const DEFAULT_GROUPS = ['VP Admin', 'Social Media', 'PR Committee', 'Events Committee', 'Software']
 
 type Editing = TeamMemberRow | 'new' | null
 
+function GroupPicker({ value, groups, onChange }: {
+  value: string
+  groups: string[]
+  onChange: (v: string) => void
+}) {
+  const [custom, setCustom] = useState(false)
+  const options = groups.includes(value) || custom ? groups : [...groups, value]
+
+  if (custom) {
+    return (
+      <div className="flex gap-2">
+        <input
+          autoFocus
+          required
+          value={value}
+          placeholder="New group name"
+          onChange={(e) => onChange(e.target.value)}
+          className={inputCls}
+        />
+        <button
+          type="button"
+          className={btnGhost}
+          onClick={() => {
+            setCustom(false)
+            onChange(groups[0] ?? DEFAULT_GROUPS[0])
+          }}
+        >
+          List
+        </button>
+      </div>
+    )
+  }
+  return (
+    <select
+      value={value}
+      onChange={(e) => {
+        if (e.target.value === '__new__') {
+          setCustom(true)
+          onChange('')
+        } else {
+          onChange(e.target.value)
+        }
+      }}
+      className={inputCls}
+    >
+      {options.map((g) => (
+        <option key={g} value={g}>{g}</option>
+      ))}
+      <option value="__new__">+ New group…</option>
+    </select>
+  )
+}
+
 const empty = {
-  name: '', initials: '', role: '', role_group: ROLE_GROUPS[0], avatar_index: 0,
+  name: '', initials: '', role: '', role_group: DEFAULT_GROUPS[0], avatar_index: 0,
   email: '', linkedin_url: '', photo_url: '', published: true,
 }
 
 function toForm(r: TeamMemberRow) {
   return {
-    name: r.name, initials: r.initials, role: r.role, role_group: r.role_group || ROLE_GROUPS[0],
+    name: r.name, initials: r.initials, role: r.role, role_group: r.role_group || DEFAULT_GROUPS[0],
     avatar_index: r.avatar_index, email: r.email ?? '', linkedin_url: r.linkedin_url ?? '',
     photo_url: r.photo_url ?? '', published: r.published,
   }
 }
 
-function MemberForm({ editing, onSave, onCancel }: {
+function MemberForm({ editing, groups, onSave, onCancel }: {
   editing: TeamMemberRow | 'new'
+  groups: string[]
   onSave: (fields: Record<string, unknown>, id?: string) => Promise<boolean>
   onCancel: () => void
 }) {
@@ -92,9 +148,11 @@ function MemberForm({ editing, onSave, onCancel }: {
           <input required value={f.role} onChange={(e) => setF((p) => ({ ...p, role: e.target.value }))} className={inputCls} />
         </Field>
         <Field label="Group" hint="Dashboard grouping only">
-          <select value={f.role_group} onChange={(e) => setF((p) => ({ ...p, role_group: e.target.value }))} className={inputCls}>
-            {ROLE_GROUPS.map((g) => <option key={g} value={g}>{g}</option>)}
-          </select>
+          <GroupPicker
+            value={f.role_group}
+            groups={groups}
+            onChange={(v) => setF((p) => ({ ...p, role_group: v }))}
+          />
         </Field>
         <Field label="Fallback color" hint="Behind the initials">
           <div className="flex gap-2 pt-1.5">
@@ -166,6 +224,8 @@ function MemberForm({ editing, onSave, onCancel }: {
 export default function TeamEditor() {
   const { rows, loading, save, remove, move } = useTable<TeamMemberRow>('team_members')
   const [editing, setEditing] = useState<Editing>(null)
+  // Every group in use, in roster order, then any unused defaults
+  const groups = [...new Set([...rows.map((r) => r.role_group).filter(Boolean), ...DEFAULT_GROUPS])]
 
   const deleteMember = async (r: TeamMemberRow) => {
     if (!window.confirm(`Delete ${r.name}?`)) return
@@ -187,6 +247,7 @@ export default function TeamEditor() {
         <MemberForm
           key={editing === 'new' ? 'new' : editing.id}
           editing={editing}
+          groups={groups}
           onSave={(fields, id) => save(id ? { ...fields, id } : fields)}
           onCancel={() => setEditing(null)}
         />

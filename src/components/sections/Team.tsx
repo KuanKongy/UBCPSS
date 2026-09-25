@@ -6,7 +6,6 @@ import ScrollReveal from '@/components/shared/ScrollReveal'
 import { useTeam } from '@/lib/cms/content'
 import { copyText } from '@/lib/clipboard'
 import { toast } from '@/lib/toast'
-import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { TeamMember } from '@/lib/types'
 
 const AVATAR_COLORS = [
@@ -26,8 +25,9 @@ const IDLE_MS = 1200    // hands-off time after any user scroll input
 const SETTLE_MS = 150   // "scroll has stopped" fallback where `scrollend` is missing
 const MAX_DT = 0.05     // seconds; caps the step after a hidden tab or a long frame
 
-function TeamCard({ member, iconsAlwaysOn }: { member: TeamMember; iconsAlwaysOn: boolean }) {
+function TeamCard({ member }: { member: TeamMember }) {
   const { initials, name, photo, role, avatarIndex, email, linkedin } = member
+  const hasActions = Boolean(email || linkedin)
 
   const copyMemberEmail = async () => {
     if (!email) return
@@ -35,9 +35,8 @@ function TeamCard({ member, iconsAlwaysOn }: { member: TeamMember; iconsAlwaysOn
     toast(ok ? `Email copied: ${email}` : `Copy failed. Email: ${email}`)
   }
 
-  // Touch screens have no hover, so the action icons stay visible there.
-  // Corner radius echoes the card's own rounded-[20px].
-  const iconBtn = `w-6 h-6 rounded-[10px] bg-white/20 hover:bg-white/40 flex items-center justify-center
+  // Gently rounded, like the card's own corners read at this size
+  const iconBtn = `w-6 h-6 rounded-md bg-white/20 hover:bg-white/40 flex items-center justify-center
                    transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80`
 
   return (
@@ -70,23 +69,21 @@ function TeamCard({ member, iconsAlwaysOn }: { member: TeamMember; iconsAlwaysOn
         </div>
       )}
 
-      {/* Gradient overlay bottom bar: name/role on the left, action icons on
-          the right (LinkedIn outermost). Icons show on hover/focus, always on
-          touch, and only when the member has that field. */}
+      {/* Gradient overlay bottom bar. With contact actions: name/role left,
+          always-visible icons right (LinkedIn outermost). Without: centred,
+          like the original card. */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-0 pl-3.5 pr-2.5 pt-6 pb-2.5 flex items-center gap-2"
+        className={`absolute bottom-0 left-0 right-0 z-0 pt-6 pb-2.5 flex items-center gap-2 ${
+          hasActions ? 'pl-3.5 pr-2.5' : 'px-3 justify-center'
+        }`}
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.80) 60%, transparent)' }}
       >
-        <div className="min-w-0 flex-1 text-left">
+        <div className={hasActions ? 'min-w-0 flex-1 text-left' : 'text-center'}>
           <div className="font-syne font-bold text-[13px] text-white leading-tight">{name}</div>
           <div className="text-[11px] text-white/75 mt-0.5 leading-tight">{role}</div>
         </div>
-        {(email || linkedin) && (
-          <div
-            className={`flex items-center gap-1.5 flex-shrink-0 transition-opacity ${
-              iconsAlwaysOn ? '' : 'opacity-0 group-hover:opacity-100 group-focus-within:opacity-100'
-            }`}
-          >
+        {hasActions && (
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             {email && (
               <button
                 type="button"
@@ -125,7 +122,6 @@ export default function Team() {
   const rowRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
   const members = useTeam()
-  const iconsAlwaysOn = useMediaQuery('(hover: none)')
   // The tripled roster; the ResizeObserver below re-measures when it changes
   const row = useMemo(
     () => Array.from({ length: COPIES }, () => members).flat(),
@@ -294,7 +290,7 @@ export default function Team() {
         >
           <div ref={rowRef} className="flex gap-4 w-max pr-4 select-none will-change-transform">
             {row.map((m, i) => (
-              <TeamCard key={`m-${i}`} member={m} iconsAlwaysOn={iconsAlwaysOn} />
+              <TeamCard key={`m-${i}`} member={m} />
             ))}
           </div>
         </div>
