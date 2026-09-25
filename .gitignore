@@ -4,6 +4,9 @@ tsconfig.tsbuildinfo
 .DS_Store
 *.local
 
+# Supabase keys (.env.example is the committed template)
+.env
+
 # Local photo review output (never deployed)
 .contact-sheet/
 photos-src/

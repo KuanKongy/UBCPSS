@@ -1,7 +1,7 @@
 // Seed the Supabase CMS with the site's built-in content, so day one in the
 // dashboard matches today's site exactly.
 //
-//   node --env-file=.env.local scripts/seed-cms.mjs
+//   node --env-file=.env scripts/seed-cms.mjs
 //
 // Wipe-and-insert per table: safe to re-run, but it OVERWRITES dashboard
 // edits — only re-run deliberately. Needs SUPABASE_SERVICE_ROLE_KEY
@@ -18,8 +18,8 @@ const url = process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 if (!url || !serviceKey) {
   console.error(
-    'Missing env. Fill .env.local (see .env.example) and run:\n' +
-    '  node --env-file=.env.local scripts/seed-cms.mjs',
+    'Missing env. Fill .env (see .env.example) and run:\n' +
+    '  node --env-file=.env scripts/seed-cms.mjs',
   )
   process.exit(1)
 }

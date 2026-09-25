@@ -29,13 +29,13 @@ at `/admin` lets signed-in admins edit that content.
 
    A signed-in user without a `profiles` row sees "No access" on `/admin`.
 
-4. **Local env**: copy `.env.example` to `.env.local` and fill in the URL and
-   both keys. `.env.local` is gitignored.
+4. **Local env**: copy `.env.example` to `.env` and fill in the URL and
+   both keys. `.env` is gitignored.
 
 5. **Seed the content** so the database matches the current site exactly:
 
    ```sh
-   node --env-file=.env.local scripts/seed-cms.mjs
+   node --env-file=.env scripts/seed-cms.mjs
    ```
 
    The script wipes and re-inserts every content table from the data files,
