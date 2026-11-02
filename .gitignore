@@ -13,3 +13,4 @@ photos-src/
 
 # Local Claude Code skills
 .github/skills/
+.claude/
