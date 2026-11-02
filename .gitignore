@@ -10,3 +10,6 @@ tsconfig.tsbuildinfo
 # Local photo review output (never deployed)
 .contact-sheet/
 photos-src/
+
+# Local Claude Code skills
+.github/skills/
