@@ -14,3 +14,12 @@ photos-src/
 # Local Claude Code skills
 .github/skills/
 .claude/
+
+# Agent-skill installers and their outputs (local only)
+.agents/
+.codex/
+.github/agents/
+.github/hooks/
+skills-lock.json
+.taste-skill/
+.impeccable/

@@ -11,8 +11,11 @@ type FooterItem =
 
 export default function Footer() {
   const links = useLinks()
+  // Database-added links slot in here and disappear when deleted there
+  const added = links.items.filter((i) => !i.protected)
   const ITEMS: FooterItem[] = [
     { label: 'Instagram', href: links.instagram, external: true },
+    ...added.map((l): FooterItem => ({ label: l.label, href: l.url, external: true })),
     { label: 'Linktree',  href: links.linktree,  external: true },
     { label: 'Email',     onClick: () => void copyEmail(links.email), title: `Copy ${links.email} to clipboard` },
     { label: 'Join PSS',  href: links.signup, external: true },
@@ -44,8 +47,8 @@ export default function Footer() {
         {/* Links, right */}
         <nav aria-label="Footer navigation" className="flex-shrink-0 w-full md:w-auto">
           <ul className="flex flex-wrap gap-5 justify-center md:justify-end list-none">
-            {ITEMS.map((item) => (
-              <li key={item.label}>
+            {ITEMS.map((item, i) => (
+              <li key={`${i}-${item.label}`}>
                 {'href' in item ? (
                   <a
                     href={item.href}

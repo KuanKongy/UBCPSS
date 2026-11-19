@@ -123,3 +123,18 @@ export interface SettingRow {
   key: string
   value: string
 }
+
+export interface SiteLinkRow {
+  id: string
+  /** Stable handle for built-ins (signup_form, instagram, …); null for additions */
+  key: string | null
+  /** Button text on the main page, sign included */
+  label: string
+  /** Field title in the dashboard; null falls back to "<label> URL" */
+  title: string | null
+  url: string
+  icon: string | null
+  description: string | null
+  protected: boolean
+  sort_order: number
+}

@@ -9,15 +9,15 @@ import { useSyncExternalStore } from 'react'
 import { cmsConfigured, cmsGet } from './client'
 import type {
   EventRow, FaqRow, GalleryAlbumWithPhotos, LinkedEventRow, PartnerRow,
-  SettingRow, StatRow, TeamMemberRow, TestimonialRow,
+  SettingRow, SiteLinkRow, StatRow, TeamMemberRow, TestimonialRow,
 } from './rows'
 import type {
-  CurrentEvent, FAQItem, GalleryEventGroup, LinkedEventItem, PastEvent,
-  Partner, SiteLinks, Stat, TeamMember, Testimonial,
+  CurrentEvent, FAQItem, GalleryEventGroup, LinkedEventItem,
+  PastEvent, Partner, SiteLinkItem, SiteLinks, Stat, TeamMember, Testimonial,
 } from '../types'
 import {
-  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, PARTNER_LOGOS,
-  PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
+  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, LINK_ITEMS,
+  PARTNER_LOGOS, PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
 } from '../data'
 import { GALLERY_GROUPS } from '../gallery'
 
@@ -196,18 +196,45 @@ const LINKS_FALLBACK: SiteLinks = {
   instagram: LINKS.instagram,
   signup: LINKS.amsSignup,
   email: EMAIL,
+  items: LINK_ITEMS,
 }
 
+/** Admin-pasted icon markup: a bare <svg> with no scripts or event handlers */
+export const isSafeSvg = (s: string): boolean =>
+  /^<svg[\s>]/i.test(s.trim()) && !/<script|\son\w+\s*=|javascript:/i.test(s)
+
+const toLinkItem = (r: SiteLinkRow): SiteLinkItem => ({
+  key: orUndef(r.key),
+  label: r.label,
+  title: orUndef(r.title),
+  url: r.url,
+  icon: orUndef(r.icon),
+  description: orUndef(r.description),
+  protected: r.protected || undefined,
+})
+
 export const useLinks = createRemote<SiteLinks>(LINKS_FALLBACK, async () => {
-  const rows = await cmsGet<SettingRow[]>('settings?select=*')
-  if (!rows || rows.length === 0) return null
+  const [rows, linkRows] = await Promise.all([
+    cmsGet<SettingRow[]>('settings?select=*'),
+    cmsGet<SiteLinkRow[]>('site_links?select=*&order=sort_order.asc'),
+  ])
+  if ((!rows || rows.length === 0) && (!linkRows || linkRows.length === 0)) return null
   const get = (key: string, fallback: string) =>
-    rows.find((r) => r.key === key)?.value || fallback
+    rows?.find((r) => r.key === key)?.value || fallback
+  // One row per link; before the table exists, fall back to the built-ins
+  // with any legacy settings-key URL overrides
+  const items: SiteLinkItem[] =
+    linkRows && linkRows.length > 0
+      ? linkRows.map(toLinkItem)
+      : LINK_ITEMS.map((d) => ({ ...d, url: get(d.key ?? '', d.url) }))
+  const itemUrl = (key: string, fallback: string) =>
+    items.find((i) => i.key === key)?.url || get(key, fallback)
   return {
-    linktree: get('linktree', LINKS.linktree),
-    instagram: get('instagram', LINKS.instagram),
-    signup: get('signup_form', LINKS.amsSignup),
-    email: get('email', EMAIL),
+    linktree: itemUrl('linktree', LINKS.linktree),
+    instagram: itemUrl('instagram', LINKS.instagram),
+    signup: itemUrl('signup_form', LINKS.amsSignup),
+    email: itemUrl('email', EMAIL),
+    items,
   }
 })
 

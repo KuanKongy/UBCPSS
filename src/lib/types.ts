@@ -76,6 +76,23 @@ export interface LinkedEventItem {
   href: string
 }
 
+/** One Get Started button: a row of the site_links table */
+export interface SiteLinkItem {
+  /** Built-in entries carry a stable key so other sections resolve their URL */
+  key?: string
+  /** Button text on the main page, sign included (e.g. "Apply to Join ↗") */
+  label: string
+  /** Field title in the dashboard (e.g. "Instagram URL"); defaults to "<label> URL" */
+  title?: string
+  url: string
+  /** Inline <svg> markup, drawn at 15px inside the button */
+  icon?: string
+  /** Dashboard-only note on what the link is for */
+  description?: string
+  /** Original links cannot be deleted from the dashboard */
+  protected?: boolean
+}
+
 /** Site-wide URLs and the contact address, editable from the dashboard */
 export interface SiteLinks {
   linktree: string
@@ -83,6 +100,8 @@ export interface SiteLinks {
   /** Membership sign-up form (the "Join" buttons) */
   signup: string
   email: string
+  /** The ordered Get Started buttons */
+  items: SiteLinkItem[]
 }
 
 export interface AboutCard {

@@ -12,8 +12,8 @@
 import { readFile } from 'node:fs/promises'
 import { createClient } from '@supabase/supabase-js'
 import {
-  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, PARTNER_LOGOS,
-  PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
+  EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, LINK_ITEMS,
+  PARTNER_LOGOS, PARTNERS, STATS, TEAM_MEMBERS, TESTIMONIALS,
 } from '../src/lib/data.ts'
 import { GALLERY_GROUP_META } from '../src/lib/gallery-meta.ts'
 
@@ -62,6 +62,7 @@ await wipe('stats')
 await wipe('faq_items')
 await wipe('partners')
 await wipe('linked_events')
+await wipe('site_links')
 
 // sort_order = array index everywhere: data.ts is already in display order
 await insert('stats', STATS.map((s, i) => ({
@@ -101,6 +102,19 @@ await insert('partners', PARTNERS.map((name, i) => ({
 
 await insert('linked_events', LINKED_EVENT_META.map((e, i) => ({
   title: e.title, subtitle: e.subtitle ?? null, instagram_url: e.href, sort_order: i,
+})))
+
+// One row per Get Started button. Seeding restores the four originals and
+// DROPS database-only additions — re-run deliberately.
+await insert('site_links', LINK_ITEMS.map((l, i) => ({
+  key: l.key ?? null,
+  label: l.label,
+  title: l.title ?? null,
+  url: l.url,
+  icon: l.icon ?? null,
+  description: l.description ?? null,
+  protected: l.protected ?? false,
+  sort_order: i,
 })))
 
 // settings has no id column: upsert by key instead of wipe-and-insert

@@ -1,6 +1,6 @@
 import type {
   Stat, PastEvent, Testimonial, TeamMember,
-  FAQItem, AboutCard, Pillar,
+  FAQItem, AboutCard, Pillar, SiteLinkItem,
 } from './types'
 
 export const LINKS = {
@@ -11,6 +11,48 @@ export const LINKS = {
 
 // Contact address. Clicking "Email" copies it to the clipboard (see lib/clipboard.ts)
 export const EMAIL = 'pssubc@gmail.com'
+
+// Fallback Get Started buttons, used when the site_links table is empty or
+// unreachable. One row per link in the database; dashboard additions live
+// only there, never here.
+// Linktree mark (simple-icons, CC0): seven-ray asterisk with a detached trunk.
+export const LINK_ITEMS: SiteLinkItem[] = [
+  {
+    key: 'signup_form',
+    label: 'Apply to Join ↗',
+    title: 'Sign-up form URL',
+    url: LINKS.amsSignup,
+    description: 'All the "Join" buttons',
+    protected: true,
+  },
+  {
+    key: 'instagram',
+    label: '@ubc_pss',
+    title: 'Instagram URL',
+    url: LINKS.instagram,
+    description: 'The @ubc_pss links',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    protected: true,
+  },
+  {
+    key: 'linktree',
+    label: 'Linktree',
+    title: 'Linktree URL',
+    url: LINKS.linktree,
+    description: 'Event RSVPs; the "See Events" and Linktree buttons',
+    icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="m13.73635 5.85251 4.00467-4.11665 2.3248 2.3808-4.20064 4.00466h5.9085v3.30473h-5.9365l4.22865 4.10766-2.3248 2.3338L12.0005 12.099l-5.74052 5.76852-2.3248-2.3248 4.22864-4.10766h-5.9375V8.12132h5.9085L3.93417 4.11666l2.3248-2.3808 4.00468 4.11665V0h3.4727zm-3.4727 10.30614h3.4727V24h-3.4727z"/></svg>',
+    protected: true,
+  },
+  {
+    key: 'email',
+    label: 'Email Us',
+    title: 'Club email',
+    url: EMAIL,
+    description: 'The copy-to-clipboard Email buttons',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>',
+    protected: true,
+  },
+]
 
 // Permalink for one of our Instagram posts
 export const igPost = (id: string) => `https://www.instagram.com/ubc_pss/p/${id}/`
