@@ -194,6 +194,7 @@ export const useLinkedEvents = createRemote<LinkedEventItem[]>(
 const LINKS_FALLBACK: SiteLinks = {
   linktree: LINKS.linktree,
   instagram: LINKS.instagram,
+  linkedin: LINKS.linkedin,
   signup: LINKS.amsSignup,
   email: EMAIL,
 }
@@ -206,6 +207,7 @@ export const useLinks = createRemote<SiteLinks>(LINKS_FALLBACK, async () => {
   return {
     linktree: get('linktree', LINKS.linktree),
     instagram: get('instagram', LINKS.instagram),
+    linkedin: get('linkedin', LINKS.linkedin),
     signup: get('signup_form', LINKS.amsSignup),
     email: get('email', EMAIL),
   }

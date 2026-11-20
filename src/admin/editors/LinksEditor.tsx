@@ -8,6 +8,7 @@ import { EditorHeader, Field, btnPrimary, inputCls } from '../ui'
 const FIELDS = [
   { key: 'linktree', label: 'Linktree URL', hint: 'Event RSVPs; the "See Events" and Linktree buttons', fallback: LINKS.linktree, type: 'url' },
   { key: 'instagram', label: 'Instagram URL', hint: 'The @ubc_pss links', fallback: LINKS.instagram, type: 'url' },
+  { key: 'linkedin', label: 'LinkedIn URL', hint: 'The footer LinkedIn link', fallback: LINKS.linkedin, type: 'url' },
   { key: 'signup_form', label: 'Sign-up form URL', hint: 'All the "Join" buttons', fallback: LINKS.amsSignup, type: 'url' },
   { key: 'email', label: 'Club email', hint: 'The copy-to-clipboard Email buttons', fallback: EMAIL, type: 'email' },
 ] as const

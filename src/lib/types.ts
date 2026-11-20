@@ -80,6 +80,7 @@ export interface LinkedEventItem {
 export interface SiteLinks {
   linktree: string
   instagram: string
+  linkedin: string
   /** Membership sign-up form (the "Join" buttons) */
   signup: string
   email: string

@@ -13,6 +13,7 @@ export default function Footer() {
   const links = useLinks()
   const ITEMS: FooterItem[] = [
     { label: 'Instagram', href: links.instagram, external: true },
+    { label: 'LinkedIn',  href: links.linkedin,  external: true },
     { label: 'Linktree',  href: links.linktree,  external: true },
     { label: 'Email',     onClick: () => void copyEmail(links.email), title: `Copy ${links.email} to clipboard` },
     { label: 'Join PSS',  href: links.signup, external: true },

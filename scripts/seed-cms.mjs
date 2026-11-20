@@ -108,6 +108,7 @@ await insert('linked_events', LINKED_EVENT_META.map((e, i) => ({
   const rows = [
     { key: 'linktree', value: LINKS.linktree },
     { key: 'instagram', value: LINKS.instagram },
+    { key: 'linkedin', value: LINKS.linkedin },
     { key: 'signup_form', value: LINKS.amsSignup },
     { key: 'email', value: EMAIL },
   ]

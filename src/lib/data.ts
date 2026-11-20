@@ -6,6 +6,7 @@ import type {
 export const LINKS = {
   linktree:  'https://linktr.ee/PSSUBC',
   instagram: 'https://www.instagram.com/ubc_pss/',
+  linkedin:  'https://www.linkedin.com/company/ubc-project-stem-search/',
   amsSignup: 'https://docs.google.com/forms/d/e/1FAIpQLScf5hQmJ5BKwbeeHQupnHS-51tXgEBQfu-_mitP3zmwET37xA/viewform',
 } as const
 
