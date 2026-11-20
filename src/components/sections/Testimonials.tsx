@@ -6,6 +6,7 @@ import Sparkle from '@/components/shared/Sparkle'
 import Sheen from '@/components/shared/Sheen'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
+import { ChevronLeftIcon, ChevronRightIcon, PlayIcon, PauseIcon } from '@/components/icons'
 import { useTestimonials } from '@/lib/cms/content'
 import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { Testimonial } from '@/lib/types'
@@ -35,7 +36,7 @@ function TestimonialCard(t: Testimonial) {
     <motion.div
       whileHover={{ scale: 1.02, boxShadow: '0 20px 48px rgba(0,0,0,0.35)' }}
       transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-      className="bg-pss-700/35 border border-white/20 rounded-[24px] p-5 flex flex-col h-auto min-h-[300px] md:h-[392px]"
+      className="bg-pss-700/35 border border-white/20 rounded-[24px] p-5 flex flex-col h-[340px] md:h-[392px]"
     >
       {/* Fixed card height for every card; long text scrolls inside instead
           of stretching the card */}
@@ -235,8 +236,8 @@ export default function Testimonials() {
           {/* Controls: 44px buttons; the dot strip scrolls sideways on phones
               (18 pages) and keeps the active dot in view */}
           <div className="flex items-center justify-center gap-3 sm:gap-6 mt-8 px-1">
-            <button onClick={goPrev} aria-label="Previous testimonials" className={`${control} text-[18px] font-bold`}>
-              ‹
+            <button onClick={goPrev} aria-label="Previous testimonials" className={control}>
+              <ChevronLeftIcon size={18} />
             </button>
 
             <div
@@ -253,7 +254,7 @@ export default function Testimonials() {
                   className="focus-ring-dark grid h-6 w-6 flex-shrink-0 place-items-center rounded-full"
                 >
                   <span
-                    className={`block rounded-full transition-all duration-300 ${
+                    className={`block rounded-full transition-[width,background-color] duration-300 ${
                       i === page
                         ? 'w-6 h-2.5 bg-white'
                         : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/75'
@@ -263,17 +264,21 @@ export default function Testimonials() {
               ))}
             </div>
 
-            <button onClick={goNext} aria-label="Next testimonials" className={`${control} text-[18px] font-bold`}>
-              ›
+            <button onClick={goNext} aria-label="Next testimonials" className={control}>
+              <ChevronRightIcon size={18} />
             </button>
 
-            <button
-              onClick={() => setPlaying((p) => !p)}
-              aria-label={playing ? 'Pause automatic rotation' : 'Resume automatic rotation'}
-              className={`${control} text-[13px]`}
-            >
-              {playing ? '❙❙' : '▶'}
-            </button>
+            {/* Auto-advance is disabled on coarse pointers, so the control
+                would be dead there; render it only where it does something */}
+            {!coarse && (
+              <button
+                onClick={() => setPlaying((p) => !p)}
+                aria-label={playing ? 'Pause automatic rotation' : 'Resume automatic rotation'}
+                className={control}
+              >
+                {playing ? <PauseIcon size={14} /> : <PlayIcon size={14} />}
+              </button>
+            )}
           </div>
         </div>
       </div>

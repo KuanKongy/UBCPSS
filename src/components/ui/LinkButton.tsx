@@ -5,7 +5,7 @@ type Variant = 'primary' | 'outline' | 'outline-white'
 type Size = 'default' | 'sm'
 
 const base =
-  'inline-flex items-center gap-2 rounded-full font-sans font-bold transition-all duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pss-500 focus-visible:ring-offset-2'
+  'inline-flex items-center gap-2 rounded-full font-sans font-bold transition-[background-color,transform] duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pss-500 focus-visible:ring-offset-2'
 
 const variants: Record<Variant, string> = {
   primary:       'bg-pss-700 text-white hover:bg-pss-600 hover:-translate-y-0.5 active:scale-95',

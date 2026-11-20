@@ -161,7 +161,7 @@ export default function Events() {
                            border border-pss-300/70 shadow-[0_2px_12px_rgba(74,122,155,.08)]
                            hover:translate-x-1.5 hover:border-teal/60 hover:shadow-[0_8px_32px_rgba(74,122,155,.12)]
                            focus-within:border-teal/60 focus-within:shadow-[0_8px_32px_rgba(74,122,155,.12)]
-                           transition-all duration-200"
+                           transition-[transform,border-color,box-shadow] duration-200"
               >
                 {/* Date: a compact inline row on mobile, a rail from md up */}
                 <div className="flex items-baseline gap-1.5 md:block md:text-center">
@@ -252,7 +252,7 @@ export default function Events() {
               type="button"
               onClick={() => setExpanded((e) => !e)}
               className="focus-ring inline-flex items-center gap-2 rounded-full border-2 border-pss-400 bg-white/70
-                         px-6 py-2.5 text-[13px] font-bold text-pss-700 transition-all duration-200
+                         px-6 py-2.5 text-[13px] font-bold text-pss-700 transition-[background-color,transform] duration-200
                          hover:bg-white hover:-translate-y-0.5 active:scale-95"
             >
               {expanded ? 'Show fewer events' : `Show all ${events.length} events`}

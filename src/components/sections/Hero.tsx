@@ -14,7 +14,7 @@ export default function Hero() {
   const stats = useStats()
   const links = useLinks()
   return (
-    <section id="hero" className="bg-pss-100 lg:min-h-screen pt-28 lg:pt-32 pb-24 grain">
+    <section id="hero" className="bg-pss-100 lg:min-h-svh pt-28 lg:pt-32 pb-24 grain">
       <BlobLayer variant="hero" />
       <SciDoodles variant="hero" />
       <Sheen delay={-4} />
@@ -34,7 +34,7 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.1em] uppercase text-pss-600
                             bg-white/65 border border-pss-500/25 rounded-full px-4 py-1.5 mb-7">
               <span
-                className="w-[7px] h-[7px] rounded-full bg-pss-500 animate-eye-pulse"
+                className="w-[7px] h-[7px] rounded-full bg-pss-500"
                 aria-hidden="true"
               />
               UBC Club &nbsp;·&nbsp; Est. 2024
@@ -48,7 +48,7 @@ export default function Hero() {
               Finding<br />
               research<br />
               shouldn't be<br />
-              <em className="not-italic bg-gradient-to-r from-pss-600 via-[#3E8E9A] to-teal bg-clip-text text-transparent">daunting.</em>
+              <em className="not-italic text-teal-ink">daunting.</em>
             </h1>
 
             <p className="text-[17px] leading-[1.7] text-pss-600 max-w-[480px] mb-8">
@@ -59,10 +59,10 @@ export default function Hero() {
             {/* CTAs */}
             <div className="flex flex-wrap gap-3.5 mb-12">
               <LinkButton href={links.signup} external>
-                Join the Club ↗
+                Join PSS ↗
               </LinkButton>
-              <LinkButton href={links.linktree} external variant="outline">
-                See Events ↗
+              <LinkButton href="#events" variant="outline">
+                See Events
               </LinkButton>
             </div>
 

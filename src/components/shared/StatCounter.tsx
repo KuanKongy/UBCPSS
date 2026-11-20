@@ -6,7 +6,7 @@ interface StatCounterProps {
   value: number
   suffix: string
   label: string
-  /** Lead stat: bigger number in the headline's teal gradient */
+  /** Lead stat: bigger number in the headline's teal ink */
   emphasis?: boolean
   /** Tiny line under the label, e.g. "since 2024" */
   caption?: string
@@ -57,14 +57,14 @@ export default function StatCounter({ value, suffix, label, emphasis, caption }:
         className={cn(
           'font-syne font-bold leading-none tracking-tight origin-left',
           emphasis
-            ? 'text-[54px] bg-gradient-to-r from-pss-600 via-[#3E8E9A] to-teal bg-clip-text text-transparent'
+            ? 'text-[54px] text-teal-ink'
             : 'text-[42px] text-pss-700',
         )}
       >
         {count}{suffix}
       </motion.div>
       <div className="text-[13px] text-pss-600 mt-1.5 font-medium">{label}</div>
-      {caption && <div className="text-[11px] text-pss-500 mt-0.5">{caption}</div>}
+      {caption && <div className="text-[11px] text-pss-600 mt-0.5">{caption}</div>}
     </motion.div>
   )
 }

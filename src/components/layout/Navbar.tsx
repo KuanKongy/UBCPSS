@@ -84,13 +84,13 @@ export default function Navbar() {
             aria-hidden="true"
             className="w-[44px] h-[44px] flex-shrink-0 rounded-full border border-pss-500/40 bg-pss-100 p-0.5 object-cover"
           />
-          <span className="font-syne text-[11px] sm:text-[13px] font-bold tracking-[0.04em] text-pss-700 block">
+          <span className="font-syne text-[11px] sm:text-[13px] font-bold tracking-[0.04em] text-pss-700 block whitespace-nowrap">
             UBC PROJECT STEM SEARCH
           </span>
         </a>
 
         {/* Desktop links */}
-        <ul className="hidden md:flex items-center gap-7 list-none" role="list">
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-7 list-none" role="list">
           {NAV_LINKS.map(({ label, href }) => (
             <li key={href} className="relative">
               {/* Weight never changes, so the row never shifts; the underline
@@ -99,7 +99,7 @@ export default function Navbar() {
                 href={href}
                 onClick={(e) => { e.preventDefault(); handleNavClick(href) }}
                 aria-current={active === href.slice(1) ? 'location' : undefined}
-                className={`text-[13px] font-medium no-underline transition-colors duration-200 rounded-sm focus-ring
+                className={`text-[13px] font-medium whitespace-nowrap no-underline transition-colors duration-200 rounded-sm focus-ring
                             ${active === href.slice(1) ? 'text-pss-700' : 'text-pss-600 hover:text-pss-700'}`}
               >
                 {label}
@@ -119,10 +119,10 @@ export default function Navbar() {
               href={links.signup}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-pss-700 text-white text-[13px] font-bold px-[22px] py-2 rounded-full
-                         hover:bg-pss-600 transition-all duration-200 hover:-translate-y-px focus-ring"
+              className="bg-pss-700 text-white text-[13px] font-bold whitespace-nowrap px-[22px] py-2 rounded-full
+                         hover:bg-pss-600 transition-[background-color,transform] duration-200 hover:-translate-y-px focus-ring"
             >
-              Join Now
+              Join PSS
             </a>
           </li>
         </ul>
@@ -131,7 +131,7 @@ export default function Navbar() {
         <button
           ref={toggleRef}
           onClick={() => setMenuOpen((o) => !o)}
-          className="md:hidden flex flex-col justify-center items-center w-11 h-11 gap-[5px] cursor-pointer
+          className="lg:hidden flex flex-col justify-center items-center w-11 h-11 gap-[5px] cursor-pointer
                      rounded-lg hover:bg-pss-100/60 transition-colors focus-ring"
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
@@ -172,7 +172,7 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
             className="fixed top-[73px] left-0 right-0 z-40 bg-pss-100/95 backdrop-blur-xl
-                       border-b border-pss-400/20 shadow-lg md:hidden"
+                       border-b border-pss-400/20 shadow-lg lg:hidden"
             style={{ WebkitBackdropFilter: 'blur(20px)' }}
           >
             <div className="flex flex-col py-4 px-6 gap-1">

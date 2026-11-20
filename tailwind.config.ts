@@ -2,6 +2,10 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  future: {
+    // hover: styles only on devices that can hover, so taps don't stick
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
       colors: {
@@ -17,7 +21,7 @@ const config: Config = {
           800: '#0F2A48',
           900: '#0F1E2E',
         },
-        teal:  '#7DD4CC',
+        teal:  { DEFAULT: '#7DD4CC', ink: '#256B70' },
         gold:  '#F0C060',
         sblue: '#6BB8D4',
       },
@@ -34,10 +38,6 @@ const config: Config = {
           '0%,82%,100%': { opacity: '0', transform: 'scale(.4) rotate(0deg)' },
           '88%':         { opacity: '0.85', transform: 'scale(1) rotate(24deg)' },
         },
-        eyePulse: {
-          '0%,100%': { opacity: '1', transform: 'scale(1)' },
-          '50%':     { opacity: '0.5', transform: 'scale(1.4)' },
-        },
         accordionDown: {
           from: { height: '0' },
           to:   { height: 'var(--radix-accordion-content-height)' },
@@ -50,7 +50,6 @@ const config: Config = {
       animation: {
         sparkle:          'spk 4s ease-in-out infinite',
         'sparkle-rare':   'spkRare 9s ease-in-out infinite',
-        'eye-pulse':      'eyePulse 2s ease-in-out infinite',
         'accordion-down': 'accordionDown 250ms ease-out',
         'accordion-up':   'accordionUp 250ms ease-in',
       },

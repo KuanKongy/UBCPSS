@@ -42,6 +42,14 @@
 
 html {
   scroll-behavior: smooth;
+  /* No gray flash on tap; no font inflation in landscape */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Controls never double-tap-zoom, so taps fire without the browser delay */
+button, a, [role='button'] {
+  touch-action: manipulation;
 }
 
 body {

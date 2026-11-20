@@ -132,7 +132,7 @@ export default function WhatWeDo() {
                              ${icon ? 'pl-3' : 'pl-4'} pr-4 py-2 text-[13px] font-semibold text-pss-700
                              shadow-[0_2px_12px_rgba(74,122,155,.10)]
                              hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(74,122,155,.18)] hover:border-teal/60
-                             transition-all duration-200`}
+                             transition-[transform,box-shadow,border-color] duration-200`}
                 >
                   {icon && (
                     <span className="grid h-7 w-7 place-items-center rounded-full bg-pss-100 flex-shrink-0">

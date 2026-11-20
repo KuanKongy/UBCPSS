@@ -11,7 +11,7 @@ import { copyEmail } from '@/lib/clipboard'
 
 const pill =
   'focus-ring inline-flex items-center gap-2 rounded-full border-2 border-pss-400 text-pss-700 ' +
-  'text-[13px] font-bold px-5 py-2 hover:bg-white/60 hover:-translate-y-0.5 transition-all duration-200 active:scale-95'
+  'text-[13px] font-bold px-5 py-2 hover:bg-white/60 hover:-translate-y-0.5 transition-[background-color,transform] duration-200 active:scale-95'
 
 export default function GetStarted() {
   const links = useLinks()
@@ -47,7 +47,7 @@ export default function GetStarted() {
             </p>
             <div className="flex gap-3 justify-center flex-wrap items-center">
               <LinkButton href={links.signup} external size="sm">
-                Apply to Join ↗
+                Join PSS ↗
               </LinkButton>
               <a href={links.instagram} target="_blank" rel="noopener noreferrer" className={pill}>
                 <InstagramIcon size={15} />
@@ -74,6 +74,9 @@ export default function GetStarted() {
                 Email Us
               </button>
             </div>
+            <p className="text-[13px] font-medium text-pss-600 mt-5">
+              Free · 2-minute form · open to every year and faculty
+            </p>
           </div>
         </ScrollReveal>
       </div>

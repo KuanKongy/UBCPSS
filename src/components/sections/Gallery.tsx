@@ -6,6 +6,7 @@ import Sparkle from '@/components/shared/Sparkle'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import Lightbox from '@/components/shared/Lightbox'
+import { ChevronLeftIcon, ChevronRightIcon } from '@/components/icons'
 import { useGallery, useLinkedEvents } from '@/lib/cms/content'
 import { useMediaQuery } from '@/lib/useMediaQuery'
 import type { GalleryEventGroup, GalleryPhoto, LinkedEventItem } from '@/lib/types'
@@ -58,7 +59,7 @@ function LinkedEventCard({ item, index }: { item: LinkedEventItem; index: number
             </p>
           ))}
         </div>
-        <span className="text-[10px] text-white/80 mt-1 italic">View on Instagram ↗</span>
+        <span className="text-[11px] text-white/90 mt-1">View on Instagram ↗</span>
       </div>
     </motion.a>
   )
@@ -169,20 +170,20 @@ function PhotoRow({
               onClick={() => step(-1)}
               aria-label={`Previous photos: ${group.title}`}
               className="focus-ring absolute left-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center
-                         rounded-full bg-white/55 text-pss-700 text-[18px] font-bold backdrop-blur-sm
+                         rounded-full bg-white/55 text-pss-700 backdrop-blur-sm
                          shadow-[0_2px_10px_rgba(26,58,92,0.18)] hover:bg-white/90 transition-colors"
             >
-              ‹
+              <ChevronLeftIcon size={18} />
             </button>
             <button
               type="button"
               onClick={() => step(1)}
               aria-label={`Next photos: ${group.title}`}
               className="focus-ring absolute right-3 top-1/2 -translate-y-1/2 z-10 grid h-10 w-10 place-items-center
-                         rounded-full bg-white/55 text-pss-700 text-[18px] font-bold backdrop-blur-sm
+                         rounded-full bg-white/55 text-pss-700 backdrop-blur-sm
                          shadow-[0_2px_10px_rgba(26,58,92,0.18)] hover:bg-white/90 transition-colors"
             >
-              ›
+              <ChevronRightIcon size={18} />
             </button>
           </>
         )}

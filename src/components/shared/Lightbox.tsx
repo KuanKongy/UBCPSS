@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { InstagramIcon } from '@/components/icons'
+import { ChevronLeftIcon, ChevronRightIcon, InstagramIcon } from '@/components/icons'
 import ZoomableImage from '@/components/shared/ZoomableImage'
 import { cn } from '@/lib/utils'
 import { useMediaQuery } from '@/lib/useMediaQuery'
@@ -152,7 +152,7 @@ export default function Lightbox({
   // and backdrop alike; the panel's stage stays flat (no shadow)
   const arrow =
     'focus-ring absolute top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full ' +
-    'bg-pss-900/40 text-white text-xl backdrop-blur-sm border border-white/45 ' +
+    'bg-pss-900/40 text-white backdrop-blur-sm border border-white/45 ' +
     'hover:bg-pss-900/65 transition-colors'
   // Inspect-view controls get livelier hover/press feedback
   const inspectCtl = cn(arrow, 'transition hover:border-white/80 hover:bg-pss-900/75 active:scale-90')
@@ -220,10 +220,10 @@ export default function Lightbox({
               {photos.length > 1 && (
                 <>
                   <button onClick={() => step(-1)} aria-label="Previous photo" className={cn(arrow, 'left-3')}>
-                    ‹
+                    <ChevronLeftIcon size={20} />
                   </button>
                   <button onClick={() => step(1)} aria-label="Next photo" className={cn(arrow, 'right-3')}>
-                    ›
+                    <ChevronRightIcon size={20} />
                   </button>
                 </>
               )}
@@ -249,7 +249,7 @@ export default function Lightbox({
                   onClick={() => onNavigate(i)}
                   aria-label={`Show photo ${i + 1} of ${photos.length}`}
                   aria-current={i === index ? 'true' : undefined}
-                  className={`focus-ring relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-[10px] transition-all duration-200
+                  className={`focus-ring relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-[10px] transition-[opacity,box-shadow] duration-200
                               ${i === index
                                 ? 'ring-2 ring-pss-500 ring-offset-2 ring-offset-[#F4F8FC]'
                                 : 'opacity-55 hover:opacity-90'}`}
@@ -294,10 +294,10 @@ export default function Lightbox({
                   {photos.length > 1 && (
                     <>
                       <button onClick={() => step(-1)} aria-label="Previous photo" className={cn(inspectCtl, 'left-3')}>
-                        ‹
+                        <ChevronLeftIcon size={20} />
                       </button>
                       <button onClick={() => step(1)} aria-label="Next photo" className={cn(inspectCtl, 'right-3')}>
-                        ›
+                        <ChevronRightIcon size={20} />
                       </button>
                       <span
                         className="absolute left-3 top-3 rounded-full bg-pss-900/40 border border-white/45 px-3 py-1.5

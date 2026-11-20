@@ -80,7 +80,7 @@ export default function FAQ() {
                       <span
                         className="w-[28px] h-[28px] rounded-full border border-pss-400/50
                                    bg-white flex items-center justify-center flex-shrink-0
-                                   text-pss-600 transition-all duration-300
+                                   text-pss-600 transition-[transform,background-color,border-color,color] duration-300
                                    group-data-[state=open]:rotate-180
                                    group-data-[state=open]:bg-pss-700
                                    group-data-[state=open]:text-white
