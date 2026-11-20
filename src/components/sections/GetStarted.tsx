@@ -5,7 +5,7 @@ import Sheen from '@/components/shared/Sheen'
 import ScrollReveal from '@/components/shared/ScrollReveal'
 import WaveTransition from '@/components/shared/WaveTransition'
 import LinkButton from '@/components/ui/LinkButton'
-import { InstagramIcon } from '@/components/icons'
+import { InstagramIcon, LinkedInIcon } from '@/components/icons'
 import { useLinks } from '@/lib/cms/content'
 import { copyEmail } from '@/lib/clipboard'
 
@@ -52,6 +52,10 @@ export default function GetStarted() {
               <a href={links.instagram} target="_blank" rel="noopener noreferrer" className={pill}>
                 <InstagramIcon size={15} />
                 @ubc_pss
+              </a>
+              <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className={pill}>
+                <LinkedInIcon size={14} />
+                LinkedIn
               </a>
               <a href={links.linktree} target="_blank" rel="noopener noreferrer" className={pill}>
                 {/* Linktree mark (simple-icons, CC0): seven-ray asterisk with a detached trunk */}

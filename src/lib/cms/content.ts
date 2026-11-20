@@ -12,8 +12,8 @@ import type {
   SettingRow, StatRow, TeamMemberRow, TestimonialRow,
 } from './rows'
 import type {
-  CurrentEvent, FAQItem, GalleryEventGroup, LinkedEventItem, PastEvent,
-  Partner, SiteLinks, Stat, TeamMember, Testimonial,
+  CurrentEvent, ExtraLink, FAQItem, GalleryEventGroup, LinkedEventItem,
+  PastEvent, Partner, SiteLinks, Stat, TeamMember, Testimonial,
 } from '../types'
 import {
   EMAIL, EVENTS, FAQ_ITEMS, LINKED_EVENT_META, LINKS, PARTNER_LOGOS,
@@ -197,6 +197,24 @@ const LINKS_FALLBACK: SiteLinks = {
   linkedin: LINKS.linkedin,
   signup: LINKS.amsSignup,
   email: EMAIL,
+  extra: [],
+}
+
+/** The 'extra_links' setting holds a JSON array of {label, url}. */
+export function parseExtraLinks(raw: string | undefined): ExtraLink[] {
+  if (!raw) return []
+  try {
+    const arr: unknown = JSON.parse(raw)
+    if (!Array.isArray(arr)) return []
+    return arr.filter((l): l is ExtraLink => {
+      if (typeof l !== 'object' || l === null) return false
+      const { label, url } = l as Record<string, unknown>
+      return typeof label === 'string' && label.trim() !== ''
+        && typeof url === 'string' && url.trim() !== ''
+    })
+  } catch {
+    return []
+  }
 }
 
 export const useLinks = createRemote<SiteLinks>(LINKS_FALLBACK, async () => {
@@ -210,6 +228,7 @@ export const useLinks = createRemote<SiteLinks>(LINKS_FALLBACK, async () => {
     linkedin: get('linkedin', LINKS.linkedin),
     signup: get('signup_form', LINKS.amsSignup),
     email: get('email', EMAIL),
+    extra: parseExtraLinks(rows.find((r) => r.key === 'extra_links')?.value),
   }
 })
 

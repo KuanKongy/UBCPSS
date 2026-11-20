@@ -76,6 +76,12 @@ export interface LinkedEventItem {
   href: string
 }
 
+/** Admin-added link, rendered as a plain text link in the footer */
+export interface ExtraLink {
+  label: string
+  url: string
+}
+
 /** Site-wide URLs and the contact address, editable from the dashboard */
 export interface SiteLinks {
   linktree: string
@@ -84,6 +90,8 @@ export interface SiteLinks {
   /** Membership sign-up form (the "Join" buttons) */
   signup: string
   email: string
+  /** Extra footer links added from the dashboard (settings key 'extra_links') */
+  extra: ExtraLink[]
 }
 
 export interface AboutCard {
